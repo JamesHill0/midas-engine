@@ -1,0 +1,231 @@
+version: "3"
+services:
+    api-gateway:
+        build:
+            context: ../../Blitz-API/api-gateway
+            dockerfile: ./Dockerfile
+        container_name: api-gateway
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "True"
+            APP_PORT: 8000
+            SECRET: ${SECRET}
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            SERVICE_MAPPING: http://mapping:8007
+            SERVICE_AUTHORIZATION: http://authorization:8008
+            SERVICE_LOGGER: http://logger:8009
+            SERVICE_INTEGRATION: http://integration:8011
+        ports:
+            - "8000:8000"
+        networks:
+            - internal
+    authentication:
+        build:
+            context: ../../Blitz-API/authentication
+            dockerfile: ./Dockerfile
+        container_name: authentication
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "True"
+            APP_PORT: 8001
+        expose:
+            - "8001"
+        networks:
+            - internal
+    account:
+        build:
+            context: ../../Blitz-API/account
+            dockerfile: ./Dockerfile
+        container_name: account
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "True"
+            APP_PORT: 8002
+            SECRET: ${SECRET}
+            DB_HOST: postgres
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_NAME: ${DB_NAME}
+            DB_PORT: 5432
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            REDIS_NAME: ${REDIS_NAME}
+            REDIS_URL: ${REDIS_URL}
+        expose:
+            - "8002"
+        networks:
+            - internal
+    mapping:
+        build:
+            context: ../../Blitz-API/mapping
+            dockerfile: ./Dockerfile
+        container_name: mapping
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "True"
+            APP_PORT: 8007
+            SECRET: ${SECRET}
+            DB_HOST: postgres
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_NAME: ${DB_NAME}
+            DB_PORT: 5432
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            SERVICE_RABBITMQ: ${SERVICE_RABBITMQ}
+            REDIS_NAME: ${REDIS_NAME}
+            REDIS_URL: ${REDIS_URL}
+        expose:
+            - "8007"
+        networks:
+            - internal
+    authorization:
+        build:
+            context: ../../Blitz-API/authorization
+            dockerfile: ./Dockerfile
+        container_name: authorization
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "True"
+            APP_PORT: 8008
+            SECRET: ${SECRET}
+            DB_HOST: postgres
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_NAME: ${DB_NAME}
+            DB_PORT: 5432
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: ${REDIS_NAME}
+            REDIS_URL: ${REDIS_URL}
+        expose:
+            - "8008"
+        networks:
+            - internal
+    logger:
+        build:
+            context: ../../Blitz-API/logger
+            dockerfile: ./Dockerfile
+        container_name: logger
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "true"
+            APP_PORT: 8009
+            SECRET: ${SECRET}
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: ${REDIS_NAME}
+            REDIS_URL: ${REDIS_URL}
+        expose:
+            - "8009"
+        networks:
+            - internal
+    integration:
+        build:
+            context: ../../Blitz-API/integration
+            dockerfile: ./Dockerfile
+        container_name: integration
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "true"
+            APP_PORT: 8011
+            SECRET: ${SECRET}
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: ${REDIS_NAME}
+            REDIS_URL: ${REDIS_URL}
+            SMART_FILE_URL: ${SMART_FILE_URL}
+        expose:
+            - "8011"
+        networks:
+            - internal
+    webserver:
+        build:
+            context: ../../Blitz-API/deployments/nginx
+            dockerfile: Dockerfile
+        image: nginx
+        container_name: webserver
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_NAME: "webserver"
+            APP_DEBUG: "false"
+            SERVICE_NAME: "webserver"
+        links:
+            - api-gateway
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - nginxdata:/var/log/nginx
+        depends_on:
+            - api-gateway
+        networks:
+            - internal
+    postgres:
+        image: postgres
+        container_name: postgres
+        restart: unless-stopped
+        volumes:
+            - ./init-pg.sql:/docker-entrypoint-initdb.d/init-pg.sql:ro
+        environment:
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_HOST_AUTH_METHOD: "trust"
+            POSTGRES_DB: ${DB_NAME}
+        ports:
+            - "5432:5432"
+        networks:
+            - internal
+    redis:
+        image: redis:latest
+        container_name: redis
+        restart: unless-stopped
+        command: redis-server --requirepass ${RABBITMQ_DEFAULT_PASS}
+        environment:
+            - REDIS_REPLICATION_MODE=master
+        networks:
+            - internal
+    rabbitmq:
+        image: rabbitmq:latest
+        container_name: rabbitmq
+        restart: unless-stopped
+        environment:
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        expose:
+            - "5672"
+            - "15672"
+        networks:
+            - internal
+    pgadmin4:
+        image: dpage/pgadmin4:latest
+        container_name: pgadmin4
+        restart: unless-stopped
+        volumes:
+            - ./db/pgadmin:/root/.pgadmin
+        ports:
+            - "5050:80"
+        expose:
+            - "5050"
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+            - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+networks:
+    internal:
+        driver: bridge
+volumes:
+    appdata:
+        driver: local
+    nginxdata:
+        driver: local

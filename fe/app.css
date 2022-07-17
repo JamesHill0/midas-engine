@@ -1,0 +1,80 @@
+/** appbar **/
+#appbar .menu {
+    line-height: 64px;
+}
+
+#appbar .avatar {
+    margin-right: 15;
+    background-color: "orange";
+}
+
+#appbar .down-outlined {
+    font-size: 10;
+    margin-left: 10;
+}
+
+/** authorization **/
+#authorization .layout {
+    background-color: "ghostwhite";
+}
+
+#authorization .login-card {
+    margin-top: 50;
+    width: 500;
+}
+
+#authorization .app-title {
+    margin-bottom: 50;
+}
+
+#authorization .login-form {
+    text-align: left;
+}
+
+#authorization .user-icon {
+    color: rgba(0,0,0,.25);
+}
+
+#authorization .input-password {
+    margin-top: 10;
+}
+
+#authorization .password-icon {
+    color: rgba(0,0,0,.25);
+}
+
+#authorization .login-form-button {
+    margin-top: 20;
+    width: 100%;
+}
+
+/** registration **/
+#registration .bread-crumb {
+    margin: 16 0;
+}
+
+#registration .content {
+    padding: 50 50;
+}
+
+#registration .content > .inner-content {
+    padding: 25 25;
+    min-height: 400;
+}
+
+#registration .information-content {
+    padding: 50 50;
+    background: #fff;
+}
+
+#registration .information-content > .back-button {
+    margin-left: 10;
+}
+
+#registration .source-card {
+    width: 240;
+}
+
+#registration .destination-card {
+    width: 240;
+}
