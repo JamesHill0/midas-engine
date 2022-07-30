@@ -4,14 +4,20 @@ import {
     Column
 } from 'typeorm';
 
-@Entity('account-detail')
-export class AccountDetail {
+@Entity('contact-detail')
+export class ContactDetail {
     @PrimaryGeneratedColumn()
     id: string;
+
+    @Column()
+    accountId: string;
 
     @Column()
     name: string;
 
     @Column()
-    address: string;
+    email: string;
+
+    @Column()
+    contactNumber: string;
 }

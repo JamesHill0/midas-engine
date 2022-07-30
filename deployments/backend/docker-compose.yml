@@ -4,7 +4,7 @@ services:
         build:
             context: ../../Blitz-API/api-gateway
             dockerfile: ./Dockerfile
-        container_name: api-gateway
+        container_name: midas-api-gateway
         restart: unless-stopped
         environment:
             APP_ENV: "production"
@@ -17,29 +17,25 @@ services:
             SERVICE_AUTHORIZATION: http://authorization:8008
             SERVICE_LOGGER: http://logger:8009
             SERVICE_INTEGRATION: http://integration:8011
-        ports:
-            - "8000:8000"
         networks:
             - internal
     authentication:
         build:
             context: ../../Blitz-API/authentication
             dockerfile: ./Dockerfile
-        container_name: authentication
+        container_name: midas-authentication
         restart: unless-stopped
         environment:
             APP_ENV: "production"
             APP_DEBUG: "True"
             APP_PORT: 8001
-        expose:
-            - "8001"
         networks:
             - internal
     account:
         build:
             context: ../../Blitz-API/account
             dockerfile: ./Dockerfile
-        container_name: account
+        container_name: midas-account
         restart: unless-stopped
         environment:
             APP_ENV: "production"
@@ -54,15 +50,13 @@ services:
             SERVICE_AUTHENTICATION: http://authentication:8001
             REDIS_NAME: ${REDIS_NAME}
             REDIS_URL: ${REDIS_URL}
-        expose:
-            - "8002"
         networks:
             - internal
     mapping:
         build:
             context: ../../Blitz-API/mapping
             dockerfile: ./Dockerfile
-        container_name: mapping
+        container_name: midas-mapping
         restart: unless-stopped
         environment:
             APP_ENV: "production"
@@ -79,15 +73,13 @@ services:
             SERVICE_RABBITMQ: ${SERVICE_RABBITMQ}
             REDIS_NAME: ${REDIS_NAME}
             REDIS_URL: ${REDIS_URL}
-        expose:
-            - "8007"
         networks:
             - internal
     authorization:
         build:
             context: ../../Blitz-API/authorization
             dockerfile: ./Dockerfile
-        container_name: authorization
+        container_name: midas-authorization
         restart: unless-stopped
         environment:
             APP_ENV: "production"
@@ -103,15 +95,13 @@ services:
             SERVICE_ACCOUNT: http://account:8002
             REDIS_NAME: ${REDIS_NAME}
             REDIS_URL: ${REDIS_URL}
-        expose:
-            - "8008"
         networks:
             - internal
     logger:
         build:
             context: ../../Blitz-API/logger
             dockerfile: ./Dockerfile
-        container_name: logger
+        container_name: midas-logger
         restart: unless-stopped
         environment:
             APP_ENV: "production"
@@ -122,15 +112,13 @@ services:
             SERVICE_ACCOUNT: http://account:8002
             REDIS_NAME: ${REDIS_NAME}
             REDIS_URL: ${REDIS_URL}
-        expose:
-            - "8009"
         networks:
             - internal
     integration:
         build:
             context: ../../Blitz-API/integration
             dockerfile: ./Dockerfile
-        container_name: integration
+        container_name: midas-integration
         restart: unless-stopped
         environment:
             APP_ENV: "production"
@@ -142,16 +130,14 @@ services:
             REDIS_NAME: ${REDIS_NAME}
             REDIS_URL: ${REDIS_URL}
             SMART_FILE_URL: ${SMART_FILE_URL}
-        expose:
-            - "8011"
         networks:
             - internal
     webserver:
         build:
-            context: ../../Blitz-API/deployments/nginx
+            context: ./nginx
             dockerfile: Dockerfile
         image: nginx
-        container_name: webserver
+        container_name: midas-gateway-nginx
         restart: unless-stopped
         environment:
             APP_ENV: "production"
@@ -161,8 +147,8 @@ services:
         links:
             - api-gateway
         ports:
-            - "80:80"
-            - "443:443"
+            - "9001:80"
+            - "9002:443"
         volumes:
             - nginxdata:/var/log/nginx
         depends_on:

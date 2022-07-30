@@ -3,9 +3,10 @@ import { StatusType } from 'src/enums/status.type';
 import {
     Entity,
     PrimaryGeneratedColumn,
-    Column, OneToOne, JoinColumn
+    Column, OneToOne, JoinColumn, OneToMany
 } from 'typeorm';
 import { AccountDetail  } from './account.detail.entity';
+import { ContactDetail } from './contact.detail.entity';
 import { Secret } from './secret.entity';
 
 @Entity('account')
@@ -31,6 +32,9 @@ export class Account {
     @OneToOne(() => AccountDetail, { eager: true, cascade: true })
     @JoinColumn()
     detail: AccountDetail;
+
+    @OneToMany(() => ContactDetail, contact => contact.accountId)
+    contacts: ContactDetail[];
 
     @OneToOne(() => Secret, { eager: true, cascade: true })
     @JoinColumn()
