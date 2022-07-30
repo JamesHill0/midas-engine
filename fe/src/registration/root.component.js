@@ -1,9 +1,18 @@
 import React from "react";
 import { useState } from "react";
 import { navigateToUrl } from "single-spa";
-import { FormOutlined, DatabaseOutlined, BranchesOutlined, CheckSquareOutlined } from "@ant-design/icons";
+import { FormOutlined, DatabaseOutlined, BranchesOutlined, RadiusSettingOutlined, CheckSquareOutlined } from "@ant-design/icons";
 
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout, Menu } from "antd";
+
+import {
+  INFORMATION_KEY, INFORMATION_LABEL,
+  SOURCE_KEY, SOURCE_LABEL,
+  DESTINATION_KEY, DESTINATION_LABEL,
+  MAPPING_KEY, MAPPING_LABEL,
+  SETUP_MAPPING_KEY, SETUP_MAPPING_LABEL,
+  CONFIRMATION_KEY, CONFIRMATION_LABEL
+} from "./shared/selected.menu.item";
 
 import Information from "./information";
 import Source from "./source";
@@ -13,64 +22,62 @@ import Confirmation from "./confirmation";
 
 const { Content, Sider } = Layout;
 
-function RegistrationBreadCrumb() {
-  return (
-    <Breadcrumb className="bread-crumb">
-      <Breadcrumb.Item>Home</Breadcrumb.Item>
-      <Breadcrumb.Item>New Account</Breadcrumb.Item>
-    </Breadcrumb>
-  )
-}
-
-function Registration() {
+function RegistrationContent() {
   const [selectedMenuItem, setSelectedMenuItem] = useState('1');
-
-  const registrationInformation = {
-    "information": {},
-    "source": {},
-    "destination": {},
-    "mapping": {},
-    "confirmation": {},
-  }
+  const [registrationInformation, setRegistrationInformation] = useState(
+    {
+      "information": {},
+      "source": {},
+      "destination": {},
+      "mapping": {},
+      "setupMapping": {},
+      "confirmation": {},
+    }
+  );
 
   const items = [
     {
-      key: '1',
+      key: INFORMATION_KEY,
       icon: <FormOutlined />,
-      label: 'Information',
-      onClick: () => setSelectedMenuItem('1')
+      label: INFORMATION_LABEL,
+      onClick: () => setSelectedMenuItem(INFORMATION_KEY)
     },
     {
-      key: '2',
+      key: SOURCE_KEY,
       icon: <DatabaseOutlined />,
-      label: 'Source',
-      onClick: () => setSelectedMenuItem('2')
+      label: SOURCE_LABEL,
+      onClick: () => setSelectedMenuItem(SOURCE_KEY)
     },
     {
-      key: '3',
+      key: DESTINATION_KEY,
       icon: <DatabaseOutlined />,
-      label: 'Destination',
-      onClick: () => setSelectedMenuItem('3')
+      label: DESTINATION_LABEL,
+      onClick: () => setSelectedMenuItem(DESTINATION_KEY)
     },
     {
-      key: '4',
+      key: MAPPING_KEY,
       icon: <BranchesOutlined />,
-      label: 'Mapping',
-      onClick: () => setSelectedMenuItem('4')
+      label: MAPPING_LABEL,
+      onClick: () => setSelectedMenuItem(MAPPING_KEY)
     },
     {
-      key: '5',
+      key: SETUP_MAPPING_KEY,
+      icon: <RadiusSettingOutlined />,
+      label: SETUP_MAPPING_LABEL,
+      onClick: () => setSelectedMenuItem(SETUP_MAPPING_KEY)
+    },
+    {
+      key: CONFIRMATION_KEY,
       icon: <CheckSquareOutlined />,
-      label: 'Confirmation',
-      onClick: () => setSelectedMenuItem('5')
+      label: CONFIRMATION_LABEL,
+      onClick: () => setSelectedMenuItem(CONFIRMATION_KEY)
     }
   ]
 
   return (
     <Content className="content">
-      {RegistrationBreadCrumb()}
-      <Layout className="site-layout-background">
-        <Sider className="site-layout-background">
+      <Layout className="layout">
+        <Sider className="sider">
           <Menu
             theme="dark"
             mode="inline"
@@ -79,29 +86,40 @@ function Registration() {
           />
         </Sider>
         <Content className="inner-content">
-          {selectedMenuItem == '1' && <Information
+          {selectedMenuItem == INFORMATION_KEY && <Information
             setSelectedMenuItem={setSelectedMenuItem}
             registrationInformation={registrationInformation}
+            setRegistrationInformation={setRegistrationInformation}
           />}
 
-          {selectedMenuItem == '2' && <Source
+          {selectedMenuItem == SOURCE_KEY && <Source
             setSelectedMenuItem={setSelectedMenuItem}
             registrationInformation={registrationInformation}
+            setRegistrationInformation={setRegistrationInformation}
           />}
 
-          {selectedMenuItem == '3' && <Destination
+          {selectedMenuItem == DESTINATION_KEY && <Destination
             setSelectedMenuItem={setSelectedMenuItem}
             registrationInformation={registrationInformation}
+            setRegistrationInformation={setRegistrationInformation}
           />}
 
-          {selectedMenuItem == '4' && <Mapping
+          {selectedMenuItem == MAPPING_KEY && <Mapping
             setSelectedMenuItem={setSelectedMenuItem}
             registrationInformation={registrationInformation}
+            setRegistrationInformation={setRegistrationInformation}
           />}
 
-          {selectedMenuItem == '5' && <Confirmation
+          {selectedMenuItem == SETUP_MAPPING_KEY && <Mapping
             setSelectedMenuItem={setSelectedMenuItem}
             registrationInformation={registrationInformation}
+            setRegistrationInformation={setRegistrationInformation}
+          />}
+
+          {selectedMenuItem == CONFIRMATION_KEY && <Confirmation
+            setSelectedMenuItem={setSelectedMenuItem}
+            registrationInformation={registrationInformation}
+            setRegistrationInformation={setRegistrationInformation}
           />}
         </Content>
       </Layout>
@@ -109,4 +127,10 @@ function Registration() {
   );
 }
 
-export default Registration;
+function RegistrationPage() {
+  return (
+    <RegistrationContent />
+  )
+}
+
+export default RegistrationPage;

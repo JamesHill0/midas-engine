@@ -37,20 +37,33 @@ function Information({ setSelectedMenuItem, registrationInformation }) {
         <Form {...formItemLayout}
             onFinish={handleSubmit}
         >
-            <Form.Item label="Name" name="name" rules={[
+            <h3>Company Details</h3>
+            <Form.Item label="Company Name" name="companyName" rules={[
+                { required: true, message: "Please input your company name" }
+            ]}>
+                <Input placeholder="Company Name" />
+            </Form.Item>
+            <Form.Item label="Company Address" name="companyAddress" rules={[
+                { required: true, message: "Please input your company address" }
+            ]}>
+                <TextArea rows={3} placeholder="Company Address" />
+            </Form.Item>
+
+            <h3>Contact Information</h3>
+            <Form.Item label="Name" name="contactName" rules={[
                 { required: true, message: "Please input your name" }
             ]}>
                 <Input placeholder="Name" />
             </Form.Item>
-            <Form.Item label="Address" name="address" rules={[
-                { required: true, message: "Please input your address" }
-            ]}>
-                <TextArea rows={3} placeholder="Address" />
-            </Form.Item>
-            <Form.Item label="E-mail" name="email" rules={[
+            <Form.Item label="E-mail" name="contactEmail" rules={[
                 { required: true, message: "Please input your email" }
             ]}>
                 <Input placeholder="E-mail" />
+            </Form.Item>
+            <Form.Item label="Contact Number" name="contactNumber" rules={[
+                { required: true, message: "Please input your contact number" }
+            ]}>
+                <Input placeholder="Contact Number" />
             </Form.Item>
             <br/>
             <Form.Item {...tailFormItemLayout}>

@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { IntegrationsImage } from "../../assets/image";
 
-import { Card, Form, Modal, Select } from "antd";
+import { Card, Form, Modal, Select, Button, Input } from "antd";
 
-import api from "../data";
+import api from "../../data";
+import AuthTypeBasicForm from "./forms/auth.type.basic.form";
 
 const { Meta } = Card;
 const { Option } = Select;
 
+function SourceTitle() {
+    return (
+        <div>
+            <h2>Select source:</h2>
+            This is where we do the data <b>extraction</b> in ETL
+            <br/><br/>
+        </div>
+    );
+}
 
 function Source() {
+    const AUTH_TYPE_BASIC = "Basic";
+
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
-    const [selectedAuthType, setSelectedAuthType] = useState("");
+    const [selectedAuthType, setSelectedAuthType] = useState(AUTH_TYPE_BASIC);
     const [availableAuthTypes, setAvailableAuthTypes] = useState([]);
-
-    const AUTH_TYPE_BASIC = "Basic";
 
     const formItemLayout = {
         labelCol: {
@@ -92,12 +102,13 @@ function Source() {
 
     return (
         <div>
+            <SourceTitle />
             {availableSources().map((availableSource) => {
                 return (
                     <Card
                         onClick={() => showModal(availableSource)}
                         hoverable
-                        className="source-card"
+                        className="app-picker-card"
                         cover={<img alt={availableSource.title} src={availableSource.imageSource} />}
                     >
                         <Meta title={availableSource.title} description={availableSource.description} />
@@ -116,19 +127,9 @@ function Source() {
                         </Select>
                     </Form.Item>
 
-                    {selectedAuthType == AUTH_TYPE_BASIC && <React.Component>
-                        <Form.Item label="Username" name="username" rules={[
-                            { required: true, message: "Please input your username" }
-                        ]}>
-                            <Input placeholder="Username" />
-                        </Form.Item>
-
-                        <Form.Item label="Password" name="password" rules={[
-                            { required: true, message: "Please input your password" }
-                        ]}>
-                            <Input placeholder="Password" />
-                        </Form.Item>
-                    </React.Component>}
+                    {selectedAuthType == AUTH_TYPE_BASIC && <div>
+                        <AuthTypeBasicForm />
+                    </div>}
 
                     <Form.Item {...tailFormItemLayout}>
                         <Button type="primary" htmlType="submit">

@@ -57,7 +57,7 @@
     padding: 50 50;
 }
 
-#registration .content > .inner-content {
+#registration .inner-content {
     padding: 25 25;
     min-height: 400;
 }
@@ -67,14 +67,11 @@
     background: #fff;
 }
 
-#registration .information-content > .back-button {
+#registration .back-button {
     margin-left: 10;
 }
 
-#registration .source-card {
+#registration .app-picker-card {
     width: 240;
-}
-
-#registration .destination-card {
-    width: 240;
+    padding: 10;
 }

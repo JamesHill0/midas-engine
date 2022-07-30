@@ -4,15 +4,13 @@ import { Layout } from "antd";
 const { Footer } = Layout;
 
 function FooterComponent() {
-    const [author, setAuthor] = useState("https://www.blitzservices.co")
-
     return (
         <Footer>
             <center>
-                {author}
+                https://www.blitzservices.co
             </center>
         </Footer>
     )
 }
 
-export default FooterComponent();
+export default FooterComponent;

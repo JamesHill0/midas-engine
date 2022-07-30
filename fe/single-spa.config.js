@@ -20,17 +20,21 @@ function currentlyLoggedIn() {
     return true;
 }
 
+function registrationPage() {
+    return true;
+}
+
 // Registers SPA Applications --
 registerApplication(
     "authorization",
     () => import("./src/authorization/authorization.app.js"),
-    () => !currentlyLoggedIn()
+    () => !currentlyLoggedIn() && !registrationPage()
 );
 
 registerApplication(
     "appbar",
     () => import("./src/appbar/appbar.app.js"),
-    () => currentlyLoggedIn()
+    () => currentlyLoggedIn() && !registrationPage()
 );
 
 registerApplication(
@@ -42,7 +46,7 @@ registerApplication(
 registerApplication(
     "footer",
     () => import("./src/footer/footer.app.js"),
-    () => currentlyLoggedIn()
+    () => currentlyLoggedIn() && !registrationPage()
 );
 
 start();

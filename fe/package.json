@@ -26,7 +26,7 @@
   },
   "scripts": {
     "prod": "webpack-dev-server --config webpack.config.js --host 0.0.0.0 --hot --disable-host-check",
-    "start": "webpack-dev-server --config webpack.dev.config.js --port 3000 --open --hot",
+    "start": "webpack-dev-server --config webpack.dev.config.js --host 0.0.0.0 --open --hot",
     "build": "webpack --config webpack.config.js -p"
   },
   "devDependencies": {
