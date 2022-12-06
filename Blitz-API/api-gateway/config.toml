@@ -1,0 +1,17 @@
+[service]
+name = "API Gateway"
+port = 8000
+host = "localhost"
+
+[http]
+authentication = 8001
+account = 8002
+location = 8003
+order = 8004
+golf = 8005
+document = 8006
+mapping = 8007
+authorization = 8008
+logger = 8009
+scheduler = 8010
+integration = 8011

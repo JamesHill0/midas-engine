@@ -1,0 +1,45 @@
+body {
+    background-color: ghostwhite !important;
+    overflow: hidden;
+}
+
+.layout {
+    background-color: white !important;
+}
+
+#logo {
+    width: 120;
+    height: 31;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16 24 16 0;
+    float: left;
+}
+
+#container {
+    background: rgba(255, 255, 255, 0.2);
+    height: 75vh;
+}
+
+.table-operations {
+    margin-bottom: 16;
+}
+
+.table-operations > button {
+    margin-right: 8;
+}
+
+.ant-pagination-item-link .anticon {
+    margin-top: 7;
+}
+
+.ant-modal-close-x {
+    margin-top: 20;
+}
+
+.ant-steps-item-icon {
+    padding: 5;
+}
+
+.styles_WrapperUi__2TxXl {
+    z-index: 9999 !important;
+}

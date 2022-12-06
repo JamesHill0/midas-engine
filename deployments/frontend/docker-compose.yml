@@ -1,0 +1,51 @@
+version: "3"
+services:
+    frontend:
+        build:
+            context: ../../fe
+            dockerfile: ./Dockerfile
+            args:
+                CHOKIDAR_USEPOLLING: "true"
+                WATCHPACK_POLLING: "true"
+                APP_BASE_URL: ${APP_BASE_URL}
+                APP_API_KEY: ${APP_API_KEY}
+                DB_SECRET: ${DB_SECRET}
+        container_name: midas-frontend
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "True"
+            APP_PORT: 8080
+        networks:
+            - internal
+    webserver:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        image: nginx
+        container_name: midas-frontend-nginx
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_NAME: "webserver"
+            APP_DEBUG: "false"
+            SERVICE_NAME: "webserver"
+        links:
+            - frontend
+        ports:
+            - "9003:80"
+            - "9004:443"
+        volumes:
+            - nginxdata:/var/log/nginx
+        depends_on:
+            - frontend
+        networks:
+            - internal
+networks:
+    internal:
+        driver: bridge
+volumes:
+    appdata:
+        driver: local
+    nginxdata:
+        driver: local

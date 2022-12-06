@@ -1,0 +1,325 @@
+version: "3"
+services:
+    api-gateway:
+        build:
+            context: ../../api-gateway
+            dockerfile: ./Dockerfile
+        container_name: api-gateway
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "True"
+            APP_PORT: 8000
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            SERVICE_LOCATION: http://location:8003
+            SERVICE_ORDER: http://order:8004
+            SERVICE_GOLF: http://golf:8005
+            SERVICE_DOCUMENT: http://document:8006
+            SERVICE_MAPPING: http://mapping:8007
+            SERVICE_AUTHORIZATION: http://authorization:8008
+            SERVICE_LOGGER: http://logger:8009
+            SERVICE_SCHEDULER: http://scheduler:8010
+            SERVICE_INTEGRATION: http://integration:8011
+            SERVICE_EXTERNAL: http://external:8012
+        expose:
+            - "8000"
+        networks:
+            - internal
+    authentication:
+        build:
+            context: ../../authentication
+            dockerfile: ./Dockerfile
+        container_name: authentication
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "True"
+            APP_PORT: 8001
+        expose:
+            - "8001"
+        networks:
+            - internal
+    account:
+        build:
+            context: ../../account
+            dockerfile: ./Dockerfile
+        container_name: account
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "True"
+            APP_PORT: 8002
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            DB_HOST: postgres
+            DB_USERNAME: "test"
+            DB_PASSWORD: mR2DAEGZOi07dgShfpTp
+            DB_NAME: "blitz"
+            DB_PORT: 5432
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8002"
+        networks:
+            - internal
+    location:
+        build:
+            context: ../../location
+            dockerfile: ./Dockerfile
+        container_name: location
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "True"
+            APP_PORT: 8003
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8003"
+        networks:
+            - internal
+    order:
+        build:
+            context: ../../order
+            dockerfile: ./Dockerfile
+        container_name: order
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "True"
+            APP_PORT: 8004
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8004"
+        networks:
+            - internal
+    golf:
+        build:
+            context: ../../golf
+            dockerfile: ./Dockerfile
+        container_name: golf
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "true"
+            APP_PORT: 8005
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8005"
+        networks:
+            - internal
+    document:
+        build:
+            context: ../../document
+            dockerfile: ./Dockerfile
+        container_name: document
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "true"
+            APP_PORT: 8006
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8006"
+        networks:
+            - internal
+    mapping:
+        build:
+            context: ../../mapping
+            dockerfile: ./Dockerfile
+        container_name: mapping
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "True"
+            APP_PORT: 8007
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            DB_HOST: postgres
+            DB_USERNAME: "test"
+            DB_PASSWORD: mR2DAEGZOi07dgShfpTp
+            DB_NAME: "blitz"
+            DB_PORT: 5432
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8007"
+        networks:
+            - internal
+    authorization:
+        build:
+            context: ../../authorization
+            dockerfile: ./Dockerfile
+        container_name: authorization
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "true"
+            APP_PORT: 8008
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8008"
+        networks:
+            - internal
+    logger:
+        build:
+            context: ../../logger
+            dockerfile: ./Dockerfile
+        container_name: logger
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "true"
+            APP_PORT: 8009
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8009"
+        networks:
+            - internal
+    scheduler:
+        build:
+            context: ../../scheduler
+            dockerfile: ./Dockerfile
+        container_name: scheduler
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "true"
+            APP_PORT: 8010
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8010"
+        networks:
+            - internal
+    integration:
+        build:
+            context: ../../integration
+            dockerfile: ./Dockerfile
+        container_name: integration
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "true"
+            APP_PORT: 8011
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8011"
+        networks:
+            - internal
+    external:
+        build:
+            context: ../../external
+            dockerfile: ./Dockerfile
+        container_name: external
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_DEBUG: "true"
+            APP_PORT: 8012
+            SECRET: "mR2DAEGZOi07dgShfpTp"
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: "blitz"
+            REDIS_URL: "redis://:mR2DAEGZOi07dgShfpTp@redis:6379"
+        expose:
+            - "8012"
+        networks:
+            - internal
+    webserver:
+        build:
+            context: ../nginx
+            dockerfile: Dockerfile
+        image: nginx
+        container_name: webserver
+        restart: unless-stopped
+        environment:
+            APP_ENV: "development"
+            APP_NAME: "webserver"
+            APP_DEBUG: "false"
+            SERVICE_NAME: "webserver"
+        links:
+            - api-gateway
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - nginxdata:/var/log/nginx
+        depends_on:
+            - api-gateway
+        networks:
+            - internal
+    postgres:
+        image: postgres
+        container_name: postgres
+        restart: unless-stopped
+        volumes:
+            - ./init-pg.sql:/docker-entrypoint-initdb.d/init-pg.sql:ro
+        environment:
+            POSTGRES_USER: "test"
+            POSTGRES_PASSWORD: mR2DAEGZOi07dgShfpTp
+            POSTGRES_HOST_AUTH_METHOD: "trust"
+            POSTGRES_DB: "blitz"
+        ports:
+            - "5432:5432"
+        networks:
+            - internal
+    pgadmin4:
+        image: dpage/pgadmin4:latest
+        container_name: pgadmin4
+        restart: unless-stopped
+        volumes:
+            - /data/pgadmin:/root/.pgadmin
+        ports:
+            - "5050:80"
+        environment:
+            PGADMIN_DEFAULT_EMAIL: postgres@localhost
+            PGADMIN_DEFAULT_PASSWORD: mR2DAEGZOi07dgShfpTp
+    redis:
+        image: redis:latest
+        container_name: redis
+        command: redis-server --requirepass mR2DAEGZOi07dgShfpTp
+        environment:
+            - REDIS_REPLICATION_MODE=master
+        networks:
+            - internal
+networks:
+    internal:
+        driver: bridge
+volumes:
+    appdata:
+        driver: local
+    nginxdata:
+        driver: local

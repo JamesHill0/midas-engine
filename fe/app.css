@@ -1,0 +1,114 @@
+/** appbar **/
+#appbar .menu {
+    line-height: 64px;
+}
+
+#appbar .avatar {
+    margin-right: 15;
+    background-color: "orange";
+}
+
+#appbar .down-outlined {
+    font-size: 10;
+    margin-left: 10;
+}
+
+/** authorization **/
+#authorization {
+    overflow: hidden;
+}
+
+#authorization .layout {
+    background-color: "ghostwhite";
+}
+
+#authorization .login-card {
+    margin-top: 50;
+    width: 75%;
+    height: 600;
+}
+
+#authorization .login-card .ant-card-body {
+    padding: 0;
+}
+
+#authorization .login-child {
+    width: 50%;
+    height: 100%;
+    float: left;
+    padding: 20px;
+}
+
+#authorization .login-form {
+    background-color: #fff;
+}
+
+#authorization .login-form .login-content {
+    margin-top: 50;
+}
+
+#authorization .login-registration-info {
+    background-color: #001529;
+    color: #fff;
+}
+
+#authorization .app-title {
+    margin-bottom: 50;
+}
+
+#authorization .login-form {
+    text-align: left;
+}
+
+#authorization .user-icon {
+    color: rgba(0,0,0,.25);
+}
+
+#authorization .input-password {
+    margin-top: 10;
+}
+
+#authorization .password-icon {
+    color: rgba(0,0,0,.25);
+}
+
+#authorization .login-form-button {
+    margin-top: 20;
+    width: 100%;
+}
+
+/** registration **/
+#registration .bread-crumb {
+    margin: 16 0;
+}
+
+#registration .content {
+    padding: 50 50;
+}
+
+#registration .inner-content {
+    padding: 25 25;
+    min-height: 400;
+}
+
+#registration .steps {
+    margin-bottom: 30;
+}
+
+#registration .information-content {
+    background: #fff;
+}
+
+#registration .back-button {
+    margin-left: 10;
+}
+
+#registration .app-picker-card {
+    width: 240;
+    padding: 10;
+}
+
+.dashboard, .integrations, .users, .etl, .settings {
+    margin: 14 0;
+    padding: 10;
+}
