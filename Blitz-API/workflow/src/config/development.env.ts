@@ -2,7 +2,7 @@ import RedisConfig from './redis';
 
 export const environment = {
     service: {
-        port: 8012,
+        port: 8013,
         mode: 'DEVELOPMENT'
     },
 

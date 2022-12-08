@@ -22,13 +22,4 @@ export class AccountsService {
         if (response.status != HttpStatus.OK) throw 'Internal Server Error';
         return response.data.data;
     }
-
-    async findByExternalApiKey(externalApiKey: string) {
-      const headerRequest = {
-        'x-external-api-key': externalApiKey
-      }
-      const response = await this.httpService.get(`${process.env.SERVICE_ACCOUNT}/accounts/external-api-key/${externalApiKey}`, { headers: headerRequest }).toPromise();
-        if (response.status != HttpStatus.OK) throw 'Internal Server Error';
-        return response.data.data;
-    }
 }

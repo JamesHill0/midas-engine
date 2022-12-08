@@ -17,6 +17,8 @@ services:
             SERVICE_AUTHORIZATION: http://authorization:8008
             SERVICE_LOGGER: http://logger:8009
             SERVICE_INTEGRATION: http://integration:8011
+            SERVICE_EXTERNAL: http://external:8012
+            SERVICE_WORKFLOW: http://workflow:8013
             ALLOWED_HOSTS: ${ALLOWED_HOSTS}
         networks:
             - internal
@@ -130,6 +132,44 @@ services:
             APP_ENV: "production"
             APP_DEBUG: "true"
             APP_PORT: 8011
+            SECRET: ${SECRET}
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: ${REDIS_NAME}
+            REDIS_URL: ${REDIS_URL}
+            SMART_FILE_URL: ${SMART_FILE_URL}
+            ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+        networks:
+            - internal
+    external:
+        build:
+            context: ../../Blitz-API/external
+            dockerfile: ./Dockerfile
+        container_name: midas-external
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "true"
+            APP_PORT: 8012
+            SECRET: ${SECRET}
+            SERVICE_AUTHENTICATION: http://authentication:8001
+            SERVICE_ACCOUNT: http://account:8002
+            REDIS_NAME: ${REDIS_NAME}
+            REDIS_URL: ${REDIS_URL}
+            SMART_FILE_URL: ${SMART_FILE_URL}
+            ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+        networks:
+            - internal
+    workflow:
+        build:
+            context: ../../Blitz-API/workflow
+            dockerfile: ./Dockerfile
+        container_name: midas-workflow
+        restart: unless-stopped
+        environment:
+            APP_ENV: "production"
+            APP_DEBUG: "true"
+            APP_PORT: 8013
             SECRET: ${SECRET}
             SERVICE_AUTHENTICATION: http://authentication:8001
             SERVICE_ACCOUNT: http://account:8002

@@ -3,8 +3,6 @@ import { environment } from './config/development.env';
 import { RedisModule } from 'nestjs-redis';
 
 // Module --
-import { WbEtlsModule } from './wbetl/wbetls.module';
-
 import { ConfigurationsModule } from './configurations/configurations.module';
 import { ConfigurationsService } from './configurations/configurations.service';
 import { AuthenticationService } from './service/authentication.service';
@@ -16,7 +14,6 @@ import { AuthenticationInterceptor } from './interceptor/authentication.intercep
     imports: [
         RedisModule.register(environment.redis),
         HttpModule,
-        WbEtlsModule,
         ConfigurationsModule
     ],
     controllers: [],
