@@ -4,9 +4,9 @@ import { WbEtlsController } from './wbetls.controller';
 import { WbEtlsService } from './wbetls.service';
 
 @Module({
-    imports: [HttpModule],
-    exports: [],
-    controllers: [WbEtlsController],
-    providers: [WbEtlsService, ConfigurationsService]
+  imports: [HttpModule],
+  exports: [],
+  controllers: [WbEtlsController],
+  providers: [WbEtlsService, ConfigurationsService]
 })
 export class WbEtlsModule { }
