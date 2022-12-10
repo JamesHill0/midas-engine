@@ -1,8 +1,8 @@
 import Api from "../api/api";
 
-export class SchedulerViewModel {
+export class WorkflowViewModel {
   constructor(url = "", config = {}) {
-    this.url = `scheduler/${url}`;
+    this.url = `workflow/${url}`;
     this.config = config;
     this.Data = {};
     this.Messages = "";
@@ -11,6 +11,19 @@ export class SchedulerViewModel {
 
   Get(params, callback) {
     Api.Get(this.url, params, this.config, response => {
+      if (callback) {
+        if (response.data) {
+          this.Data = response.data;
+        }
+        this.Error = response.Error;
+        this.Message = response.message;
+        callback(this);
+      }
+    });
+  }
+
+  Post(data, callback) {
+    Api.Post(this.url, data, this.config, response => {
       if (callback) {
         if (response.data) {
           this.Data = response.data;

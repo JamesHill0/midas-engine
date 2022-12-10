@@ -5,6 +5,7 @@ import { MappingViewModel } from "./mapping";
 import { SchedulerViewModel } from "./scheduler";
 import { IntegrationViewModel } from "./integration";
 import { AccountViewModel } from "./account";
+import { WorkflowViewModel } from "./workflow";
 
 export default {
   Dashboard(url, config) {
@@ -27,5 +28,8 @@ export default {
   },
   Account(url, config) {
     return new AccountViewModel(url, config);
+  },
+  Workflow(url, config) {
+    return new WorkflowViewModel(url, config);
   }
 };
