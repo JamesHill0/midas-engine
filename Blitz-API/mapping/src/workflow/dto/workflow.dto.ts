@@ -2,14 +2,16 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 import { StatusType } from 'src/enums/status.type';
 
-export class WbEtlDto {
-  @ApiProperty({required: true})
+export class WorkflowDto {
+  @ApiProperty({ required: true })
   @IsString()
   readonly id: string;
 
-  uniqueId: string;
+  @ApiProperty()
+  @IsString()
+  name: string;
 
-  externalId: string;
-
-  data: any;
+  @ApiProperty()
+  @IsString()
+  status: StatusType;
 }

@@ -8,4 +8,6 @@ export class WebhookDto {
   readonly id: string;
 
   status: StatusType;
+
+  externalId: string;
 }

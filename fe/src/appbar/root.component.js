@@ -45,26 +45,17 @@ function Appbar() {
                     <Menu.Item key={"dashboard"} onClick={() => navigateToUrl("/dashboard")}>
                         Dashboard
                     </Menu.Item>
-                    <Menu.Item key={"integrations"} onClick={() => navigateToUrl("/integrations")}>
-                        Integrations
-                    </Menu.Item>
                     <SubMenu
-                        key={"etl"}
+                        key={"workflow"}
                         title={
                             <span className="submenu-title-wrapper">
-                                Extract-Transform-Load
+                                Workflows
                                 <DownOutlined style={{ fontSize: 10, marginLeft: 10 }} />
                             </span>
                         }
                     >
-                        <Menu.Item key={"etl-extract"} onClick={() => navigateToUrl("/etl/extract")}>
-                            Extract
-                        </Menu.Item>
-                        <Menu.Item key={"etl-transform"} onClick={() => navigateToUrl("/etl/transform")}>
-                            Transform
-                        </Menu.Item>
-                        <Menu.Item key={"etl-load"} onClick={() => navigateToUrl("/etl/load")}>
-                            Load
+                        <Menu.Item key={"etl-workflows"} onClick={() => navigateToUrl("/workflows/etl-workflows")}>
+                            Extract Transform Load
                         </Menu.Item>
                     </SubMenu>
                     <SubMenu

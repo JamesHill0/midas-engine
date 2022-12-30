@@ -5,12 +5,13 @@ import {
 } from 'typeorm';
 
 import { Collection } from 'fireorm';
-import { StatusType } from 'src/enums/status.type';
 
 export class WbEtl {
   id: string;
 
-  status: StatusType;
+  uniqueId: string;
+
+  externalId: string;
 
   data: any;
 
@@ -23,7 +24,9 @@ export class WbEtl {
 export class WbEtlCollection {
   id: string;
 
-  status: StatusType;
+  uniqueId: string;
+
+  externalId: string;
 
   data: any;
 }
@@ -34,7 +37,10 @@ export class WbEtlEntity {
   id: string;
 
   @Column()
-  status: StatusType;
+  uniqueId: string;
+
+  @Column()
+  externalId: string;
 
   @Column({
     type: 'jsonb'

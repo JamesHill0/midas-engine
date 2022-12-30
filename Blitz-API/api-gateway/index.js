@@ -18,8 +18,7 @@ function get_routes() {
         'logger',
         'scheduler',
         'integration',
-        'external',
-        'workflow'
+        'external'
     ];
 
     let routes = [];

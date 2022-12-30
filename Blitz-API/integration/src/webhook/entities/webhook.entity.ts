@@ -12,6 +12,8 @@ export class Webhook {
 
   status: StatusType;
 
+  externalId: string;
+
   constructor(partial: any) {
     Object.assign(this, partial);
   }
@@ -22,6 +24,8 @@ export class WebhookCollection {
   id: string;
 
   status: StatusType;
+
+  externalId: string;
 }
 
 @Entity('webhook')
@@ -31,4 +35,7 @@ export class WebhookEntity {
 
   @Column()
   status: StatusType;
+
+  @Column()
+  externalId: string;
 }

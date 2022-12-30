@@ -11,6 +11,8 @@ import { AccountsService } from './service/account.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthenticationInterceptor } from './interceptor/authentication.interceptor';
 import { PrioritiesModule } from './priority/priorities.module';
+import { WorkflowsModule } from './workflow/workflows.module';
+import { SubworkflowsModule } from './subworkflow/subworkflows.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { PrioritiesModule } from './priority/priorities.module';
     AccountsModule,
     MappingsModule,
     PrioritiesModule,
+    WorkflowsModule,
+    SubworkflowsModule,
   ],
   controllers: [],
   providers: [

@@ -1,0 +1,15 @@
+slack_webhook
+python-dotenv
+simple_salesforce
+sqlescapy
+psycopg2
+aenum
+jsonschema
+pyyaml
+flask
+Flask
+requests
+dnspython
+flask-restful
+flask-cors
+python-dateutil
