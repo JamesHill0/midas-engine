@@ -7,9 +7,11 @@ export class WbEtlDto {
   @IsString()
   readonly id: string;
 
+  @ApiProperty()
   uniqueId: string;
 
   externalId: string;
 
+  @ApiProperty()
   data: any;
 }
