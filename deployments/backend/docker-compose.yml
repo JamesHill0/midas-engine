@@ -67,10 +67,10 @@ services:
             APP_DEBUG: "True"
             APP_PORT: 8007
             SECRET: ${SECRET}
-            DB_HOST: postgres
-            DB_USERNAME: ${DB_USERNAME}
-            DB_PASSWORD: ${DB_PASSWORD}
-            DB_NAME: ${DB_NAME}
+            DB_HOST: ${POSTGRES_HOST}
+            DB_USERNAME: ${POSTGRES_USERNAME}
+            DB_PASSWORD: ${POSTGRES_PASSWORD}
+            DB_NAME: ${POSTGRES_DATABASE}
             DB_PORT: 5432
             SERVICE_AUTHENTICATION: http://authentication:8001
             SERVICE_ACCOUNT: http://account:8002
