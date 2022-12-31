@@ -45,10 +45,10 @@ services:
             APP_DEBUG: "True"
             APP_PORT: 8002
             SECRET: ${SECRET}
-            DB_HOST: postgres
-            DB_USERNAME: ${DB_USERNAME}
-            DB_PASSWORD: ${DB_PASSWORD}
-            DB_NAME: ${DB_NAME}
+            DB_HOST: ${POSTGRES_HOST}
+            DB_USERNAME: ${POSTGRES_USERNAME}
+            DB_PASSWORD: ${POSTGRES_PASSWORD}
+            DB_NAME: ${POSTGRES_DATABASE}
             DB_PORT: 5432
             SERVICE_AUTHENTICATION: http://authentication:8001
             REDIS_NAME: ${REDIS_NAME}
@@ -91,10 +91,10 @@ services:
             APP_DEBUG: "True"
             APP_PORT: 8008
             SECRET: ${SECRET}
-            DB_HOST: postgres
-            DB_USERNAME: ${DB_USERNAME}
-            DB_PASSWORD: ${DB_PASSWORD}
-            DB_NAME: ${DB_NAME}
+            DB_HOST: ${POSTGRES_HOST}
+            DB_USERNAME: ${POSTGRES_USERNAME}
+            DB_PASSWORD: ${POSTGRES_PASSWORD}
+            DB_NAME: ${POSTGRES_NAME}
             DB_PORT: 5432
             SERVICE_AUTHENTICATION: http://authentication:8001
             SERVICE_ACCOUNT: http://account:8002
@@ -183,23 +183,23 @@ services:
             - api-gateway
         networks:
             - internal
-    postgres:
-        image: postgres
-        container_name: midas-postgres
-        restart: unless-stopped
-        volumes:
-            - ./init-pg.sql:/docker-entrypoint-initdb.d/init-pg.sql:ro
-        environment:
-            POSTGRES_USER: ${DB_USERNAME}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
-            POSTGRES_HOST_AUTH_METHOD: "trust"
-            POSTGRES_DB: ${DB_NAME}
-        ports:
-            - "5432:5432"
-        expose:
-            - "5432"
-        networks:
-            - internal
+    # postgres:
+    #     image: postgres
+    #     container_name: midas-postgres
+    #     restart: unless-stopped
+    #     volumes:
+    #         - ./init-pg.sql:/docker-entrypoint-initdb.d/init-pg.sql:ro
+    #     environment:
+    #         POSTGRES_USER: ${DB_USERNAME}
+    #         POSTGRES_PASSWORD: ${DB_PASSWORD}
+    #         POSTGRES_HOST_AUTH_METHOD: "trust"
+    #         POSTGRES_DB: ${DB_NAME}
+    #     ports:
+    #         - "5432:5432"
+    #     expose:
+    #         - "5432"
+    #     networks:
+    #         - internal
     redis:
         image: redis:latest
         container_name: midas-redis
