@@ -5,18 +5,6 @@ load_dotenv()
 
 # define env
 class Env:
-    def __init__(self):
-        self.app = self.app_name().upper()
-
-    def name(self):
-        return os.getenv("NAME")
-
-    def mode(self):
-        return os.getenv("MODE")
-
-    def app_name(self):
-        return os.getenv("APP_NAME")
-
     def logger_alerting(self):
         return os.getenv("LOGGER_ALERTING")
 
@@ -27,16 +15,16 @@ class Env:
         return os.getenv("SLACK_WEBHOOK")
 
     def postgres_host(self):
-        return os.getenv("%s_POSTGRES_HOST" % (self.app))
+        return os.getenv("POSTGRES_HOST")
 
     def postgres_database(self):
-        return os.getenv("%s_POSTGRES_DATABASE" % (self.app))
+        return os.getenv("POSTGRES_DATABASE")
 
     def postgres_username(self):
-        return os.getenv("%s_POSTGRES_USERNAME" % (self.app))
+        return os.getenv("POSTGRES_USERNAME")
 
     def postgres_password(self):
-        return os.getenv("%s_POSTGRES_PASSWORD" % (self.app))
+        return os.getenv("POSTGRES_PASSWORD")
 
     def access_allow_control_origin(self):
         return os.getenv("CORS_ACCESS_ALLOW_CONTROL_ORIGIN")

@@ -5,6 +5,7 @@ class Extract:
     self.log_name = 'extract'
 
   def __check_schedule():
+    return { 'status': 'inactive' }
 
   def run():
     app_state = self.__check_schedule()

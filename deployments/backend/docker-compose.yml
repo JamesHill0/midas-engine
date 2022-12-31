@@ -175,8 +175,8 @@ services:
         links:
             - api-gateway
         ports:
-            - "9001:80"
-            - "9002:443"
+            - "80:80"
+            - "443:443"
         volumes:
             - nginxdata:/var/log/nginx
         depends_on:
