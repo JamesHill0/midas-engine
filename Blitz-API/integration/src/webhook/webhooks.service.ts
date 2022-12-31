@@ -9,6 +9,8 @@ import * as admin from 'firebase-admin';
 import * as fireorm from 'fireorm';
 import { ConfigurationsService } from 'src/configurations/configurations.service';
 
+import { StatusType } from '../enums/status.type';
+
 @Injectable()
 export class WebhooksService {
   constructor(
@@ -37,6 +39,7 @@ export class WebhooksService {
 
   public async create(dto: WebhookDto): Promise<Webhook> {
       const repository = await this.connection();
+      dto.status = StatusType.ACTIVE
       const timestamp = Math.floor(Date.now() / 1000);
       dto.externalId = `EID-${timestamp}`;
       return await repository.create(dto);
