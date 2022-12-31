@@ -12,6 +12,8 @@ export class Workflow {
 
   name: string;
 
+  description: string;
+
   status: StatusType;
 
   constructor(partial: any) {
@@ -25,6 +27,8 @@ export class WorkflowCollection {
 
   name: string;
 
+  description: string;
+
   status: StatusType;
 }
 
@@ -35,6 +39,9 @@ export class WorkflowEntity {
 
   @Column()
   name: string;
+
+  @Column()
+  description: string;
 
   @Column()
   status: StatusType;

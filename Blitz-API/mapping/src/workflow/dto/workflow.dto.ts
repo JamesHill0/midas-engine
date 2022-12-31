@@ -13,5 +13,9 @@ export class WorkflowDto {
 
   @ApiProperty()
   @IsString()
+  description: string;
+
+  @ApiProperty()
+  @IsString()
   status: StatusType;
 }
