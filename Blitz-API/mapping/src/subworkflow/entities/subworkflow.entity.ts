@@ -19,8 +19,6 @@ export class Subworkflow {
 
   integrationId: string;
 
-  tableName: string;
-
   constructor(partial: any) {
     Object.assign(this, partial)
   }
@@ -37,8 +35,6 @@ export class SubworkflowCollection {
   integrationType: IntegrationType;
 
   integrationId: string;
-
-  tableName: string;
 }
 
 @Entity('subworkflow')
@@ -57,7 +53,4 @@ export class SubworkflowEntity {
 
   @Column()
   integrationId: string;
-
-  @Column()
-  tableName: string;
 }
