@@ -209,34 +209,34 @@ services:
             - REDIS_REPLICATION_MODE=master
         networks:
             - internal
-    rabbitmq:
-        image: rabbitmq:latest
-        container_name: midas-rabbitmq
-        restart: unless-stopped
-        environment:
-            RABBITMQ_DEFAULT_USER: ${RABBIT_MQ_USERNAME}
-            RABBITMQ_DEFAULT_PASS: ${RABBIT_MQ_PASSWORD}
-        ports:
-            - "5672:5672"
-            - "15672:15672"
-        expose:
-            - "5672"
-            - "15672"
-        networks:
-            - internal
-    pgadmin4:
-        image: dpage/pgadmin4:latest
-        container_name: midas-pgadmin4
-        restart: unless-stopped
-        volumes:
-            - ./db/pgadmin:/root/.pgadmin
-        ports:
-            - "5050:80"
-        expose:
-            - "5050"
-        environment:
-            - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
-            - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    # rabbitmq:
+    #     image: rabbitmq:latest
+    #     container_name: midas-rabbitmq
+    #     restart: unless-stopped
+    #     environment:
+    #         RABBITMQ_DEFAULT_USER: ${RABBIT_MQ_USERNAME}
+    #         RABBITMQ_DEFAULT_PASS: ${RABBIT_MQ_PASSWORD}
+    #     ports:
+    #         - "5672:5672"
+    #         - "15672:15672"
+    #     expose:
+    #         - "5672"
+    #         - "15672"
+    #     networks:
+    #         - internal
+    # pgadmin4:
+    #     image: dpage/pgadmin4:latest
+    #     container_name: midas-pgadmin4
+    #     restart: unless-stopped
+    #     volumes:
+    #         - ./db/pgadmin:/root/.pgadmin
+    #     ports:
+    #         - "5050:80"
+    #     expose:
+    #         - "5050"
+    #     environment:
+    #         - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+    #         - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
 networks:
     internal:
         driver: bridge
