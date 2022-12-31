@@ -12,4 +12,6 @@ export class SalesforceDto {
 
     @ApiProperty()
     secret: SecretDto;
+
+    externalId: string;
 }

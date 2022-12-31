@@ -37,6 +37,8 @@ export class SalesforcesService {
 
     public async create(dto: SalesforceDto): Promise<Salesforce> {
         const repository = await this.connection();
+        const timestamp = Math.floor(Date.now() / 1000);
+        dto.externalId = `EID-${timestamp}`;
         return await repository.create(dto);
     }
 

@@ -15,6 +15,8 @@ export class SmartFile {
 
   secret: Secret;
 
+  externalId: string;
+
   constructor(partial: any) {
     Object.assign(this, partial);
   }
@@ -27,6 +29,8 @@ export class SmartFileCollection {
   status: StatusType;
 
   secret: Secret;
+
+  externalId: string;
 }
 
 @Entity('smartfile')
@@ -40,4 +44,7 @@ export class SmartFileEntity {
   @OneToOne(() => Secret, { eager: true, cascade: true })
   @JoinColumn()
   secret: Secret;
+
+  @Column()
+  externalId: string;
 }

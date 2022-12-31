@@ -37,6 +37,8 @@ export class WebhooksService {
 
   public async create(dto: WebhookDto): Promise<Webhook> {
       const repository = await this.connection();
+      const timestamp = Math.floor(Date.now() / 1000);
+      dto.externalId = `EID-${timestamp}`;
       return await repository.create(dto);
   }
 

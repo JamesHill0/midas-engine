@@ -12,4 +12,6 @@ export class SmartFileDto {
 
     @ApiProperty()
     secret: SecretDto;
+
+    externalId: string;
 }

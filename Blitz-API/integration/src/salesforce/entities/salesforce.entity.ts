@@ -15,6 +15,8 @@ export class Salesforce {
 
     secret: Secret;
 
+    externalId: string;
+
     constructor(partial: any) {
         Object.assign(this, partial);
     }
@@ -27,6 +29,8 @@ export class SalesforceCollection {
     status: StatusType;
 
     secret: Secret;
+
+    externalId: string;
 }
 
 @Entity('salesforce')
@@ -40,4 +44,7 @@ export class SalesforceEntity {
     @OneToOne(() => Secret, { eager: true, cascade: true })
     @JoinColumn()
     secret: Secret;
+
+    @Column()
+    externalId: string;
 }
