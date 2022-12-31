@@ -23,4 +23,8 @@ export class SubworkflowDto {
   @ApiProperty()
   @IsString()
   integrationId: string;
+
+  @ApiProperty()
+  @IsString()
+  tableName: string;
 }
