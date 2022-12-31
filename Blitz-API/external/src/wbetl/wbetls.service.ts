@@ -16,7 +16,7 @@ export class WbEtlsService {
   ) { }
 
   private async connection(): Promise<WbEtlsConfig> {
-    let config = await this.configurationsService.get('wbetl');
+    let config = await this.configurationsService.get('external');
     let conn = JSON.parse(config);
     if (conn.type == CredentialType.FIRE) {
       return new WbEtlsFireorm(conn);

@@ -96,9 +96,9 @@ export class AuthenticationInterceptor implements NestInterceptor {
                 type: CredentialType.FIRE,
                 key: conn
             }
-            await this.configurationsService.set('integration', JSON.stringify(connection));
+            await this.configurationsService.set('external', JSON.stringify(connection));
         } else {
-            let dbName = `${account['number']}-integration`;
+            let dbName = `${account['number']}-external`;
             let connection = {
                 type: conn['type'],
                 host: conn['host'],
@@ -119,8 +119,8 @@ export class AuthenticationInterceptor implements NestInterceptor {
                     await this.createDatabase(connection);
                 }
             } finally {
-                console.log('setting integration configuration session')
-                await this.configurationsService.set('integration', JSON.stringify(connection));
+                console.log('setting external configuration session')
+                await this.configurationsService.set('external', JSON.stringify(connection));
             }
         }
     }
