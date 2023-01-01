@@ -31,7 +31,7 @@ export class MappingDto {
 
   @ApiProperty()
   @IsString()
-  FromData: string;
+  fromData: string;
 
   @ApiProperty()
   @IsString()
