@@ -19,6 +19,8 @@ export class Workflow {
 
   mappingType: MappingType;
 
+  needDataMapping: boolean;
+
   constructor(partial: any) {
     Object.assign(this, partial)
   }
@@ -35,6 +37,8 @@ export class WorkflowCollection {
   status: StatusType;
 
   mappingType: MappingType;
+
+  needDataMapping: boolean;
 }
 
 @Entity('workflow')
@@ -53,4 +57,7 @@ export class WorkflowEntity {
 
   @Column()
   mappingType: MappingType;
+
+  @Column()
+  needDataMapping: boolean;
 }

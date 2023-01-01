@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsBoolean, IsString } from 'class-validator';
 import { MappingType } from 'src/enums/mapping.type';
 import { StatusType } from 'src/enums/status.type';
 
@@ -23,4 +23,8 @@ export class WorkflowDto {
   @ApiProperty()
   @IsString()
   mappingType: MappingType;
+
+  @ApiProperty()
+  @IsBoolean()
+  needDataMapping: boolean;
 }
