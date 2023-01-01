@@ -58,6 +58,6 @@ export class SubworkflowEntity {
   @Column()
   integrationId: string;
 
-  @Column()
+  @Column({ nullable: true })
   tableName: string;
 }
