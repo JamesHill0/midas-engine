@@ -16,6 +16,17 @@ class Extract:
 
     return api_keys
 
+  def __get_subworkflows():
+    subworkflows = []
+    for api_key in api_keys:
+      extractable_subworkflows = blitz.get_extractable_subworkflows({ 'x-api-key': api_key })
+      subworkflows.append({
+        'api_key': api_key,
+        'subworkflows': extractable_subworkflows
+      })
+
+    return subworkflows
+
   def run():
     app_state = self.__check_schedule()
 
@@ -23,3 +34,6 @@ class Extract:
       return
 
     api_keys = self.__get_accounts_api_keys()
+    subworkflows = self.__get_subworkflows(api_keys)
+
+    for subworkflow in subworkflows:

@@ -56,27 +56,15 @@ registerApplication(
 )
 
 registerApplication(
+  "etl-workflows",
+  () => import("./src/workflows/etl-workflows/etl.workflows.app.js"),
+  () => currentlyLoggedIn() && onCurrentRoute("/workflows/etl-workflows")
+)
+
+registerApplication(
     "integrations",
     () => import("./src/integrations/integrations.app.js"),
     () => currentlyLoggedIn() && onCurrentRoute("/integrations")
-)
-
-registerApplication(
-    "etl-extract",
-    () => import("./src/etl/extract/extract.app.js"),
-    () => currentlyLoggedIn() && onCurrentRoute("/etl/extract")
-)
-
-registerApplication(
-    "etl-transform",
-    () => import("./src/etl/transform/transform.app.js"),
-    () => currentlyLoggedIn() && onCurrentRoute("/etl/transform")
-)
-
-registerApplication(
-    "etl-load",
-    () => import("./src/etl/load/load.app.js"),
-    () => currentlyLoggedIn() && onCurrentRoute("/etl/load")
 )
 
 registerApplication(

@@ -108,7 +108,7 @@
     padding: 10;
 }
 
-.dashboard, .integrations, .users, .etl, .settings {
+.dashboard, .integrations, .etl-workflows, .users, .etl, .settings {
     margin: 14 0;
     padding: 10;
 }

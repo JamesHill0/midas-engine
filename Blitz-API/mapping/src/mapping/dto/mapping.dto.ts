@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString, IsBoolean } from 'class-validator';
+import { JobType } from 'src/enums/job.type';
 
 export class MappingDto {
   @ApiProperty({ required: true })
@@ -7,30 +8,32 @@ export class MappingDto {
   readonly id: string;
 
   @ApiProperty()
-  @IsString()
   accountId: string;
 
   @ApiProperty()
   @IsString()
-  origin: string;
-
-  @ApiProperty()
-  @IsString()
-  key: string;
-
-  @ApiProperty()
-  @IsString()
-  value: string;
-
-  @ApiProperty()
-  @IsString()
-  label: string;
-
-  @ApiProperty()
-  @IsString()
-  category: string;
+  externalId: string;
 
   @ApiProperty()
   @IsBoolean()
   editable: boolean;
+
+  @ApiProperty()
+  currentJob: JobType;
+
+  @ApiProperty()
+  @IsString()
+  fromFieldName: string;
+
+  @ApiProperty()
+  @IsString()
+  toFieldName: string;
+
+  @ApiProperty()
+  @IsString()
+  FromData: string;
+
+  @ApiProperty()
+  @IsString()
+  toData: string;
 }

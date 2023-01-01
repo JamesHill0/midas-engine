@@ -16,7 +16,7 @@ export class WorkflowsService {
   ) { }
 
   private async connection(): Promise<WorkflowsConfig> {
-    let config = await this.configurationsService.get('workflow');
+    let config = await this.configurationsService.get('mapping');
     let conn = JSON.parse(config);
     if (conn.type == CredentialType.FIRE) {
       return new WorkflowsFireorm(conn);

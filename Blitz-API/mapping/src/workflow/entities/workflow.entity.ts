@@ -6,6 +6,7 @@ import {
 
 import { Collection } from 'fireorm';
 import { StatusType } from 'src/enums/status.type';
+import { MappingType } from 'src/enums/mapping.type';
 
 export class Workflow {
   id: string;
@@ -15,6 +16,8 @@ export class Workflow {
   description: string;
 
   status: StatusType;
+
+  mappingType: MappingType;
 
   constructor(partial: any) {
     Object.assign(this, partial)
@@ -30,6 +33,8 @@ export class WorkflowCollection {
   description: string;
 
   status: StatusType;
+
+  mappingType: MappingType;
 }
 
 @Entity('workflow')
@@ -45,4 +50,7 @@ export class WorkflowEntity {
 
   @Column()
   status: StatusType;
+
+  @Column()
+  mappingType: MappingType;
 }

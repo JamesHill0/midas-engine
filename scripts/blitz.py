@@ -15,8 +15,20 @@ class Blitz:
     if 'data' in response.json():
       return response.json()['data']
 
-  def get_workflows(self):
-    url = self.base_url + '/mapping/workflows'
-    response = requests.get(url)
+  def get_extractable_subworkflows(self, headers):
+    url = self.base_url + '/mapping/subworkflows?q_job_type=extraction'
+    response = requests.get(url, headers=headers)
+    if 'data' in response.json():
+      return response.json()['data']
+
+  def get_transformable_subworkflows(self, headers):
+    url = self.base_url + '/mapping/subworkflows?q_job_type=transform'
+    response = requests.get(url, headers=headers)
+    if 'data' in response.json():
+      return response.json()['data']
+
+  def get_loadable_subworkflows(self, headers):
+    url = self.base_url + '/mapping/subworkflows?q_job_type=load'
+    response = requests.get(url, headers=headers)
     if 'data' in response.json():
       return response.json()['data']

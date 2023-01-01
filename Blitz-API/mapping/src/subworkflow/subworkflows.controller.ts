@@ -2,7 +2,7 @@ import { Controller, Res, Param, Body, Get, Post, HttpStatus, Logger, Patch, Del
 import { SubworkflowDto } from './dto/subworkflow.dto';
 import { SubworkflowsService } from './subworkflows.service';
 
-@Controller('subworkflow')
+@Controller('subworkflows')
 export class SubworkflowsController {
 
   constructor(

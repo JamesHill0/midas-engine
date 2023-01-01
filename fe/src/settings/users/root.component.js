@@ -7,40 +7,40 @@ import UsersTable from "./users.table";
 import UsersStats from "./users.stats";
 
 function Users() {
-    const [isLoading, setIsLoading] = useState(false);
-    const [usersList, setUsersList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [usersList, setUsersList] = useState([]);
 
-    useEffect(() => {
-        loadUsersList();
-    }, []);
+  useEffect(() => {
+    loadUsersList();
+  }, []);
 
-    function loadUsersList() {
-        setIsLoading(true);
-        api.Authorization("users").Get({}, response => {
-            if (response.Error == null) {
-                const data = response.Data;
-                setUsersList(data);
-                setIsLoading(false);
-                return;
-            }
+  function loadUsersList() {
+    setIsLoading(true);
+    api.Authorization("users").Get({}, response => {
+      if (response.Error == null) {
+        const data = response.Data;
+        setUsersList(data);
+        setIsLoading(false);
+        return;
+      }
 
-            notification["error"]({
-                placement: "bottomRight",
-                message: "500",
-                description: "Internal Server Error"
-            })
-            setIsLoading(false);
-        })
-    }
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+      setIsLoading(false);
+    })
+  }
 
-    return (
-        <div className="users">
-            {isLoading && <Loader />}
-            <UsersStats usersList={usersList} />
-            <br />
-            <UsersTable usersList={usersList} />
-        </div>
-    )
+  return (
+    <div className="users">
+      {isLoading && <Loader />}
+      <UsersStats usersList={usersList} />
+      <br />
+      <UsersTable usersList={usersList} />
+    </div>
+  )
 }
 
 export default Users;
