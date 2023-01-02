@@ -51,39 +51,50 @@ class IntegrationsTypeorm implements IntegrationsConfig {
 
   public async findAll(): Promise<Integration[]> {
     let integrations = [];
-    let services = [
-      {
-        func: this.salesforceService,
-        name: "Salesforce",
-        direction: DirectionType.OUTGOING
-      },
-      {
-        func: this.smartfilesService,
-        name: "Smartfile",
-        direction: DirectionType.INCOMING
-      },
-      {
-        func: this.webhooksService,
-        name: "Webhook",
-        direction: DirectionType.INCOMING
-      }
-    ];
 
-    services.map(async (service) => {
-      let loadedService = await service.func.findAll();
+    let salesforce = await this.salesforceService.findAll()
 
-      loadedService.map((res) => {
-        integrations.push(
-          new Integration(
-            {
-              id: res.id,
-              name: service.name,
-              status: res.status,
-              direction: service.direction
-            }
-          )
+    salesforce.map((res) => {
+      integrations.push(
+        new Integration(
+          {
+            id: res.id,
+            name: "Salesforce",
+            status: res.status,
+            direction: DirectionType.OUTGOING
+          }
         )
-      })
+      )
+    })
+
+    let smartfile = await this.smartfilesService.findAll()
+
+    smartfile.map((res) => {
+      integrations.push(
+        new Integration(
+          {
+            id: res.id,
+            name: "Smartfile",
+            status: res.status,
+            direction: DirectionType.INCOMING
+          }
+        )
+      )
+    })
+
+    let webhooks = await this.webhooksService.findAll()
+
+    webhooks.map((res) => {
+      integrations.push(
+        new Integration(
+          {
+            id: res.id,
+            name: "Webhook",
+            status: res.status,
+            direction: DirectionType.INCOMING
+          }
+        )
+      )
     })
 
     return integrations;
@@ -121,39 +132,50 @@ class IntegrationsFireorm implements IntegrationsConfig {
 
   public async findAll(): Promise<Integration[]> {
     let integrations = [];
-    let services = [
-      {
-        func: this.salesforceService,
-        name: "Salesforce",
-        direction: DirectionType.OUTGOING
-      },
-      {
-        func: this.smartfilesService,
-        name: "Smartfile",
-        direction: DirectionType.INCOMING
-      },
-      {
-        func: this.webhooksService,
-        name: "Webhook",
-        direction: DirectionType.INCOMING
-      }
-    ];
 
-    services.map(async (service) => {
-      let loadedService = await service.func.findAll();
+    let salesforce = await this.salesforceService.findAll()
 
-      loadedService.map((res) => {
-        integrations.push(
-          new Integration(
-            {
-              id: res.id,
-              name: service.name,
-              status: res.status,
-              direction: service.direction
-            }
-          )
+    salesforce.map((res) => {
+      integrations.push(
+        new Integration(
+          {
+            id: res.id,
+            name: "Salesforce",
+            status: res.status,
+            direction: DirectionType.OUTGOING
+          }
         )
-      })
+      )
+    })
+
+    let smartfile = await this.smartfilesService.findAll()
+
+    smartfile.map((res) => {
+      integrations.push(
+        new Integration(
+          {
+            id: res.id,
+            name: "Smartfile",
+            status: res.status,
+            direction: DirectionType.INCOMING
+          }
+        )
+      )
+    })
+
+    let webhooks = await this.webhooksService.findAll()
+
+    webhooks.map((res) => {
+      integrations.push(
+        new Integration(
+          {
+            id: res.id,
+            name: "Webhook",
+            status: res.status,
+            direction: DirectionType.INCOMING
+          }
+        )
+      )
     })
 
     return integrations;
