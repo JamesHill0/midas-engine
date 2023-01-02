@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import singleSpaReact from "single-spa-react";
-import Extract from "./root.component.js";
+import EtlSubworkflows from "./root.component.js";
 
 function domElementGetter() {
-    return document.getElementById("etl-extract");
+  return document.getElementById("etl-sub-workflows");
 }
 
 const reactLifecycles = singleSpaReact({
-    React,
-    ReactDOM,
-    rootComponent: Extract,
-    domElementGetter
+  React,
+  ReactDOM,
+  rootComponent: EtlSubworkflows,
+  domElementGetter
 });
 
 export const bootstrap = [reactLifecycles.bootstrap];

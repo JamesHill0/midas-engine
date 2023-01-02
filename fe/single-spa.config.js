@@ -56,15 +56,27 @@ registerApplication(
 )
 
 registerApplication(
+  "integrations",
+  () => import("./src/integrations/integrations.app.js"),
+  () => currentlyLoggedIn() && onCurrentRoute("/integrations")
+)
+
+registerApplication(
   "etl-workflows",
   () => import("./src/workflows/etl-workflows/etl.workflows.app.js"),
   () => currentlyLoggedIn() && onCurrentRoute("/workflows/etl-workflows")
 )
 
 registerApplication(
-    "integrations",
-    () => import("./src/integrations/integrations.app.js"),
-    () => currentlyLoggedIn() && onCurrentRoute("/integrations")
+  "sub-workflows",
+  () => import("./src/workflows/etl-workflows/etl-subworkflows/etl.subworkflows.app.js"),
+  () => currentlyLoggedIn() && onCurrentRoute("/workflows/etl-sub-workflows")
+)
+
+registerApplication(
+  "mappings",
+  () => import("./src/mappings/mappings.app.js"),
+  () => currentlyLoggedIn() && onCurrentRoute("/mappings")
 )
 
 registerApplication(

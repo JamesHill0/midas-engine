@@ -45,6 +45,9 @@ function Appbar() {
           <Menu.Item key={"dashboard"} onClick={() => navigateToUrl("/dashboard")}>
             Dashboard
           </Menu.Item>
+          <Menu.Item key={"integration"} onClick={() => navigateToUrl("/integrations")}>
+            Integrations
+          </Menu.Item>
           <SubMenu
             key={"workflow"}
             title={

@@ -1,4 +1,4 @@
-import { Controller, Res, Param, Body, Get, Post, HttpStatus, Logger, Patch, Delete } from '@nestjs/common';
+import { Controller, Res, Param, Query, Body, Get, Post, HttpStatus, Logger, Patch, Delete, Query } from '@nestjs/common';
 import { SubworkflowDto } from './dto/subworkflow.dto';
 import { SubworkflowsService } from './subworkflows.service';
 
@@ -10,9 +10,9 @@ export class SubworkflowsController {
   ) { }
 
   @Get()
-  public async findAll(@Res() res): Promise<any> {
+  public async findAll(@Query() query, @Res() res): Promise<any> {
     try {
-      let datas = await this.subworkflowsService.findAll();
+      let datas = await this.subworkflowsService.findAll(query);
       return res.status(HttpStatus.OK).json({
         data: datas,
         message: 'Success',

@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import singleSpaReact from "single-spa-react";
-import Transform from "./root.component.js";
+import Mappings from "./root.component.js";
 
 function domElementGetter() {
-    return document.getElementById("etl-transform");
+  return document.getElementById("mappings");
 }
 
 const reactLifecycles = singleSpaReact({
-    React,
-    ReactDOM,
-    rootComponent: Transform,
-    domElementGetter
+  React,
+  ReactDOM,
+  rootComponent: Mappings,
+  domElementGetter
 });
 
 export const bootstrap = [reactLifecycles.bootstrap];

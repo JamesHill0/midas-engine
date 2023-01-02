@@ -14,30 +14,6 @@ function IntegrationsStats({ integrationsList }) {
                     />
                 </Card>
             </Col>
-            <Col span={6}>
-                <Card>
-                    <Statistic
-                        title="Extracted"
-                        value={0}
-                    />
-                </Card>
-            </Col>
-            <Col span={6}>
-                <Card>
-                    <Statistic
-                        title="Transformed"
-                        value={0}
-                    />
-                </Card>
-            </Col>
-            <Col span={6}>
-                <Card>
-                    <Statistic
-                        title="Loaded"
-                        value={0}
-                    />
-                </Card>
-            </Col>
         </Row>
     )
 }

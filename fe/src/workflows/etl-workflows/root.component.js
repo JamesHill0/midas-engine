@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Collapse, notification } from "antd";
+import { Breadcrumb, notification } from "antd";
 import api from "../../data";
 
 import { Loader } from "../../utils/ui_helper";
-
-const { Panel } = Collapse;
+import EtlWorkflowsTable from "./etl.workflows.table";
 
 function EtlWorkflows() {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,14 +35,11 @@ function EtlWorkflows() {
   return (
     <div className="etl-workflows">
       {isLoading && <Loader />}
-      <Collapse defaultActiveKey={['1']}>
-        <Panel header="This is panel header 1" key="1">
-        </Panel>
-        <Panel header="This is panel header 2" key="2">
-        </Panel>
-        <Panel header="This is panel header 3" key="3">
-        </Panel>
-      </Collapse>
+      <Breadcrumb separator=">">
+        <Breadcrumb.Item>ETL Workflows</Breadcrumb.Item>
+      </Breadcrumb>
+      <br/>
+      <EtlWorkflowsTable workflowsList={workflowsList} />
     </div>
   )
 }
