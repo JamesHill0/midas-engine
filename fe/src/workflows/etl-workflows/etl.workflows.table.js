@@ -70,7 +70,7 @@ function EtlWorkflowsTable({ workflowsList }) {
           {<a>Toggle Status</a>}
           {<a onClick={() => navigateToUrl(`/workflows/etl-mappings`)}>Mapping</a>}
           {<a onClick={() => navigateToUrl(`/workflows/etl-sub-workflows?id=${item.id}&name=${item.name}`)}>Subworkflows</a>}
-          {<a onClick={() => navigateToUrl(`/workflows/etl-view-data`)}>View Data</a>}
+          {<a onClick={() => navigateToUrl(`/workflows/etl-view-data?id=${item.id}&name=${item.name}`)}>View Data</a>}
         </Space>
       )
     }
