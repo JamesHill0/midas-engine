@@ -85,7 +85,8 @@ class MappingsTypeorm implements MappingsConfig {
 
   public async findAll(query: any): Promise<Mapping[]> {
     const repository = await this.repository();
-    let selectQueryBuilder = repository.createQueryBuilder('mappings');
+    const queryBuilderName = "mappings";
+    let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName);
 
     let limit = 500;
     if (query.limit) {
@@ -106,7 +107,7 @@ class MappingsTypeorm implements MappingsConfig {
     );
 
     queries.map((q) => {
-      selectQueryBuilder = selectQueryBuilder.where(`${q.type} = :value`, { value: q.value });
+      selectQueryBuilder = selectQueryBuilder.where(`${queryBuilderName}.${q.type} = :value`, { value: q.value });
     })
 
     return await selectQueryBuilder.limit(limit).getMany();

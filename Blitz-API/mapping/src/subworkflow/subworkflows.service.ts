@@ -79,7 +79,7 @@ class SubworkflowsTypeorm implements SubworkflowsConfig {
 
   public async findAll(query: any): Promise<Subworkflow[]> {
     const repository = await this.repository();
-    let queryBuilderName = "subworkflows";
+    const queryBuilderName = "subworkflows";
     let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName);
 
     let limit = 500;
