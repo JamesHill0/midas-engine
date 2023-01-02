@@ -79,7 +79,8 @@ class SubworkflowsTypeorm implements SubworkflowsConfig {
 
   public async findAll(query: any): Promise<Subworkflow[]> {
     const repository = await this.repository();
-    let selectQueryBuilder = repository.createQueryBuilder('mappings');
+    let queryBuilderName = "subworkflows";
+    let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName);
 
     let limit = 500;
     if (query.limit) {
@@ -100,7 +101,7 @@ class SubworkflowsTypeorm implements SubworkflowsConfig {
     );
 
     queries.map((q) => {
-      selectQueryBuilder = selectQueryBuilder.where(`${q.type} = :value`, { value: q.value });
+      selectQueryBuilder = selectQueryBuilder.where(`${queryBuilderName}.${q.type} = :value`, { value: q.value });
     })
 
     return await selectQueryBuilder.limit(limit).getMany();
