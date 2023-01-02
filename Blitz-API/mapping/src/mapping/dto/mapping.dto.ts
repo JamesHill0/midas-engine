@@ -11,10 +11,6 @@ export class MappingDto {
   accountId: string;
 
   @ApiProperty()
-  @IsString()
-  externalId: string;
-
-  @ApiProperty()
   @IsBoolean()
   editable: boolean;
 

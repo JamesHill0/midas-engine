@@ -13,7 +13,6 @@ import { JobType } from 'src/enums/job.type';
 export class Mapping {
   id: string;
   accountId: string;
-  externalId: string;
   editable: boolean;
   currentJob: JobType;
   fromFieldName: string;
@@ -30,7 +29,6 @@ export class Mapping {
 export class MappingCollection {
   id: string;
   accountId: string;
-  externalId: string;
   editable: boolean;
   currentJob: JobType;
   fromFieldName: string;
@@ -46,9 +44,6 @@ export class MappingEntity {
 
   @Column()
   accountId: string;
-
-  @Column()
-  externalId: string;
 
   @Column()
   editable: boolean;

@@ -68,9 +68,9 @@ function EtlWorkflowsTable({ workflowsList }) {
       render: item => (
         <Space size="middle">
           {<a>Toggle Status</a>}
-          {<a>Mapping</a>}
+          {<a onClick={() => navigateToUrl(`/workflows/etl-mappings`)}>Mapping</a>}
           {<a onClick={() => navigateToUrl(`/workflows/etl-sub-workflows?id=${item.id}&name=${item.name}`)}>Subworkflows</a>}
-          {<a>View Data</a>}
+          {<a onClick={() => navigateToUrl(`/workflows/etl-view-data`)}>View Data</a>}
         </Space>
       )
     }

@@ -16,5 +16,9 @@ export class AccountDto {
     protected: boolean;
 
     @ApiProperty()
+    @IsString()
+    externalId: string;
+
+    @ApiProperty()
     mappings: MappingDto[];
 }

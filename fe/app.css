@@ -108,7 +108,7 @@
     padding: 10;
 }
 
-.dashboard, .integrations, .etl-workflows, .etl-sub-workflows, .users, .etl, .settings {
+.dashboard, .integrations, .etl-workflows, .etl-sub-workflows, .etl-mappings, .etl-view-data, .users, .etl, .settings {
     margin: 14 0;
     padding: 10;
 }

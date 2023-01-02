@@ -1,16 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import singleSpaReact from "single-spa-react";
-import Mappings from "./root.component.js";
+import EtlViewData from "./root.component.js";
 
 function domElementGetter() {
-  return document.getElementById("mappings");
+  return document.getElementById("etl-view-data");
 }
 
 const reactLifecycles = singleSpaReact({
   React,
   ReactDOM,
-  rootComponent: Mappings,
+  rootComponent: EtlViewData,
   domElementGetter
 });
 
