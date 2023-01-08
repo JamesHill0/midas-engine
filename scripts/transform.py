@@ -17,7 +17,7 @@ class Transform:
     return { 'status': 'inactive' }
 
   def __get_accounts_api_keys(self):
-    accounts = blitz.get_accounts()
+    accounts = self.blitz.account_get_accounts()
 
     api_keys = []
     for account in accounts:

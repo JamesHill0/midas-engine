@@ -1,7 +1,7 @@
 import { Controller, Res, Param, Query, Body, Get, Post, HttpStatus, Patch, Delete } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { AccountDto } from './dto/account.dto';
-import { Ctx, MessagePattern, Payload, RmqContext, Transport } from '@nestjs/microservices';
+import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 
 @Controller('accounts')
 export class AccountsController {
@@ -109,5 +109,5 @@ export class AccountsController {
         } catch (err) {
             console.log(err);
         }
-    } 
+    }
 }

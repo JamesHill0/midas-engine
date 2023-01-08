@@ -36,6 +36,7 @@ class ExtractFromSmartFile:
       if len(mappings) > 0:
         self.mq.publish('blitz-api-mapping', 'accounts.mapping.created', {
           'name': filename,
+          'currentJob': 'extraction'
           'protected': False,
           'mappings': mappings
         })
@@ -68,6 +69,7 @@ class ExtractFromSmartFile:
       if len(mappings) > 0:
         self.mq.publish('blitz-api-mapping', 'accounts.mapping.created', {
           'name': filename,
+          'currentJob': 'extraction'
           'protected': True,
           'mappings': mappings
         })
