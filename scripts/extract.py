@@ -52,11 +52,11 @@ class Extract:
         if subworkflow['integrationType'] == 'smartfile':
           if subworkflow['direction'] == 'incoming':
             self.extract_from_smartfile.create_account_mapping(api_key, subworkflow)
-          else
+          else:
             self.extract_from_smartfile.create_field_mapping(api_key, subworkflow)
 
-        else if subworkflow['integrationType'] == 'webhook':
+        elif subworkflow['integrationType'] == 'webhook':
           if subworkflow['direction'] == 'incoming':
             self.extract_from_webhook.create_account_mapping(api_key, subworkflow)
-          else
+          else:
             self.extract_from_webhook.create_field_mapping(api_key, subworkflow)

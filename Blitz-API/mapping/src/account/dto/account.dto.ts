@@ -26,4 +26,6 @@ export class AccountDto {
 
     @ApiProperty()
     mappings: MappingDto[];
+
+    result: any;
 }

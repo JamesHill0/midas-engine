@@ -44,3 +44,6 @@ class Load:
     for loadable_subworkflow in loadable_subworkflows:
       for subworkflow in loadable_subworkflow['subworkflows']:
         api_key = loadable_subworkflow['api_key']
+
+        if subworkflow['integrationType'] == 'salesforce':
+          self.load_into_salesforce.run(api_key, subworkflow)

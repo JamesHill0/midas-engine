@@ -51,10 +51,10 @@ class Transform:
         workflow = self.blitz.mapping_get_workflow({ 'x-api-key': api_key}, subworkflow['workflowId'])
 
         if workflow['mappingType'] == 'direct-mapping':
-          self.transform_using_data_mapping.update_account_mapping(api_key, subworkflow)
+          self.transform_using_data_mapping.run(api_key, subworkflow)
 
-        else if workflow['mappingType'] == 'priority-mapping':
-          self.transform_using_priority_mapping.update_account_mapping(api_key, subworkflow)
+        elif workflow['mappingType'] == 'priority-mapping':
+          self.transform_using_priority_mapping.run(api_key, subworkflow)
 
         if workflow['needDataMapping'] == True:
-          self.transform_using_data_mapping.update_account_mapping(api_key, subworkflow)
+          self.transform_using_data_mapping.run(api_key, subworkflow)

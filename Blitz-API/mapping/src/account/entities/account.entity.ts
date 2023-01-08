@@ -18,6 +18,7 @@ export class Account {
     protected: boolean;
     externalId: string;
     mappings: Mapping[];
+    result: any;
 
     constructor(partial: any) {
         Object.assign(this, partial);
@@ -32,6 +33,7 @@ export class AccountCollection {
     protected: boolean;
     externalId: string;
     mappings: MappingCollection[];
+    result: any;
 }
 
 @Entity('account')
@@ -54,4 +56,7 @@ export class AccountEntity {
     @OneToMany(() => MappingEntity, mapping => mapping.account, { eager: true, cascade: true, onUpdate: 'CASCADE' })
     @JoinColumn()
     mappings: MappingEntity[];
+
+    @Column()
+    result: any;
 }
