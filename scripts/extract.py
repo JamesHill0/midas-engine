@@ -17,7 +17,7 @@ class Extract:
     return { 'status': 'inactive' }
 
   def __get_accounts_api_keys(self):
-    accounts = blitz.get_accounts()
+    accounts = blitz.account_get_accounts()
 
     api_keys = []
     for account in accounts:
@@ -25,10 +25,10 @@ class Extract:
 
     return api_keys
 
-  def __get_extractable_subworkflows(self):
+  def __get_extractable_subworkflows(self, api_keys):
     subworkflows = []
     for api_key in api_keys:
-      extractable_subworkflows = self.blitz.get_extractable_subworkflows({ 'x-api-key': api_key })
+      extractable_subworkflows = self.blitz.mapping_get_extractable_subworkflows({ 'x-api-key': api_key })
       subworkflows.append({
         'api_key': api_key,
         'subworkflows': extractable_subworkflows

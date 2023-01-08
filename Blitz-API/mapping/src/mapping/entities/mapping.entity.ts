@@ -14,7 +14,6 @@ export class Mapping {
   id: string;
   accountId: string;
   editable: boolean;
-  currentJob: JobType;
   fromFieldName: string;
   toFieldName: string;
   fromData: string;
@@ -30,7 +29,6 @@ export class MappingCollection {
   id: string;
   accountId: string;
   editable: boolean;
-  currentJob: JobType;
   fromFieldName: string;
   toFieldName: string;
   fromData: string;
@@ -47,9 +45,6 @@ export class MappingEntity {
 
   @Column()
   editable: boolean;
-
-  @Column()
-  currentJob: JobType;
 
   @Column()
   fromFieldName: string;

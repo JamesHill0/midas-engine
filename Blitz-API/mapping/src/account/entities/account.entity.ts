@@ -9,10 +9,12 @@ import {
 import { Collection } from 'fireorm';
 
 import { Mapping, MappingCollection, MappingEntity } from 'src/mapping/entities/mapping.entity';
+import { JobType } from 'src/enums/job.type';
 
 export class Account {
     id: string;
     name: string;
+    currentJob: JobType;
     protected: boolean;
     externalId: string;
     mappings: Mapping[];
@@ -26,6 +28,7 @@ export class Account {
 export class AccountCollection {
     id: string;
     name: string;
+    currentJob: JobType;
     protected: boolean;
     externalId: string;
     mappings: MappingCollection[];
@@ -38,6 +41,9 @@ export class AccountEntity {
 
     @Column({ unique: true })
     name: string;
+
+    @Column()
+    currentJob: JobType;
 
     @Column()
     protected: boolean;

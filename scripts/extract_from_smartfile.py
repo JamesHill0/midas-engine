@@ -9,14 +9,14 @@ class ExtractFromSmartFile:
     self.mq = RabbitMQ()
 
   def create_account_mapping(self, api_key, subworkflow):
-    files = self.blitz.smart_file_info_list_files({ 'x-api-key': api_key }, subworkflow['integrationId'])
+    files = self.blitz.integration_smart_file_info_list_files({ 'x-api-key': api_key }, subworkflow['integrationId'])
 
     for f in files:
       filename = f['name']
       if f['isfile'] != True and f['mime'] != 'text/html':
         continue
 
-      raw = self.blitz.smart_file_get_data({ 'x-api-key': api_key }, subworkflow['integrationId'], filename)
+      raw = self.blitz.integration_smart_file_get_data({ 'x-api-key': api_key }, subworkflow['integrationId'], filename)
       if raw['data'] == '':
         continue
 
@@ -41,14 +41,14 @@ class ExtractFromSmartFile:
         })
 
   def create_field_mapping(self, api_key, subworkflow)
-    files = self.blitz.smart_file_info_list_files({ 'x-api-key': api_key }, subworkflow['integrationId'])
+    files = self.blitz.integration_smart_file_info_list_files({ 'x-api-key': api_key }, subworkflow['integrationId'])
 
     for f in files:
       filename = f['name']
       if f['isfile'] != True and f['mime'] != 'text/html':
         continue
 
-      raw = self.blitz.smart_file_get_data({ 'x-api-key': api_key }, subworkflow['integrationId'], filename)
+      raw = self.blitz.integration_smart_file_get_data({ 'x-api-key': api_key }, subworkflow['integrationId'], filename)
       if raw['data'] == '':
         continue
 
