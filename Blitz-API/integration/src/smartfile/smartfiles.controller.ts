@@ -5,6 +5,7 @@ import { SmartFilesConnService } from './smartfiles.conn.service';
 import { SmartFileDto } from './dto/smartfile.dto';
 import { AuthType } from 'src/enums/auth.type';
 import { StatusType } from 'src/enums/status.type';
+import { identity } from 'rxjs';
 
 @Controller('smartfiles')
 export class SmartFilesController {
@@ -94,6 +95,25 @@ export class SmartFilesController {
     try {
       let smartFile = await this.smartFilesService.findById(id);
       let data = await this.smartFilesConnService.infoListFiles(smartFile.secret);
+      return res.status(HttpStatus.OK).json({
+        data: data,
+        message: 'Success',
+        status: HttpStatus.OK,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: 'Internal Server Error',
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+      });
+    }
+  }
+
+  @Get('/:id/data/:name')
+  public async getData(@Res() res, @Param('id') id, @Param('name') name): Promise<any> {
+    try {
+      let smartFile = await this.smartFilesService.findById(id);
+      let data = await this.smartFilesConnService.getOne(name, smartFile.secret);
       return res.status(HttpStatus.OK).json({
         data: data,
         message: 'Success',

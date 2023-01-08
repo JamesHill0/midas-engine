@@ -15,5 +15,8 @@ export class SecretDto {
     @ApiProperty()
     basic: BasicAuthDto;
 
+    @ApiProperty()
+    directory: string;
+
     key: string;
 }

@@ -7,6 +7,7 @@ import {
 import { Collection } from 'fireorm';
 import { JobType } from 'src/enums/job.type';
 import { IntegrationType } from 'src/enums/integration.type';
+import { DirectionType } from 'src/enums/direction.type';
 
 export class Subworkflow {
   id: string;
@@ -14,6 +15,8 @@ export class Subworkflow {
   workflowId: string
 
   jobType: JobType;
+
+  directionType: DirectionType;
 
   integrationType: IntegrationType;
 
@@ -34,6 +37,8 @@ export class SubworkflowCollection {
 
   jobType: JobType;
 
+  directionType: DirectionType;
+
   integrationType: IntegrationType;
 
   integrationId: string;
@@ -51,6 +56,9 @@ export class SubworkflowEntity {
 
   @Column()
   jobType: JobType;
+
+  @Column()
+  directionType: DirectionType;
 
   @Column()
   integrationType: IntegrationType;

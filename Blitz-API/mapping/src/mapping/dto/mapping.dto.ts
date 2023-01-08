@@ -15,9 +15,6 @@ export class MappingDto {
   editable: boolean;
 
   @ApiProperty()
-  currentJob: JobType;
-
-  @ApiProperty()
   @IsString()
   fromFieldName: string;
 

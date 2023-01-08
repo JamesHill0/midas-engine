@@ -4,6 +4,7 @@ import api from "../../../data";
 
 import { Loader } from "../../../utils/ui_helper";
 import { navigateToUrl } from "single-spa";
+import EtlViewDataTable from "./etl.view.data.table";
 
 function EtlViewData() {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +61,7 @@ function EtlViewData() {
           const data = response.Data;
           setDataList(data);
           setIsLoading(false);
+          return;
         }
 
         notification["error"]({
@@ -81,6 +83,7 @@ function EtlViewData() {
         <Breadcrumb.Item>View Data</Breadcrumb.Item>
       </Breadcrumb>
       <br />
+      <EtlViewDataTable dataList={dataList} />
     </div>
   )
 }

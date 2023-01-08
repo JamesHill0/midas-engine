@@ -14,5 +14,8 @@ export class Secret {
     type: AuthType;
 
     @Column()
+    directory: string;
+
+    @Column()
     key: string;
 }
