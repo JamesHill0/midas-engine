@@ -1,4 +1,4 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import * as Jsforce from "jsforce";
 
@@ -69,5 +69,91 @@ export class SalesforcesConnService {
         let conn = await this.connection(null, authBasic);
 
         return await this.encodeTokens(conn);
+    }
+
+    public async getById(auth: Secret, tableName: string, id: string): Promise<any> {
+      let conn = await this.connection(auth, null);
+
+      return new Promise((resolve, reject) => {
+        conn.sobject(tableName).retrieve(id, (err, data) => {
+          if (err) {
+            console.log(err);
+            reject('Internal Server Error');
+          }
+          resolve(data);
+        })
+      })
+    }
+
+    public async create(auth: Secret, tableName: string, inputData: any): Promise<any> {
+      let conn = await this.connection(auth, null);
+
+      return new Promise((resolve, reject) => {
+        conn.sobject(tableName).create(inputData, (err: any, data: Jsforce.RecordResult) => {
+          if (err) {
+            console.log(err);
+            reject('Internal Server Error');
+          }
+          resolve(data);
+        })
+      })
+    }
+
+    public async bulkCreate(auth: Secret, tableName: string, inputDatas: any[]): Promise<any> {
+      let conn = await this.connection(auth, null);
+
+      return new Promise((resolve, reject) => {
+        conn.sobject(tableName).create(inputDatas, (err: any, ret: Jsforce.RecordResult[]) => {
+          if (err) {
+            console.log(err);
+            reject('Internal Server Error');
+          }
+
+          let data = { "results": [] }
+          for (let i=0; i < ret.length; i++) {
+            if (ret[i].success) {
+              data["results"].push(ret);
+            }
+          }
+
+          resolve(data);
+        })
+      })
+    }
+
+    public async update(auth: Secret, tableName: string, inputData: any): Promise<any> {
+      let conn = await this.connection(auth, null);
+
+      return new Promise((resolve, reject) => {
+        conn.sobject(tableName).update(inputData, (err: any, data: Jsforce.RecordResult) => {
+          if (err) {
+            console.log(err);
+            reject('Internal Server Error');
+          }
+          resolve(data);
+        })
+      })
+    }
+
+    public async bulkUpdate(auth: Secret, tableName: string, inputDatas: any[]): Promise<any> {
+      let conn = await this.connection(auth, null);
+
+      return new Promise((resolve, reject) => {
+        conn.sobject(tableName).update(inputDatas, (err: any, ret: Jsforce.RecordResult[]) => {
+          if (err) {
+            console.log(err);
+            reject('Internal Server Error');
+          }
+
+          let data = { "results": [] }
+          for (let i=0; i < ret.length; i++) {
+            if (ret[i].success) {
+              data["results"].push(ret);
+            }
+          }
+
+          resolve(data);
+        })
+      })
     }
 }
