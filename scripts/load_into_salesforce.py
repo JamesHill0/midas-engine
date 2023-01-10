@@ -1,8 +1,10 @@
 from blitz import Blitz
+from rabbitmq import RabbitMQ
 
 class LoadIntoSalesForce:
   def __init__(self):
     self.blitz = Blitz()
+    self.mq = RabbitMQ()
 
   def __create_salesforce_object(self, account_mapping):
     salesforce_object = {}
@@ -37,10 +39,29 @@ class LoadIntoSalesForce:
 
     account_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, integration['externalId'])
 
+    for_creation = []
+    for_update = []
+
     for account_mapping in account_mappings:
       salesforce_object = self.__create_salesforce_object(account_mapping)
 
       if account_mapping['result']:
         # do create
+        for_creation.append(salesforce_object)
       else:
         # do update
+        salesforce_id = account_mapping['result']['salesforce_id']
+        salesforce_object['Id'] = salesforce_id
+        for_update.append(salesforce_object)
+
+    if len(for_creation) > 0:
+      self.mq.publish('blitz-api-load-into-salesforce', 'integrations.salesforce.bulk.created', {
+        'x-api-key': api_key,
+        'datas': for_creation
+      })
+
+    if len(for_update) > 0:
+      self.mq.publish('blitz-api-load-into-salesforce', 'integrations.salesforce.bulk.updated', {
+        'x-api-key': api_key,
+        'datas': for_update
+      })

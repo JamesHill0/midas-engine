@@ -10,6 +10,7 @@ class ExtractFromSmartFile:
 
   def create_account_mapping(self, api_key, subworkflow):
     files = self.blitz.integration_smart_file_info_list_files({ 'x-api-key': api_key }, subworkflow['integrationId'])
+    smartfile_integration = self.blitz.integration_smart_file_get_by_id({ 'x-api-key': api_key }, subworkflow['integrationId'])
 
     for f in files:
       filename = f['name']
@@ -35,14 +36,19 @@ class ExtractFromSmartFile:
 
       if len(mappings) > 0:
         self.mq.publish('blitz-api-mapping', 'accounts.mapping.created', {
-          'name': filename,
-          'currentJob': 'extraction'
-          'protected': False,
-          'mappings': mappings
+          'apiKey': api_key,
+          'account': {
+            'name': filename,
+            'currentJob': 'extraction'
+            'protected': False,
+            'externalId': smartfile_integration['externalId'],
+            'mappings': mappings
+          }
         })
 
   def create_field_mapping(self, api_key, subworkflow)
     files = self.blitz.integration_smart_file_info_list_files({ 'x-api-key': api_key }, subworkflow['integrationId'])
+    smartfile_integration = self.blitz.integration_smart_file_get_by_id({ 'x-api-key': api_key }, subworkflow['integrationId'])
 
     for f in files:
       filename = f['name']
@@ -68,8 +74,12 @@ class ExtractFromSmartFile:
 
       if len(mappings) > 0:
         self.mq.publish('blitz-api-mapping', 'accounts.mapping.created', {
-          'name': filename,
-          'currentJob': 'extraction'
-          'protected': True,
-          'mappings': mappings
+          'apiKey': api_key,
+          'account': {
+            'name': filename,
+            'currentJob': 'extraction'
+            'protected': True,
+            'externalId': smartfile_integration['externalId'],
+            'mappings': mappings
+          }
         })

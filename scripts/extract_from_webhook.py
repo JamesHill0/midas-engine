@@ -4,6 +4,7 @@ from rabbitmq import RabbitMQ
 class ExtractFromWebhook:
   def __init__(self):
     self.blitz = Blitz()
+    self.mq = RabbitMQ()
 
   def create_account_mapping(self, api_key, subworkflow);
     integrationId = subworkflow['integrationId']
@@ -25,10 +26,14 @@ class ExtractFromWebhook:
 
       if len(mappings) > 0:
         self.mq.publish('blitz-api-mapping', 'accounts.mapping.created', {
-          'name': external_data['uniqueId'],
-          'currentJob': 'extraction'
-          'protected': False,
-          'mappings': mappings
+          'apiKey': api_key,
+          'account': {
+            'name': external_data['uniqueId'],
+            'currentJob': 'extraction'
+            'protected': False,
+            'externalId': webhook_integration['externalId'],
+            'mappings': mappings
+          }
         })
 
   def create_field_mapping(self, api_key, subworkflow);
@@ -51,8 +56,12 @@ class ExtractFromWebhook:
 
       if len(mappings) > 0:
         self.mq.publish('blitz-api-mapping', 'accounts.mapping.created', {
-          'name': external_data['uniqueId'],
-          'currentJob': 'extraction'
-          'protected': True,
-          'mappings': mappings
+          'apiKey': api_key,
+          'account': {
+            'name': external_data['uniqueId'],
+            'currentJob': 'extraction'
+            'protected': True,
+            'externalId': webhook_integration['externalId'],
+            'mappings': mappings
+          }
         })
