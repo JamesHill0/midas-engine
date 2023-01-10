@@ -56,12 +56,16 @@ class LoadIntoSalesForce:
 
     if len(for_creation) > 0:
       self.mq.publish('blitz-api-load-into-salesforce', 'integrations.salesforce.bulk.created', {
-        'x-api-key': api_key,
+        'apiKey': api_key,
+        'integrationId': subworkflow['integrationId'],
+        'tableName': subworkflow['tableName'],
         'datas': for_creation
       })
 
     if len(for_update) > 0:
       self.mq.publish('blitz-api-load-into-salesforce', 'integrations.salesforce.bulk.updated', {
-        'x-api-key': api_key,
+        'apiKey': api_key,
+        'integrationId': subworkflow['integrationId'],
+        'tableName': subworkflow['tableName'],
         'datas': for_update
       })

@@ -3,9 +3,12 @@ import { AuthenticationService } from 'src/service/authentication.service';
 import { SalesforcesService } from './salesforces.service'
 import { SalesforcesConnService } from './salesforces.conn.service';
 import { SalesforceDto } from './dto/salesforce.dto';
-import { AuthType } from 'src/enums/auth.type';
 import { StatusType } from 'src/enums/status.type';
-import { resolveSoa } from 'dns';
+import { AccountsService } from 'src/service/account.service';
+import { ConfigurationsService } from 'src/configurations/configurations.service';
+import { createConnection, getConnection } from 'typeorm';
+import { CredentialType } from 'src/enums/credential.type';
+import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 
 @Controller('salesforces')
 export class SalesforcesController {
@@ -13,7 +16,9 @@ export class SalesforcesController {
   constructor(
     private readonly salesforcesService: SalesforcesService,
     private readonly salesforcesConnService: SalesforcesConnService,
-    private readonly authenticationService: AuthenticationService,
+    private readonly configurationsService: ConfigurationsService,
+    private readonly authenticationsService: AuthenticationService,
+    private readonly accountsService: AccountsService,
   ) { }
 
   @Get()
@@ -55,10 +60,10 @@ export class SalesforcesController {
   @Post()
   public async create(@Res() res, @Body() dto: SalesforceDto): Promise<any> {
     try {
-      let encodedUsername = await this.authenticationService.encrypt({ "encoded": dto.secret.username });
-      let encodedPassword = await this.authenticationService.encrypt({ "encoded": dto.secret.password });
-      let encodedUrl = await this.authenticationService.encrypt({ "encoded": dto.secret.url });
-      let encodedSecurityToken = await this.authenticationService.encrypt({ "encoded": dto.secret.securityToken });
+      let encodedUsername = await this.authenticationsService.encrypt({ "encoded": dto.secret.username });
+      let encodedPassword = await this.authenticationsService.encrypt({ "encoded": dto.secret.password });
+      let encodedUrl = await this.authenticationsService.encrypt({ "encoded": dto.secret.url });
+      let encodedSecurityToken = await this.authenticationsService.encrypt({ "encoded": dto.secret.securityToken });
 
       dto.secret.username = encodedUsername;
       dto.secret.password = encodedPassword;
@@ -126,10 +131,10 @@ export class SalesforcesController {
   @Post("/test-connection")
   public async testConnection(@Res() res, @Body() dto: SalesforceDto): Promise<any> {
     try {
-      let encodedUsername = await this.authenticationService.encrypt({ "encoded": dto.secret.username });
-      let encodedPassword = await this.authenticationService.encrypt({ "encoded": dto.secret.password });
-      let encodedUrl = await this.authenticationService.encrypt({ "encoded": dto.secret.url });
-      let encodedSecurityToken = await this.authenticationService.encrypt({ "encoded": dto.secret.securityToken });
+      let encodedUsername = await this.authenticationsService.encrypt({ "encoded": dto.secret.username });
+      let encodedPassword = await this.authenticationsService.encrypt({ "encoded": dto.secret.password });
+      let encodedUrl = await this.authenticationsService.encrypt({ "encoded": dto.secret.url });
+      let encodedSecurityToken = await this.authenticationsService.encrypt({ "encoded": dto.secret.securityToken });
 
       dto.secret.username = encodedUsername;
       dto.secret.password = encodedPassword;
@@ -247,4 +252,108 @@ export class SalesforcesController {
     }
   }
 
+  private async createDatabase(connection: any) {
+    try {
+      const db = getConnection('master');
+      await db.query(`CREATE DATABASE "${connection['database']}"`);
+      db.close();
+    } catch (e) {
+      const db = await createConnection({
+        type: connection['type'],
+        host: connection['host'],
+        port: connection['port'],
+        username: connection['username'],
+        password: connection['password'],
+        database: 'postgres',
+        name: 'master',
+        synchronize: false
+      });
+      await db.query(`CREATE DATABASE "${connection['database']}"`);
+      db.close();
+    }
+  }
+
+  @MessagePattern('integrations.salesforce.bulk.created')
+  async handleSalseforceBulkCreation(@Payload() payload: any, @Ctx() context: RmqContext) {
+    try {
+      const apiKey = payload['apiKey']
+      await this.setUpConnection(apiKey);
+
+      let integrationId = payload['integrationId'];
+      let tableName = payload['tableName'];
+      let datas = payload['datas'];
+
+      let sf = await this.salesforcesService.findById(integrationId);
+      let data = await this.salesforcesConnService.bulkCreate(sf.secret, tableName, datas);
+
+      const channel = context.getChannelRef();
+      const originalMsg = context.getMessage();
+
+      channel.ack(originalMsg);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  @MessagePattern('integrations.salesforce.bulk.update')
+  async handleSalseforceBulkUpdate(@Payload() payload: any, @Ctx() context: RmqContext) {
+    try {
+      const apiKey = payload['apiKey']
+      await this.setUpConnection(apiKey);
+
+      let integrationId = payload['integrationId'];
+      let tableName = payload['tableName'];
+      let datas = payload['datas'];
+
+      let sf = await this.salesforcesService.findById(integrationId);
+      let data = await this.salesforcesConnService.bulkUpdate(sf.secret, tableName, datas);
+
+      const channel = context.getChannelRef();
+      const originalMsg = context.getMessage();
+
+      channel.ack(originalMsg);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  private async setUpConnection(apiKey: any) {
+    const account = await this.accountsService.findByApiKey(apiKey);
+
+    const conn = await this.authenticationsService.decrypt(account['secret']['key']);
+    if (account['secret']['type'] == CredentialType.FIRE) {
+      let connection = {
+        type: CredentialType.FIRE,
+        key: conn
+      }
+      await this.configurationsService.set('mapping', JSON.stringify(connection));
+    } else {
+      let dbName = `${account['number']}-mapping`;
+      let connection = {
+        type: conn['type'],
+        host: conn['host'],
+        port: conn['port'],
+        username: conn['username'],
+        password: conn['password'],
+        database: dbName,
+        name: dbName,
+        entities: ['dist/**/*.entity{.ts,.js}'],
+        synchronize: true,
+      };
+
+      try {
+        if (account['database']) {
+          connection['database'] = account['database'];
+          connection['name'] = account['database'];
+        } else {
+          await this.createDatabase(connection);
+        }
+      } finally {
+        console.log('setting mapping configuration session')
+        await this.configurationsService.set('mapping', JSON.stringify(connection));
+      }
+    }
+  }
 }
