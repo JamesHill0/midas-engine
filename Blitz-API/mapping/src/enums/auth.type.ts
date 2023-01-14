@@ -1,4 +1,4 @@
 export enum AuthType {
-    BASIC = "basic",
-    OAUTH = "oauth"
+  BASIC = "basic",
+  OAUTH = "oauth"
 }

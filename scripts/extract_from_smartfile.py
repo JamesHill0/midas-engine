@@ -9,15 +9,16 @@ class ExtractFromSmartFile:
     self.mq = RabbitMQ()
 
   def create_account_mapping(self, api_key, subworkflow):
-    files = self.blitz.integration_smart_file_info_list_files({ 'x-api-key': api_key }, subworkflow['integrationId'])
-    smartfile_integration = self.blitz.integration_smart_file_get_by_id({ 'x-api-key': api_key }, subworkflow['integrationId'])
+    headers = { 'x-api_key': api_key }
+    files = self.blitz.integration_smart_file_info_list_files(headers, subworkflow['integrationId'])
+    smartfile_integration = self.blitz.integration_smart_file_get_by_id(headers, subworkflow['integrationId'])
 
     for f in files:
       filename = f['name']
       if f['isfile'] != True and f['mime'] != 'text/html':
         continue
 
-      raw = self.blitz.integration_smart_file_get_data({ 'x-api-key': api_key }, subworkflow['integrationId'], filename)
+      raw = self.blitz.integration_smart_file_get_data(headers, subworkflow['integrationId'], filename)
       if raw['data'] == '':
         continue
 
@@ -47,15 +48,16 @@ class ExtractFromSmartFile:
         })
 
   def create_field_mapping(self, api_key, subworkflow)
-    files = self.blitz.integration_smart_file_info_list_files({ 'x-api-key': api_key }, subworkflow['integrationId'])
-    smartfile_integration = self.blitz.integration_smart_file_get_by_id({ 'x-api-key': api_key }, subworkflow['integrationId'])
+    headers = { 'x-api-key': api_key }
+    files = self.blitz.integration_smart_file_info_list_files(headers, subworkflow['integrationId'])
+    smartfile_integration = self.blitz.integration_smart_file_get_by_id(headers, subworkflow['integrationId'])
 
     for f in files:
       filename = f['name']
       if f['isfile'] != True and f['mime'] != 'text/html':
         continue
 
-      raw = self.blitz.integration_smart_file_get_data({ 'x-api-key': api_key }, subworkflow['integrationId'], filename)
+      raw = self.blitz.integration_smart_file_get_data(headers, subworkflow['integrationId'], filename)
       if raw['data'] == '':
         continue
 
@@ -75,7 +77,7 @@ class ExtractFromSmartFile:
       if len(mappings) > 0:
         self.mq.publish('blitz-api-mapping', 'accounts.mapping.created', {
           'apiKey': api_key,
-          'account': {
+          'data': {
             'name': filename,
             'currentJob': 'extraction'
             'protected': True,

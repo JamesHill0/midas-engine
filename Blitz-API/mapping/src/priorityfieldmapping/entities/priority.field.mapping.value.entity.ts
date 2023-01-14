@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 import { Collection } from 'fireorm';
-import { PriorityFieldMapping } from './priority.field.mapping';
+import { PriorityFieldMapping } from './priority.field.mapping.entity';
 
 export class PriorityFieldMappingValue {
     id: string;

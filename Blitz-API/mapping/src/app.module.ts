@@ -14,6 +14,7 @@ import { PrioritiesModule } from './priorityfieldmapping/priorities.module';
 import { WorkflowsModule } from './workflow/workflows.module';
 import { SubworkflowsModule } from './subworkflow/subworkflows.module';
 import { DirectFieldMappingsModule } from './directfieldmapping/direct.field.mappings.module';
+import { DataMappingsModule } from './datamapping/data.mappings.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { DirectFieldMappingsModule } from './directfieldmapping/direct.field.map
     MappingsModule,
     PrioritiesModule,
     DirectFieldMappingsModule,
+    DataMappingsModule,
     WorkflowsModule,
     SubworkflowsModule,
   ],

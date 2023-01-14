@@ -16,11 +16,11 @@ export class MappingDto {
 
   @ApiProperty()
   @IsString()
-  fromFieldName: string;
+  fromField: string;
 
   @ApiProperty()
   @IsString()
-  toFieldName: string;
+  toField: string;
 
   @ApiProperty()
   @IsString()

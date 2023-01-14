@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { getConnection, createConnection, Repository } from 'typeorm';
-import { PriorityFieldMappingValue, PriorityFieldMappingValueCollection, PriorityFieldMappingValueEntity } from './entities/priority.field.mapping.value';
+import { PriorityFieldMappingValue, PriorityFieldMappingValueCollection, PriorityFieldMappingValueEntity } from './entities/priority.field.mapping.value.entity';
 import { PriorityFieldMappingValueDto } from './dto/priority.field.mapping.value.dto';
 
 import { CredentialType } from 'src/enums/credential.type';

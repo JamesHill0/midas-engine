@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { getConnection, createConnection, Repository } from 'typeorm';
-import { PriorityFieldMapping, PriorityFieldMappingCollection, PriorityFieldMappingEntity } from './entities/priority.field.mapping';
-import { PriorityFieldMappingDto } from './dto/priority.field.mapping';
+import { PriorityFieldMapping, PriorityFieldMappingCollection, PriorityFieldMappingEntity } from './entities/priority.field.mapping.entity';
+import { PriorityFieldMappingDto } from './dto/priority.field.mapping.dto';
 
 import { CredentialType } from 'src/enums/credential.type';
 
@@ -10,7 +10,7 @@ import * as fireorm from 'fireorm';
 import { ConfigurationsService } from 'src/configurations/configurations.service';
 import { PriorityFieldMappingValuesService } from './priority.field.mapping.values.service';
 import { PriorityFieldMappingValueDto } from './dto/priority.field.mapping.value.dto';
-import { PriorityFieldMappingValueCollection } from './entities/priority.field.mapping.value';
+import { PriorityFieldMappingValueCollection } from './entities/priority.field.mapping.value.entity';
 
 @Injectable()
 export class PriorityFieldMappingsService {

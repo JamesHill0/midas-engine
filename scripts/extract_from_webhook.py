@@ -7,10 +7,11 @@ class ExtractFromWebhook:
     self.mq = RabbitMQ()
 
   def create_account_mapping(self, api_key, subworkflow);
+    headers = { 'x-api-key': api_key }
     integrationId = subworkflow['integrationId']
-    webhook_integration = self.blitz.integration_webhook_get_by_id({ 'x-api-key': api_key }, integrationId)
+    webhook_integration = self.blitz.integration_webhook_get_by_id(headers, integrationId)
 
-    external_datas = self.blitz.integration_webhook_get_data({ 'x-api-key': api_key }, webhook_integration['externalId'])
+    external_datas = self.blitz.integration_webhook_get_data(headers, webhook_integration['externalId'])
 
     for external_data in external_datas:
       mappings = []
@@ -37,10 +38,11 @@ class ExtractFromWebhook:
         })
 
   def create_field_mapping(self, api_key, subworkflow);
+    headers = { 'x-api-key': api_key }
     integrationId = subworkflow['integrationId']
-    webhook_integration = self.blitz.integration_webhook_get_by_id({ 'x-api-key': api_key }, integrationId)
+    webhook_integration = self.blitz.integration_webhook_get_by_id(headers, integrationId)
 
-    external_datas = self.blitz.integration_webhook_get_data({ 'x-api-key': api_key }, webhook_integration['externalId'])
+    external_datas = self.blitz.integration_webhook_get_data(headers, webhook_integration['externalId'])
 
     for external_data in external_datas:
       mappings = []

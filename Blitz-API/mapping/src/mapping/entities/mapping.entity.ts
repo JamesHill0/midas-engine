@@ -14,8 +14,8 @@ export class Mapping {
   id: string;
   accountId: string;
   editable: boolean;
-  fromFieldName: string;
-  toFieldName: string;
+  fromField: string;
+  toField: string;
   fromData: string;
   toData: string;
 
@@ -29,8 +29,8 @@ export class MappingCollection {
   id: string;
   accountId: string;
   editable: boolean;
-  fromFieldName: string;
-  toFieldName: string;
+  fromField: string;
+  toField: string;
   fromData: string;
   toData: string;
 }
@@ -47,10 +47,10 @@ export class MappingEntity {
   editable: boolean;
 
   @Column()
-  fromFieldName: string;
+  fromField: string;
 
   @Column()
-  toFieldName: string;
+  toField: string;
 
   @Column()
   fromData: string;

@@ -110,10 +110,10 @@ export class AccountsController {
   @MessagePattern('account.mappings.created')
   async handleAccountMappingsCreated(@Payload() payload: any, @Ctx() context: RmqContext) {
     try {
-      const apiKey = payload['apiKey']
+      const apiKey = payload['apiKey'];
       await this.setUpConnection(apiKey);
 
-      let dto = payload['account']
+      let dto = payload['data'];
       const data = await this.accountsService.create(dto);
       const channel = context.getChannelRef();
       const originalMsg = context.getMessage();

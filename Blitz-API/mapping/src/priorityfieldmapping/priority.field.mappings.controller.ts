@@ -1,6 +1,6 @@
 import { Controller, Res, Param, Query, Body, Get, Post, HttpStatus, Patch, Delete } from '@nestjs/common';
 import { PriorityFieldMappingsService } from './priority.field.mappings.service';
-import { PriorityFieldMappingDto } from './dto/priority.field.mapping';
+import { PriorityFieldMappingDto } from './dto/priority.field.mapping.dto';
 
 @Controller('priority-field-mappings')
 export class PriorityFieldMappingsController {

@@ -26,6 +26,18 @@ class Blitz:
     url = self.base_url + '/mapping/accounts?q_external_id=' + external_id
     return self.__get_response(url, headers)
 
+  def mapping_get_direct_field_mapping_by_external_id(self, headers, external_id):
+    url = self.base_url + '/mapping/direct-field-mappings?q_external_id=' + external_id
+    return self.__get_response(url, headers)
+
+  def mapping_get_priority_field_mapping_by_external_id(self, headers, external_id):
+    url = self.base_url + '/mapping/priority-field-mappings?q_external_id=' + external_id
+    return self.__get_response(url, headers)
+
+  def mapping_get_data_mapping_by_external_id(self, headers, external_id):
+    url = self.base_url + '/mapping/data-mappings?q_external_id=' + external_id
+    return self.__get_response(url, headers)
+
   def mapping_get_workflow_by_id(self, headers, id):
     url = self.base_url + '/mapping/workflows/' + id
     return self.__get_response(url, headers)

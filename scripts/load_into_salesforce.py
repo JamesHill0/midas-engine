@@ -59,7 +59,7 @@ class LoadIntoSalesForce:
         'apiKey': api_key,
         'integrationId': subworkflow['integrationId'],
         'tableName': subworkflow['tableName'],
-        'datas': for_creation
+        'data': for_creation
       })
 
     if len(for_update) > 0:
@@ -67,5 +67,5 @@ class LoadIntoSalesForce:
         'apiKey': api_key,
         'integrationId': subworkflow['integrationId'],
         'tableName': subworkflow['tableName'],
-        'datas': for_update
+        'data': for_update
       })

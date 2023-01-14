@@ -1,6 +1,6 @@
 export enum CredentialType {
-    FIRE = "firebase",
-    MONGO = "mongo",
-    POSTGRES = "postgres",
-    SQL = "sql"
+  FIRE = "firebase",
+  MONGO = "mongo",
+  POSTGRES = "postgres",
+  SQL = "sql"
 }

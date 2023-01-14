@@ -8,7 +8,7 @@ import {
 
 import { Collection } from 'fireorm';
 
-import { PriorityFieldMappingValue, PriorityFieldMappingValueCollection, PriorityFieldMappingValueEntity } from './priority.field.mapping.value';
+import { PriorityFieldMappingValue, PriorityFieldMappingValueCollection, PriorityFieldMappingValueEntity } from './priority.field.mapping.value.entity';
 
 export class PriorityFieldMapping {
     id: string;
