@@ -10,9 +10,10 @@ import { AuthenticationService } from './service/authentication.service';
 import { AccountsService } from './service/account.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthenticationInterceptor } from './interceptor/authentication.interceptor';
-import { PrioritiesModule } from './priority/priorities.module';
+import { PrioritiesModule } from './priorityfieldmapping/priorities.module';
 import { WorkflowsModule } from './workflow/workflows.module';
 import { SubworkflowsModule } from './subworkflow/subworkflows.module';
+import { DirectFieldMappingsModule } from './directfieldmapping/direct.field.mappings.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { SubworkflowsModule } from './subworkflow/subworkflows.module';
     AccountsModule,
     MappingsModule,
     PrioritiesModule,
+    DirectFieldMappingsModule,
     WorkflowsModule,
     SubworkflowsModule,
   ],

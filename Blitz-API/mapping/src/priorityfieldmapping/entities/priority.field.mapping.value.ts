@@ -7,13 +7,12 @@ import {
 } from 'typeorm';
 
 import { Collection } from 'fireorm';
-import { PriorityEntity } from './priority.entity';
+import { PriorityFieldMapping } from './priority.field.mapping';
 
-export class PriorityValue {
+export class PriorityFieldMappingValue {
     id: string;
     priorityId: string;
-    key: string;
-    value: string;
+    toField: string;
     level: number;
 
     constructor(partial: any) {
@@ -21,17 +20,16 @@ export class PriorityValue {
     }
 }
 
-@Collection('priority-value')
-export class PriorityValueCollection {
+@Collection('priority-field-mapping-values')
+export class PriorityFieldMappingValueCollection {
     id: string;
     priorityId: string;
-    key: string;
-    value: string;
+    toField: string;
     level: number;
 }
 
-@Entity('priority-value')
-export class PriorityValueEntity {
+@Entity('priority-field-mapping-values')
+export class PriorityFieldMappingValueEntity {
     @PrimaryGeneratedColumn()
     id: string;
 
@@ -39,17 +37,14 @@ export class PriorityValueEntity {
     priorityId: string;
 
     @Column()
-    key: string;
+    toField: string;
 
     @Column()
-    value: string;
+    level: number;
 
-    @Column()
-    level: number;  
-
-    @ManyToOne(() => PriorityEntity, priority => priority.values)
+    @ManyToOne(() => PriorityFieldMapping, priority => priority.values)
     @JoinColumn()
-    priority: PriorityEntity;
+    priority: PriorityFieldMapping;
 
     constructor(partial: any) {
         Object.assign(this, partial);

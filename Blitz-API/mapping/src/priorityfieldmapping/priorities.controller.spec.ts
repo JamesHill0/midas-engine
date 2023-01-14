@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrioritiesController } from './priorities.controller';
+import { PriorityFieldMappingsController } from './priority.field.mappings.controller';
 
 describe('Priorities Controller', () => {
-    let controller: PrioritiesController;
+    let controller: PriorityFieldMappingsController;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            controllers: [PrioritiesController],
+            controllers: [PriorityFieldMappingsController],
         }).compile();
 
-        controller = module.get<PrioritiesController>(PrioritiesController);
+        controller = module.get<PriorityFieldMappingsController>(PriorityFieldMappingsController);
     });
 
     it('should be defined', () => {

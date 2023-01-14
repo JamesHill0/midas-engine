@@ -1,45 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { getConnection, createConnection, Repository } from 'typeorm';
-import { Priority, PriorityCollection, PriorityEntity } from './entities/priority.entity';
-import { PriorityDto } from './dto/priority.dto';
+import { PriorityFieldMapping, PriorityFieldMappingCollection, PriorityFieldMappingEntity } from './entities/priority.field.mapping';
+import { PriorityFieldMappingDto } from './dto/priority.field.mapping';
 
 import { CredentialType } from 'src/enums/credential.type';
 
 import * as admin from 'firebase-admin';
 import * as fireorm from 'fireorm';
 import { ConfigurationsService } from 'src/configurations/configurations.service';
-import { PrioritiesValueService } from './priorities-value.service';
-import { PriorityValueDto } from './dto/priority-value.dto';
-import { PriorityValueCollection } from './entities/priority-value.entity';
+import { PriorityFieldMappingValuesService } from './priority.field.mapping.values.service';
+import { PriorityFieldMappingValueDto } from './dto/priority.field.mapping.value.dto';
+import { PriorityFieldMappingValueCollection } from './entities/priority.field.mapping.value';
 
 @Injectable()
-export class PrioritiesService {
+export class PriorityFieldMappingsService {
     constructor(
-        private readonly prioritiesValueService: PrioritiesValueService,
+        private readonly priorityFieldMappingValuesService: PriorityFieldMappingValuesService,
         private readonly configurationsService: ConfigurationsService
     ) { }
 
-    private async connection(): Promise<PrioritiesConfig> {
+    private async connection(): Promise<PriorityFieldMappingsConfig> {
         let config = await this.configurationsService.get('mapping');
         let conn = JSON.parse(config);
         if (conn.type == CredentialType.FIRE) {
-            return new PrioritiesFireorm(conn, this.prioritiesValueService);
+            return new PriorityFieldMappingsFireorm(conn, this.priorityFieldMappingValuesService);
         } else {
-            return new PrioritiesTypeorm(conn, this.prioritiesValueService);
+            return new PriorityFieldMappingsTypeorm(conn, this.priorityFieldMappingValuesService);
         }
     }
 
-    public async findAll(query: any): Promise<Priority[]> {
+    public async findAll(query: any): Promise<PriorityFieldMapping[]> {
         const repository = await this.connection();
         return repository.findAll(query);
     }
 
-    public async findById(id: string): Promise<Priority | null> {
+    public async findById(id: string): Promise<PriorityFieldMapping | null> {
         const repository = await this.connection();
         return await repository.findById(id);
     }
 
-    public async create(dto: PriorityDto): Promise<Priority> {
+    public async create(dto: PriorityFieldMappingDto): Promise<PriorityFieldMapping> {
         const repository = await this.connection();
         return await repository.create(dto);
     }
@@ -47,7 +47,7 @@ export class PrioritiesService {
     public async update(
         id: string,
         newValue: any,
-    ): Promise<Priority | null> {
+    ): Promise<PriorityFieldMapping | null> {
         const repository = await this.connection();
         return await repository.update(id, newValue);
     }
@@ -58,33 +58,33 @@ export class PrioritiesService {
     }
 }
 
-interface PrioritiesConfig {
-    findAll(query: any): Promise<Priority[]>;
-    findById(id: string): Promise<Priority | null>;
-    create(dto: PriorityDto): Promise<Priority>;
-    update(id: string, newValue: any): Promise<Priority | null>;
+interface PriorityFieldMappingsConfig {
+    findAll(query: any): Promise<PriorityFieldMapping[]>;
+    findById(id: string): Promise<PriorityFieldMapping | null>;
+    create(dto: PriorityFieldMappingDto): Promise<PriorityFieldMapping>;
+    update(id: string, newValue: any): Promise<PriorityFieldMapping | null>;
     delete(id: string);
 }
 
-class PrioritiesTypeorm implements PrioritiesConfig {
+class PriorityFieldMappingsTypeorm implements PriorityFieldMappingsConfig {
     constructor(
         private connection: any,
-        private readonly prioritiesValueService: PrioritiesValueService
+        private readonly priorityFieldMappingValuesService: PriorityFieldMappingValuesService
     ) { }
 
-    private async repository(): Promise<Repository<PriorityEntity>> {
+    private async repository(): Promise<Repository<PriorityFieldMappingEntity>> {
         try {
             const db = getConnection(this.connection['name']);
-            return db.getRepository(PriorityEntity);
+            return db.getRepository(PriorityFieldMappingEntity);
         } catch (e) {
             const db = await createConnection(this.connection);
-            return db.getRepository(PriorityEntity);
+            return db.getRepository(PriorityFieldMappingEntity);
         }
     }
 
-    public async findAll(query: any): Promise<Priority[]> {
+    public async findAll(query: any): Promise<PriorityFieldMapping[]> {
         const repository = await this.repository();
-        let selectQueryBuilder = repository.createQueryBuilder('priorities').leftJoinAndSelect('priorities.values', 'priority-value');
+        let selectQueryBuilder = repository.createQueryBuilder('priority-field-mappings').leftJoinAndSelect('priority-field-mappings.values', 'priority-field-mapping-values');
 
         let limit = 0;
         if (query.limit) {
@@ -115,27 +115,27 @@ class PrioritiesTypeorm implements PrioritiesConfig {
         return await selectQueryBuilder.limit(limit).getMany();
     }
 
-    public async findById(id: string): Promise<Priority | null> {
+    public async findById(id: string): Promise<PriorityFieldMapping | null> {
         const repository = await this.repository();
         return await repository.findOneOrFail(id);
     }
 
-    private async findByKey(key: string): Promise<Priority[]> {
+    private async findByFromField(fromField: string): Promise<PriorityFieldMapping[]> {
         const repository = await this.repository();
-        return await repository.find({ key: key });
+        return await repository.find({ 'fromField': fromField });
     }
 
-    public async create(dto: PriorityDto): Promise<Priority> {
+    public async create(dto: PriorityFieldMappingDto): Promise<PriorityFieldMapping> {
         const repository = await this.repository();
-        const results = await this.findByKey(dto.key);
+        const results = await this.findByFromField(dto.fromField);
 
         if (results.length > 0) {
             const priority = results[0];
             await Promise.all(dto.values.map(async (value) => {
                 value.priorityId = priority.id;
-                await this.prioritiesValueService.create(value);
+                await this.priorityFieldMappingValuesService.create(value);
             }));
-            return await this.update(priority.id, { 'key': dto.key });
+            return await this.update(priority.id, { 'fromField': dto.fromField });
         }
         return await repository.save(dto);
     }
@@ -143,11 +143,11 @@ class PrioritiesTypeorm implements PrioritiesConfig {
     public async update(
         id: string,
         newValue: any,
-    ): Promise<Priority | null> {
+    ): Promise<PriorityFieldMapping | null> {
         const data = await this.findById(id);
         if (!data.id) {
             //tslint:disable-next-line:no-console
-            console.error("Priority Mapping doesn't exist");
+            console.error("Priority Field Mapping doesn't exist");
         }
         const repository = await this.repository();
         await repository.update(id, newValue);
@@ -160,10 +160,10 @@ class PrioritiesTypeorm implements PrioritiesConfig {
     }
 }
 
-class PrioritiesFireorm implements PrioritiesConfig {
+class PriorityFieldMappingsFireorm implements PriorityFieldMappingsConfig {
     constructor(
         private connection: any,
-        private readonly prioritiesValueService: PrioritiesValueService
+        private readonly priorityFieldMappingValuesService: PriorityFieldMappingValuesService
     ) { }
 
     private async initialize() {
@@ -182,41 +182,41 @@ class PrioritiesFireorm implements PrioritiesConfig {
         }
     }
 
-    private async repository(): Promise<fireorm.BaseFirestoreRepository<PriorityCollection> | null> {
+    private async repository(): Promise<fireorm.BaseFirestoreRepository<PriorityFieldMappingCollection> | null> {
         await this.initialize();
-        return fireorm.getRepository(PriorityCollection);
+        return fireorm.getRepository(PriorityFieldMappingCollection);
     }
 
-    public async findAll(): Promise<Priority[]> {
+    public async findAll(): Promise<PriorityFieldMapping[]> {
         let priorities = [];
 
         const repository = await this.repository();
         let result = await repository.find();
         await Promise.all(result.map(async (res) => {
-            res.values = await this.prioritiesValueService.findByPriorityId(res.id);
-            priorities.push(new Priority(res));
+            res.values = await this.priorityFieldMappingValuesService.findByPriorityId(res.id);
+            priorities.push(new PriorityFieldMapping(res));
         }));
 
         return priorities;
     }
 
-    public async findById(id: string): Promise<Priority | null> {
+    public async findById(id: string): Promise<PriorityFieldMapping | null> {
         const repository = await this.repository();
         let result = await repository.findById(id);
 
-        result.values = await this.prioritiesValueService.findByPriorityId(result.id);
+        result.values = await this.priorityFieldMappingValuesService.findByPriorityId(result.id);
 
-        return new Priority(result);
+        return new PriorityFieldMapping(result);
     }
 
-    private async createMappingValue(dto: PriorityValueDto): Promise<Priority> {
+    private async createMappingValue(dto: PriorityFieldMappingValueDto): Promise<PriorityFieldMapping> {
         await this.initialize();
-        const repository = fireorm.getRepository(PriorityValueCollection);
+        const repository = fireorm.getRepository(PriorityFieldMappingValueCollection);
         let result = await repository.create(dto);
-        return new Priority(result);
+        return new PriorityFieldMapping(result);
     }
 
-    public async create(dto: PriorityDto): Promise<Priority> {
+    public async create(dto: PriorityFieldMappingDto): Promise<PriorityFieldMapping> {
         const repository = await this.repository();
 
         let values = dto.values;
@@ -232,13 +232,13 @@ class PrioritiesFireorm implements PrioritiesConfig {
         }
 
         result = await this.findById(result.id);
-        return new Priority(result);
+        return new PriorityFieldMapping(result);
     }
 
     public async update(
         id: string,
         newValue: any,
-    ): Promise<Priority | null> {
+    ): Promise<PriorityFieldMapping | null> {
         const data = await this.findById(id);
         if (!data.id) {
             // tslint:disable-next-line:no-console

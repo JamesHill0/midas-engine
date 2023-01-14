@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
-export class PriorityValueDto {
+export class PriorityFieldMappingValueDto {
     @ApiProperty({required: true})
     @IsString()
     readonly id: string;
@@ -12,11 +12,7 @@ export class PriorityValueDto {
 
     @ApiProperty()
     @IsString()
-    key: string;
-
-    @ApiProperty()
-    @IsString()
-    value: string;
+    toField: string;
 
     @ApiProperty()
     @IsNumber()
