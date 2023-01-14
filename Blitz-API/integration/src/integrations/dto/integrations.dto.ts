@@ -13,4 +13,6 @@ export class IntegrationDto {
     status: StatusType;
 
     direction: DirectionType;
+
+    externalId: string;
 }

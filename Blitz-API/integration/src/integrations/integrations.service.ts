@@ -61,7 +61,8 @@ class IntegrationsTypeorm implements IntegrationsConfig {
             id: res.id,
             name: "Salesforce",
             status: res.status,
-            direction: DirectionType.OUTGOING
+            direction: DirectionType.OUTGOING,
+            externalId: res.externalId
           }
         )
       )
@@ -76,7 +77,8 @@ class IntegrationsTypeorm implements IntegrationsConfig {
             id: res.id,
             name: "Smartfile",
             status: res.status,
-            direction: DirectionType.INCOMING
+            direction: DirectionType.INCOMING,
+            externalId: res.externalId
           }
         )
       )
@@ -91,7 +93,8 @@ class IntegrationsTypeorm implements IntegrationsConfig {
             id: res.id,
             name: "Webhook",
             status: res.status,
-            direction: DirectionType.INCOMING
+            direction: DirectionType.INCOMING,
+            externalId: res.externalId
           }
         )
       )
@@ -142,7 +145,8 @@ class IntegrationsFireorm implements IntegrationsConfig {
             id: res.id,
             name: "Salesforce",
             status: res.status,
-            direction: DirectionType.OUTGOING
+            direction: DirectionType.OUTGOING,
+            externalId: res.externalId
           }
         )
       )
@@ -157,7 +161,8 @@ class IntegrationsFireorm implements IntegrationsConfig {
             id: res.id,
             name: "Smartfile",
             status: res.status,
-            direction: DirectionType.INCOMING
+            direction: DirectionType.INCOMING,
+            externalId: res.externalId
           }
         )
       )
@@ -172,7 +177,8 @@ class IntegrationsFireorm implements IntegrationsConfig {
             id: res.id,
             name: "Webhook",
             status: res.status,
-            direction: DirectionType.INCOMING
+            direction: DirectionType.INCOMING,
+            externalId: res.externalId
           }
         )
       )

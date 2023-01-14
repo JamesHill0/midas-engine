@@ -10,6 +10,28 @@ function EtlSubworkflowsTable({ subworkflowsList }) {
       key: 'jobType'
     },
     {
+      title: 'Direction',
+      dataIndex: 'direction',
+      key: 'direction',
+      render: item => {
+        let color = "green";
+        switch (item) {
+          case "outgoing":
+            color = "red"
+            break;
+          default:
+            color = "green"
+            break;
+        }
+
+        return (
+          <Tag color={color} key={item}>
+            {item}
+          </Tag>
+        )
+      }
+    },
+    {
       title: 'Integration Type',
       dataIndex: 'integrationType',
       key: 'integrationType'

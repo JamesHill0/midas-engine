@@ -35,6 +35,11 @@ function IntegrationsTable({ integrationsList }) {
       }
     },
     {
+      title: 'External Id',
+      dataIndex: 'externalId',
+      key: 'externalId'
+    },
+    {
       title: 'Direction',
       dataIndex: 'direction',
       key: 'direction',
