@@ -5,6 +5,9 @@ load_dotenv()
 
 # define env
 class Env:
+    def name(self):
+      return "Midas"
+
     def logger_alerting(self):
       return os.getenv("LOGGER_ALERTING")
 
@@ -31,3 +34,15 @@ class Env:
 
     def access_allow_control_origin(self):
       return os.getenv("CORS_ACCESS_ALLOW_CONTROL_ORIGIN")
+
+    def rabbitmq_host()
+      return os.getenv("RABBIT_MQ_HOST")
+
+    def rabbitmq_username()
+      return os.getenv("RABBIT_MQ_USERNAME")
+
+    def rabbitmq_password()
+      return os.getenv("RABBIT_MQ_PASSWORD")
+
+    def rabbitmq_pattern()
+      return os.getenv("RABBIT_MQ_PATTERN")

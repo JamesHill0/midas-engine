@@ -2,6 +2,7 @@ from blitz import Blitz
 from transform_using_direct_mapping import TransformUsingDirectMapping
 from transform_using_priority_mapping import TransformUsingPriorityMapping
 from transform_using_data_mapping import TransformUsingDataMapping
+from logger import Logger
 
 class Transform:
   def __init__(self):
@@ -12,6 +13,8 @@ class Transform:
     self.transform_using_direct_mapping = TransformUsingDataMapping()
     self.transform_using_priority_mapping = TransformUsingPriorityMapping()
     self.transform_using_data_mapping = TransformUsingDataMapping()
+
+    self.logger = Logger()
 
   def __check_schedule():
     return { 'status': 'inactive' }
@@ -36,14 +39,21 @@ class Transform:
 
     return subworkflows
 
-  def run():
+  def __execute(self):
+    self.logger.info('', self.log_name, 'checking scheduler')
     app_state = self.__check_schedule()
 
     if app_state['status'] == 'running' or app_state['status'] == 'suspended':
+      self.logger.info('', self.log_name, 'did not create a new run instance')
       return
 
+    self.logger.info('', self.log_name, 'retrieving all accounts')
     api_keys = self.__get_accounts_api_keys()
+    self.logger.info('', self.log_name, 'finish retrieving all accounts')
+
+    self.logger.info('', self.log_name, 'retrieving transformable workflows')
     transformable_subworkflows = self.__get_transformable_subworkflows(api_keys)
+    self.logger.info('', self.log_name, 'finish retrieving transformable workflows')
 
     for transformable_subworkflow in transformable_subworkflows:
       for subworkflow in transformable_subworkflow['subworkflows']:
@@ -51,10 +61,22 @@ class Transform:
         workflow = self.blitz.mapping_get_workflow({ 'x-api-key': api_key}, subworkflow['workflowId'])
 
         if workflow['mappingType'] == 'direct-mapping':
+          self.logger.info(api_key, self.log_name, 'transforming field using direct mapping for workflow ' + workflow['name'])
           self.transform_using_data_mapping.run(api_key, subworkflow)
+          self.logger.info(api_key, self.log_name, 'finish transforming field using direct mapping for workflow ' + workflow['name'])
 
         elif workflow['mappingType'] == 'priority-mapping':
+          self.logger.info(api_key, self.log_name, 'transforming field using priority mapping for workflow ' + workflow['name'])
           self.transform_using_priority_mapping.run(api_key, subworkflow)
+          self.logger.info(api_key, self.log_name, 'finish transforming field using priority mapping for workflow ' + workflow['name'])
 
         if workflow['needDataMapping'] == True:
+          self.logger.info(api_key, self.log_name, 'transforming data using data mapping for workflow ' + workflow['name'])
           self.transform_using_data_mapping.run(api_key, subworkflow)
+          self.logger.info(api_key, self.log_name, 'finish transforming data using data mapping for workflow ' + workflow['name'])
+
+  def run(self):
+    try:
+      self.__execute()
+    except:
+      self.logger.exception('', self.log_name, 'something went wrong')

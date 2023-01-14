@@ -2,6 +2,7 @@ from blitz import Blitz
 from mapper import Mapper
 from extract_from_smartfile import ExtractFromSmartFile
 from extract_from_webhook import ExtractFromWebhook
+from logger import Logger
 
 class Extract:
   def __init__(self):
@@ -12,6 +13,8 @@ class Extract:
 
     self.extract_from_smartfile = ExtractFromSmartFile()
     self.extract_from_webhook = ExtractFromWebhook()
+
+    self.logger = Logger()
 
   def __check_schedule():
     return { 'status': 'inactive' }
@@ -36,14 +39,21 @@ class Extract:
 
     return subworkflows
 
-  def run():
+  def __execute(self):
+    self.logger.info('', self.log_name, 'checking scheduler')
     app_state = self.__check_schedule()
 
     if app_state['status'] == 'running' or app_state['status'] == 'suspended':
+      self.logger.info('', self.log_name, 'did not create a new run instance')
       return
 
+    self.logger.info('', self.log_name, 'retrieving all accounts')
     api_keys = self.__get_accounts_api_keys()
+    self.logger.info('', self.log_name, 'finish retrieving all accounts')
+
+    self.logger.info('', self.log_name, 'retrieving extractable workflows')
     extractable_subworkflows = self.__get_extractable_subworkflows(api_keys)
+    self.logger.info('', self.log_name, 'finish retrieving extractable workflows')
 
     for extractable_subworkflow in extractable_subworkflows:
       for subworkflow in extractable_subworkflow['subworkflows']:
@@ -51,12 +61,26 @@ class Extract:
 
         if subworkflow['integrationType'] == 'smartfile':
           if subworkflow['direction'] == 'incoming':
+            self.logger.info(api_key, self.log_name, 'creating account mapping using smartfile')
             self.extract_from_smartfile.create_account_mapping(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish creating account mapping using smartfile')
           else:
+            self.logger.info(api_key, self.log_name, 'creating field mapping using smartfile')
             self.extract_from_smartfile.create_field_mapping(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish creating field mapping using smartfile')
 
         elif subworkflow['integrationType'] == 'webhook':
           if subworkflow['direction'] == 'incoming':
+            self.logger.info(api_key, self.log_name, 'creating account mapping using webhook')
             self.extract_from_webhook.create_account_mapping(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish creating account mapping using webhook')
           else:
+            self.logger.info(api_key, self.log_name, 'creating field mapping using webhook')
             self.extract_from_webhook.create_field_mapping(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish creating field mapping using webhook')
+
+  def run(self):
+    try:
+      self.__execute()
+    except:
+      self.logger.exception('', self.log_name, 'something went wrong')
