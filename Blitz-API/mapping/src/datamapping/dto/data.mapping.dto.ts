@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 import { DataFormatType } from 'src/enums/data.format.type';
+import { DataMappingOptionDto } from './data.mapping.option.dto';
 
 export class DataMappingDto {
   @ApiProperty({ required: true })
@@ -21,4 +22,7 @@ export class DataMappingDto {
   @ApiProperty()
   @IsString()
   formatting: string;
+
+  @ApiProperty()
+  options: DataMappingOptionDto[];
 }
