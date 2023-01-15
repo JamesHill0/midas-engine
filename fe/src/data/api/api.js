@@ -4,7 +4,7 @@ class Api extends Axios {
     constructor(url) {
         super();
         this.defaults.url = url;
-        this.defaults.baseURL = `${process.env.APP_BASE_URL}`;
+        this.defaults.baseURL = `${process.env.API_BASE_URL}`;
     }
 }
 

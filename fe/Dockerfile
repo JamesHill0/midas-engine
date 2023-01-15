@@ -1,8 +1,7 @@
 FROM node:16-alpine
 WORKDIR /app
 
-ARG APP_BASE_URL
-ARG APP_API_KEY
+ARG API_BASE_URL
 ARG DB_SECRET
 ARG REGISTRATION_ENABLED
 
@@ -11,8 +10,7 @@ RUN npm install
 
 COPY . ./
 RUN rm -rf ./.env
-RUN printf 'APP_BASE_URL="%s"\n' "${APP_BASE_URL}" >> ./.env
-RUN printf 'APP_API_KEY="%s"\n' "${APP_API_KEY}" >> ./.env
+RUN printf 'API_BASE_URL="%s"\n' "${API_BASE_URL}" >> ./.env
 RUN printf 'DB_SECRET="%s"\n' "${DB_SECRET}" >> ./.env
 RUN printf 'REGISTRATION_ENABLED="%s"\n' "${REGISTRATION_ENABLED}" >> ./.env
 

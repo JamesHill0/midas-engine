@@ -7,8 +7,7 @@ services:
             args:
                 CHOKIDAR_USEPOLLING: "true"
                 WATCHPACK_POLLING: "true"
-                APP_BASE_URL: ${APP_BASE_URL}
-                APP_API_KEY: ${APP_API_KEY}
+                API_BASE_URL: ${API_BASE_URL}
                 DB_SECRET: ${DB_SECRET}
         container_name: midas-frontend
         restart: unless-stopped
