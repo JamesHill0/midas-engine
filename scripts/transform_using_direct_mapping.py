@@ -21,6 +21,9 @@ class TransformUsingDirectMapping:
 
     accounts_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, current_integration['externalId'])
     for account_mapping in account_mappings:
+      if account_mapping['currentJob'] != 'transformation':
+        continue
+
       for mapping in account_mapping['mappings']:
         if dfm[mapping['fromField']]:
           self.mq.publish('blitz-api-mapping', 'mappings.updated', {
@@ -30,3 +33,11 @@ class TransformUsingDirectMapping:
               'toField': dfm[mapping['fromField']]
             }
           })
+
+      self.mq.publish('blitz-api-mapping', 'accounts.mapping.updated', {
+        'apiKey': api_key,
+        'id': account_mapping['id'],
+        'data': {
+          'currentJob': 'load'
+        }
+      })

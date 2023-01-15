@@ -126,6 +126,26 @@ export class MappingsController {
     }
   }
 
+  @MessagePattern('mappings.deleted')
+  async handleMappingsDeleted(@Payload() payload: any, @Ctx() context: RmqContext) {
+    try {
+      const apiKey = payload['apiKey'];
+      await this.setUpConnection(apiKey);
+
+      let datas = payload['data'];
+      await datas.map(async (data: any) => {
+        await this.mappingsService.delete(data['id']);
+      })
+
+      const channel = context.getChannelRef();
+      const originalMsg = context.getMessage();
+
+      channel.ack(originalMsg);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   private async createDatabase(connection: any) {
     try {
       const db = getConnection('master');

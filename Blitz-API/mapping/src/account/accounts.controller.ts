@@ -125,6 +125,25 @@ export class AccountsController {
     }
   }
 
+  @MessagePattern('account.mappings.updated')
+  async handleAccountMappingsUpdated(@Payload() payload: any, @Ctx() context: RmqContext) {
+    try {
+      const apiKey = payload['apiKey'];
+      await this.setUpConnection(apiKey);
+
+      let id = payload['id'];
+      let dto = payload['data'];
+      const data = await this.accountsService.update(id, dto);
+      const channel = context.getChannelRef();
+      const originalMsg = context.getMessage();
+
+      channel.ack(originalMsg);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   private async createDatabase(connection: any) {
     try {
       const db = getConnection('master');

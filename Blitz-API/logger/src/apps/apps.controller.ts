@@ -118,6 +118,7 @@ export class AppsController {
       const originalMsg = context.getMessage();
 
       channel.ack(originalMsg);
+      return data;
     } catch (err) {
       console.log(err);
     }

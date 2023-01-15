@@ -55,6 +55,9 @@ class TransformUsingDataMapping:
       return
 
     for account_mapping in account_mappings:
+      if account_mapping['currentJob'] != 'transformation':
+        continue
+
       for mapping in account_mapping['mappings']:
         if dm[mapping['fromField']]:
           data_mapping = dm[mapping['fromField']]
@@ -68,3 +71,11 @@ class TransformUsingDataMapping:
                 'toData': formatted_data
               }
             })
+
+      self.mq.publish('blitz-api-mapping', 'accounts.mapping.updated', {
+        'apiKey': api_key,
+        'id': account_mapping['id'],
+        'data': {
+          'currentJob': 'load'
+        }
+      })

@@ -32,9 +32,6 @@ class Env:
     def postgres_password(self):
       return os.getenv("POSTGRES_PASSWORD")
 
-    def access_allow_control_origin(self):
-      return os.getenv("CORS_ACCESS_ALLOW_CONTROL_ORIGIN")
-
     def rabbitmq_host()
       return os.getenv("RABBIT_MQ_HOST")
 

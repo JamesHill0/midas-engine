@@ -37,6 +37,14 @@ export class WbEtlsService {
 
   public async create(dto: WbEtlDto): Promise<WbEtl> {
     const repository = await this.connection();
+    const timestamp = Math.floor(Date.now() / 1000);
+
+    if (dto.uniqueId == '') {
+      dto.uniqueId = `${dto.externalId}-${timestamp}`;
+    } else {
+      dto.uniqueId = `${dto.externalId}-${dto.uniqueId}`;
+    }
+
     return await repository.create(dto);
   }
 

@@ -1,5 +1,7 @@
 export enum JobType {
   EXTRACTION = "extraction",
+  PRE_TRANSFORMATION = "pre-transformation",
   TRANSFORM = "transform",
-  LOAD = "load"
+  LOAD = "load",
+  DONE = "done"
 }

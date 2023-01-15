@@ -43,9 +43,12 @@ class LoadIntoSalesForce:
     for_update = []
 
     for account_mapping in account_mappings:
+      if account_mapping['currentJob'] != 'load':
+        continue
+
       salesforce_object = self.__create_salesforce_object(account_mapping)
 
-      if account_mapping['result']:
+      if not account_mapping['result']:
         # do create
         for_creation.append(salesforce_object)
       else:
@@ -53,6 +56,14 @@ class LoadIntoSalesForce:
         salesforce_id = account_mapping['result']['salesforce_id']
         salesforce_object['Id'] = salesforce_id
         for_update.append(salesforce_object)
+
+      self.mq.publish('blitz-api-mapping', 'accounts.mapping.updated', {
+        'apiKey': api_key,
+        'id': account_mapping['id'],
+        'data': {
+          'currentJob': 'done',
+        }
+      })
 
     if len(for_creation) > 0:
       self.mq.publish('blitz-api-mapping', 'integrations.salesforce.bulk.created', {
