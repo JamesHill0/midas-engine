@@ -84,3 +84,7 @@ class Extract:
       self.__execute()
     except:
       self.logger.exception('', self.log_name, 'something went wrong')
+
+if __name__ == '__main__':
+  app = Extract()
+  app.run()

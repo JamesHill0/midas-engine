@@ -65,3 +65,7 @@ class Load:
       self.__execute()
     except:
       self.logger.exception('', self.log_name, 'something went wrong')
+
+if __name__ == '__main__':
+  app = Load()
+  app.run()
