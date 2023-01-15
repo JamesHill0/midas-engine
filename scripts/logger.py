@@ -6,8 +6,9 @@ from rabbitmq import RabbitMQ
 
 # logger with slack connectivity
 class Logger:
-    def __init__(self):
+    def __init__(self, mode):
       self.mq = RabbitMQ()
+      self.mode = mode
 
     # info
     def info(self, api_key, name, message):
@@ -15,10 +16,12 @@ class Logger:
         logging.info(message)
 
         if api_key:
-          self.mq.publish('blitz-api-mapping', 'logger.info', {
+          self.mq.publish('blitz-api-mapping', 'logger.apps.created', {
             'apiKey': api_key,
             'data': {
               'name': name,
+              'type': 'info',
+              'mode': mode,
               'message': message
             }
           })
@@ -29,10 +32,12 @@ class Logger:
         logging.error(message)
 
         if api_key:
-          self.mq.publish('blitz-api-mapping', 'logger.error', {
+          self.mq.publish('blitz-api-mapping', 'logger.apps.created', {
             'apiKey': api_key,
             'data': {
               'name': name,
+              'type': 'error',
+              'mode': mode,
               'message': message
             }
           })
@@ -44,10 +49,12 @@ class Logger:
         logging.exception(message)
 
         if api_key:
-          self.mq.publish('blitz-api-mapping', 'logger.exception', {
+          self.mq.publish('blitz-api-mapping', 'logger.apps.created', {
             'apiKey': api_key,
             'data': {
               'name': name,
+              'type': 'exception',
+              'mode': mode,
               'message': message
             }
           })
@@ -62,4 +69,4 @@ class Logger:
 
         if e.logger_slack() == "True":
             sl = Slacker(e.slack_webhook())
-            sl.send("[%s] [%s] %s - %s : %s" % (typ, e.name(), name, e.mode(), message))
+            sl.send("[%s] [%s] %s - %s : %s" % (typ, e.name(), name, self.mode, message))
