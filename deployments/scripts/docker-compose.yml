@@ -1,9 +1,9 @@
 version: "3"
 services:
-    etl:
+    etl-extract:
       build:
         context: ../../scripts
-        dockerfile: ./Dockerfile
+        dockerfile: ./Dockerfile.extract
         args:
           LOGGER_ALERTING=${LOGGER_ALERTING}
           LOGGER_SLACK=${LOGGER_SLACK}
@@ -17,5 +17,43 @@ services:
           RABBIT_MQ_USERNAME=${RABBIT_MQ_USERNAME}
           RABBIT_MQ_PASSWORD=${RABBIT_MQ_PASSWORD}
           RABBIT_MQ_PATTERN=${RABBIT_MQ_PATTERN}
-      container_name: midas-etl
+      container_name: midas-etl-extract
+      restart: unless-stopped
+    etl-transform:
+      build:
+        context: ../../scripts
+        dockerfile: ./Dockerfile.transform
+      args:
+          LOGGER_ALERTING=${LOGGER_ALERTING}
+          LOGGER_SLACK=${LOGGER_SLACK}
+          SLACK_WEBHOOK=${SLACK_WEBHOOK}
+          API_URL=${API_BASE_URL}
+          POSTGRES_HOST=${POSTGRES_HOST}
+          POSTGRES_DATABASE=${POSTGRES_DATABASE}
+          POSTGRES_USERNAME=${POSTGRES_USERNAME}
+          POSTGRES_PASSWORD=${POSTGREST_PASSWORD}
+          RABBIT_MQ_HOST=${RABBIT_MQ_HOST}
+          RABBIT_MQ_USERNAME=${RABBIT_MQ_USERNAME}
+          RABBIT_MQ_PASSWORD=${RABBIT_MQ_PASSWORD}
+          RABBIT_MQ_PATTERN=${RABBIT_MQ_PATTERN}
+      container_name: midas-etl-transform
+      restart: unless-stopped
+    etl-load:
+      build:
+        context: ../../scripts
+        dockerfile: ./Dockerfile.load
+      args:
+          LOGGER_ALERTING=${LOGGER_ALERTING}
+          LOGGER_SLACK=${LOGGER_SLACK}
+          SLACK_WEBHOOK=${SLACK_WEBHOOK}
+          API_URL=${API_BASE_URL}
+          POSTGRES_HOST=${POSTGRES_HOST}
+          POSTGRES_DATABASE=${POSTGRES_DATABASE}
+          POSTGRES_USERNAME=${POSTGRES_USERNAME}
+          POSTGRES_PASSWORD=${POSTGREST_PASSWORD}
+          RABBIT_MQ_HOST=${RABBIT_MQ_HOST}
+          RABBIT_MQ_USERNAME=${RABBIT_MQ_USERNAME}
+          RABBIT_MQ_PASSWORD=${RABBIT_MQ_PASSWORD}
+          RABBIT_MQ_PATTERN=${RABBIT_MQ_PATTERN}
+      container_name: midas-etl-load
       restart: unless-stopped

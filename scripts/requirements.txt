@@ -13,3 +13,5 @@ dnspython
 flask-restful
 flask-cors
 python-dateutil
+pandas
+datetime

@@ -13,7 +13,7 @@ class Load:
     self.logger = Logger()
 
   def __check_schedule():
-    return { 'status': 'inactive' }
+    return { 'status': 'suspended' }
 
   def __get_accounts_api_keys(self):
     accounts = self.blitz.account_get_accounts()
