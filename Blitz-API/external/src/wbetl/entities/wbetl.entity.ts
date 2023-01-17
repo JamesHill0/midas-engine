@@ -42,8 +42,6 @@ export class WbEtlEntity {
   @Column()
   externalId: string;
 
-  @Column({
-    type: 'jsonb'
-  })
+  @Column()
   data: string;
 }
