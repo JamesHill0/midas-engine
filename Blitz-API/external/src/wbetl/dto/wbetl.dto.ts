@@ -13,5 +13,5 @@ export class WbEtlDto {
   externalId: string;
 
   @ApiProperty()
-  data: any;
+  data: string;
 }

@@ -13,7 +13,7 @@ export class WbEtl {
 
   externalId: string;
 
-  data: any;
+  data: string;
 
   constructor(partial: any) {
     Object.assign(this, partial);
@@ -28,7 +28,7 @@ export class WbEtlCollection {
 
   externalId: string;
 
-  data: any;
+  data: string;
 }
 
 @Entity('wbetl')
@@ -45,5 +45,5 @@ export class WbEtlEntity {
   @Column({
     type: 'jsonb'
   })
-  data: any;
+  data: string;
 }
