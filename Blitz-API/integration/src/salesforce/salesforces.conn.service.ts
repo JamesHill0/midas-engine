@@ -8,152 +8,166 @@ import { Secret } from './entities/secret.entity';
 
 @Injectable()
 export class SalesforcesConnService {
-    constructor(
-        private authenticationService: AuthenticationService,
-    ) { }
+  constructor(
+    private authenticationService: AuthenticationService,
+  ) { }
 
-    private async connection(auth: Secret, authBasic: SecretDto): Promise<Jsforce.Connection> {
-        if (auth != null && auth.accessToken != null && auth.instanceUrl != null) {
-            let accessToken = await this.authenticationService.decrypt(auth.accessToken);
-            let instanceUrl = await this.authenticationService.decrypt(auth.instanceUrl);
+  private async connection(auth: Secret, authBasic: SecretDto): Promise<Jsforce.Connection> {
+    if (auth != null && auth.accessToken != null && auth.instanceUrl != null) {
+      let accessToken = await this.authenticationService.decrypt(auth.accessToken);
+      let instanceUrl = await this.authenticationService.decrypt(auth.instanceUrl);
 
-            return new Jsforce.Connection({
-                accessToken: accessToken["encoded"],
-                instanceUrl: instanceUrl["encoded"],
-            });
+      return new Jsforce.Connection({
+        accessToken: accessToken["encoded"],
+        instanceUrl: instanceUrl["encoded"],
+      });
+    }
+
+    let loginUrl = await this.authenticationService.decrypt(authBasic.url);
+
+    let conn = new Jsforce.Connection({})
+
+    if (loginUrl["encoded"] != "") {
+      conn = new Jsforce.Connection({
+        loginUrl: loginUrl["encoded"],
+      });
+    }
+
+    let username = await this.authenticationService.decrypt(authBasic.username);
+    let password = await this.authenticationService.decrypt(authBasic.password);
+    let securityToken = await this.authenticationService.decrypt(authBasic.securityToken);
+
+    conn = await this.basicLogin(conn, `${username["encoded"]}`, `${password["encoded"]}${securityToken["encoded"]}`)
+    return conn;
+  }
+
+  private async basicLogin(conn: Jsforce.Connection, username: string, password: string): Promise<Jsforce.Connection> {
+    return new Promise((resolve, reject) => {
+      conn.login(`${username}`, `${password}`, (err) => {
+        if (err) {
+          console.log(err);
+          reject('Internal Server Error');
+        }
+        resolve(conn);
+      });
+    })
+  }
+
+  private async encodeTokens(conn: Jsforce.Connection): Promise<any> {
+    let accessToken = await this.authenticationService.encrypt(conn.accessToken);
+    let instanceUrl = await this.authenticationService.encrypt(conn.instanceUrl);
+    let refreshToken = await this.authenticationService.encrypt(conn.refreshToken);
+
+    return {
+      "accessToken": accessToken,
+      "instanceUrl": instanceUrl,
+      "refreshToken": refreshToken
+    }
+  }
+
+  public async ping(authBasic: SecretDto): Promise<any> {
+    let conn = await this.connection(null, authBasic);
+
+    return await this.encodeTokens(conn);
+  }
+
+  public async getOne(auth: Secret, tableName: string): Promise<any> {
+    let conn = await this.connection(auth, null);
+
+    return new Promise((resolve, reject) => {
+      conn.query(`SELECT * FROM ${tableName} LIMIT 1`, {}, (err: any, result: any) => {
+        if (err) {
+          console.log(err);
+          reject('Internal Server Error');
+        }
+        resolve(result['records'][0]);
+      })
+    })
+  }
+
+  public async getById(auth: Secret, tableName: string, id: string): Promise<any> {
+    let conn = await this.connection(auth, null);
+
+    return new Promise((resolve, reject) => {
+      conn.sobject(tableName).retrieve(id, (err, data) => {
+        if (err) {
+          console.log(err);
+          reject('Internal Server Error');
+        }
+        resolve(data);
+      })
+    })
+  }
+
+  public async create(auth: Secret, tableName: string, inputData: any): Promise<any> {
+    let conn = await this.connection(auth, null);
+
+    return new Promise((resolve, reject) => {
+      conn.sobject(tableName).create(inputData, (err: any, data: Jsforce.RecordResult) => {
+        if (err) {
+          console.log(err);
+          reject('Internal Server Error');
+        }
+        resolve(data);
+      })
+    })
+  }
+
+  public async bulkCreate(auth: Secret, tableName: string, inputDatas: any[]): Promise<any> {
+    let conn = await this.connection(auth, null);
+
+    return new Promise((resolve, reject) => {
+      conn.sobject(tableName).create(inputDatas, (err: any, ret: Jsforce.RecordResult[]) => {
+        if (err) {
+          console.log(err);
+          reject('Internal Server Error');
         }
 
-        let loginUrl = await this.authenticationService.decrypt(authBasic.url);
-
-        let conn = new Jsforce.Connection({})
-
-        if (loginUrl["encoded"] != "") {
-            conn = new Jsforce.Connection({
-                loginUrl: loginUrl["encoded"],
-            });
+        let data = { "results": [] }
+        for (let i = 0; i < ret.length; i++) {
+          if (ret[i].success) {
+            data["results"].push(ret);
+          }
         }
 
-        let username = await this.authenticationService.decrypt(authBasic.username);
-        let password = await this.authenticationService.decrypt(authBasic.password);
-        let securityToken = await this.authenticationService.decrypt(authBasic.securityToken);
+        resolve(data);
+      })
+    })
+  }
 
-        conn = await this.basicLogin(conn, `${username["encoded"]}`, `${password["encoded"]}${securityToken["encoded"]}`)
-        return conn;
-    }
+  public async update(auth: Secret, tableName: string, inputData: any): Promise<any> {
+    let conn = await this.connection(auth, null);
 
-    private async basicLogin(conn: Jsforce.Connection, username: string, password: string): Promise<Jsforce.Connection> {
-        return new Promise((resolve, reject) => {
-            conn.login(`${username}`, `${password}`, (err) => {
-                if (err) {
-                    console.log(err);
-                    reject('Internal Server Error');
-                }
-                resolve(conn);
-            });
-        })
-    }
-
-    private async encodeTokens(conn: Jsforce.Connection): Promise<any> {
-        let accessToken = await this.authenticationService.encrypt(conn.accessToken);
-        let instanceUrl = await this.authenticationService.encrypt(conn.instanceUrl);
-        let refreshToken = await this.authenticationService.encrypt(conn.refreshToken);
-
-        return {
-            "accessToken": accessToken,
-            "instanceUrl": instanceUrl,
-            "refreshToken": refreshToken
+    return new Promise((resolve, reject) => {
+      conn.sobject(tableName).update(inputData, (err: any, data: Jsforce.RecordResult) => {
+        if (err) {
+          console.log(err);
+          reject('Internal Server Error');
         }
-    }
-
-    public async ping(authBasic: SecretDto): Promise<any> {
-        let conn = await this.connection(null, authBasic);
-
-        return await this.encodeTokens(conn);
-    }
-
-    public async getById(auth: Secret, tableName: string, id: string): Promise<any> {
-      let conn = await this.connection(auth, null);
-
-      return new Promise((resolve, reject) => {
-        conn.sobject(tableName).retrieve(id, (err, data) => {
-          if (err) {
-            console.log(err);
-            reject('Internal Server Error');
-          }
-          resolve(data);
-        })
+        resolve(data);
       })
-    }
+    })
+  }
 
-    public async create(auth: Secret, tableName: string, inputData: any): Promise<any> {
-      let conn = await this.connection(auth, null);
+  public async bulkUpdate(auth: Secret, tableName: string, inputDatas: any[]): Promise<any> {
+    let conn = await this.connection(auth, null);
 
-      return new Promise((resolve, reject) => {
-        conn.sobject(tableName).create(inputData, (err: any, data: Jsforce.RecordResult) => {
-          if (err) {
-            console.log(err);
-            reject('Internal Server Error');
+    return new Promise((resolve, reject) => {
+      conn.sobject(tableName).update(inputDatas, (err: any, ret: Jsforce.RecordResult[]) => {
+        if (err) {
+          console.log(err);
+          reject('Internal Server Error');
+        }
+
+        let data = { "results": [] }
+        for (let i = 0; i < ret.length; i++) {
+          if (ret[i].success) {
+            data["results"].push(ret);
           }
-          resolve(data);
-        })
+        }
+
+        resolve(data);
       })
-    }
-
-    public async bulkCreate(auth: Secret, tableName: string, inputDatas: any[]): Promise<any> {
-      let conn = await this.connection(auth, null);
-
-      return new Promise((resolve, reject) => {
-        conn.sobject(tableName).create(inputDatas, (err: any, ret: Jsforce.RecordResult[]) => {
-          if (err) {
-            console.log(err);
-            reject('Internal Server Error');
-          }
-
-          let data = { "results": [] }
-          for (let i=0; i < ret.length; i++) {
-            if (ret[i].success) {
-              data["results"].push(ret);
-            }
-          }
-
-          resolve(data);
-        })
-      })
-    }
-
-    public async update(auth: Secret, tableName: string, inputData: any): Promise<any> {
-      let conn = await this.connection(auth, null);
-
-      return new Promise((resolve, reject) => {
-        conn.sobject(tableName).update(inputData, (err: any, data: Jsforce.RecordResult) => {
-          if (err) {
-            console.log(err);
-            reject('Internal Server Error');
-          }
-          resolve(data);
-        })
-      })
-    }
-
-    public async bulkUpdate(auth: Secret, tableName: string, inputDatas: any[]): Promise<any> {
-      let conn = await this.connection(auth, null);
-
-      return new Promise((resolve, reject) => {
-        conn.sobject(tableName).update(inputDatas, (err: any, ret: Jsforce.RecordResult[]) => {
-          if (err) {
-            console.log(err);
-            reject('Internal Server Error');
-          }
-
-          let data = { "results": [] }
-          for (let i=0; i < ret.length; i++) {
-            if (ret[i].success) {
-              data["results"].push(ret);
-            }
-          }
-
-          resolve(data);
-        })
-      })
-    }
+    })
+  }
 }

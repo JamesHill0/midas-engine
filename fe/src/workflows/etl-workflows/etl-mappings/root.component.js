@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Tabs } from "antd";
+import { Breadcrumb, Tabs, notification } from "antd";
 import api from "../../../data";
 
 import { Loader } from "../../../utils/ui_helper";
 import { navigateToUrl } from "single-spa";
 
-import PriorityFieldMapping from "./priority-field-mappings/priority.field.mappings";
+import PriorityFieldMappings from "./priority-field-mappings/priority.field.mappings";
+import DirectFieldMappings from "./direct-field-mappings/direct.field.mappings";
+import DataMappings from "./data-mapping/data.mappings";
 
 const TabPane = Tabs.TabPane;
 
@@ -53,9 +55,9 @@ function EtlMappings() {
       </Breadcrumb>
       <br />
       <Tabs type="card">
-        { workflow.mappingType == "direct-mapping" && <TabPane tab="Direct Mapping" key="1">Content of Tab Pane 1</TabPane> }
-        { workflow.mappingType == "priority-mapping" && <TabPane tab="Priority Mapping" key="2"><PriorityFieldMapping workflowId={workflow.id}/></TabPane> }
-        { workflow.needDataMapping && <TabPane tab="Data Mapping" key="3">Content of Tab Pane 3</TabPane> }
+        {workflow.mappingType == "direct-mapping" && <TabPane tab="Direct Mapping" key="1"><DirectFieldMappings workflowId={workflow.id} /></TabPane>}
+        {workflow.mappingType == "priority-mapping" && <TabPane tab="Priority Mapping" key="2"><PriorityFieldMappings workflowId={workflow.id} /></TabPane>}
+        {workflow.needDataMapping && <TabPane tab="Data Mapping" key="3"><DataMappings workflowId={workflow.id}/></TabPane>}
       </Tabs>
     </div>
   )

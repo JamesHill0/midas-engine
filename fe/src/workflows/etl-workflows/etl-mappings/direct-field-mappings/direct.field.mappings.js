@@ -3,22 +3,21 @@ import { notification } from "antd";
 import api from "../../../../data";
 
 import { Loader } from "../../../../utils/ui_helper";
-import PriorityFieldMappingsTable from "./priority.field.mappings.table";
 
-function PriorityFieldMappings({ workflowId }) {
+function DirectFieldMappings({ workflowId }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [priorityFieldMappingsList, setPriorityFieldMappingsList] = useState([])
+  const [directFieldMappingsList, setDirectFieldMappingsList] = useState({})
 
   useEffect(() => {
-    loadPriorityFieldMappings();
+    loadDirectFieldMappings();
   }, []);
 
-  function loadPriorityFieldMappings() {
+  function loadDirectFieldMappings() {
     setIsLoading(true);
-    api.Mapping(`priority-field-mappings?q_workflowId=${workflowId}`).Get({}, response => {
+    api.Mapping(`direct-field-mappings?q_workflowId=${workflowId}`).Get({}, response => {
       if (response.Error == null) {
         const data = response.Data;
-        setPriorityFieldMappingsList(data);
+        setDirectFieldMappingsList(data);
         setIsLoading(false);
         return;
       }
@@ -33,11 +32,10 @@ function PriorityFieldMappings({ workflowId }) {
   }
 
   return (
-    <div className="priority-field-mappings">
+    <div className="direct-field-mappings">
       {isLoading && <Loader />}
-      <PriorityFieldMappingsTable priorityFieldMappingsList={priorityFieldMappingsList} />
     </div>
   )
 }
 
-export default PriorityFieldMappings;
+export default DirectFieldMappings;

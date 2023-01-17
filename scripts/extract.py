@@ -2,6 +2,7 @@ from blitz import Blitz
 from mapper import Mapper
 from extract_from_smartfile import ExtractFromSmartFile
 from extract_from_webhook import ExtractFromWebhook
+from extract_from_salesforce import ExtractFromSalesforce
 from logger import Logger
 import datetime
 
@@ -14,6 +15,7 @@ class Extract:
 
     self.extract_from_smartfile = ExtractFromSmartFile()
     self.extract_from_webhook = ExtractFromWebhook()
+    self.extract_from_salesforce = ExtractFromSalesforce()
 
     self.logger = Logger()
 
@@ -84,6 +86,16 @@ class Extract:
             self.logger.info(api_key, self.log_name, 'creating field mapping using webhook')
             self.extract_from_webhook.create_field_mapping(api_key, subworkflow)
             self.logger.info(api_key, self.log_name, 'finish creating field mapping using webhook')
+
+        elif subworkflow['integrationType'] == 'salesforce':
+          if subworkflow['directionType'] == 'incoming':
+            self.logger.info(api_key, self.log_name, 'creating account mapping using salesforce')
+            self.extract_from_salesforce.create_account_mapping(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish creating account mapping using salesforce')
+          else:
+            self.logger.info(api_key, self.log_name, 'creating field mapping using salesforce')
+            self.extract_from_salesforce.create_field_mapping(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish creating field mapping using salesforce')
 
   def run(self):
     try:
