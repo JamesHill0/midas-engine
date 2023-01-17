@@ -66,6 +66,10 @@ class Transform:
         api_key = transformable_subworkflow['api_key']
         workflow = self.blitz.mapping_get_workflow({ 'x-api-key': api_key}, subworkflow['workflowId'])
 
+        if workflow['status'] == 'inactive':
+          self.logger.info(api_key, self.log_name, workflow['name'] + ' is inactive. skipping.')
+          continue
+
         if workflow['mappingType'] == 'direct-mapping':
           self.logger.info(api_key, self.log_name, 'transforming field using direct mapping for workflow ' + workflow['name'])
           self.transform_using_data_mapping.run(api_key, subworkflow)

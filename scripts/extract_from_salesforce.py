@@ -77,6 +77,7 @@ class ExtractFromSalesforce:
   def create_field_mapping(self, api_key, subworkflow):
     headers = { 'x-api-key': api_key }
     workflow = self.blitz.mapping_get_workflow_by_id(headers, subworkflow['workflowId'])
+
     integration = self.blitz.integration_salesforce_get_by_id(headers, subworkflow['integrationId'])
 
     salesforce_fields = self.blitz.integration_salesforce_sf_get_one(headers, subworkflow['integrationId'], subworkflow['tableName'])

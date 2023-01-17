@@ -67,6 +67,12 @@ class Extract:
       for subworkflow in extractable_subworkflow['subworkflows']:
         api_key = extractable_subworkflow['api_key']
 
+        workflow = self.blitz.mapping_get_workflow_by_id({ 'x-api-key': api_key }, subworkflow['workflowId'])
+
+        if workflow['status'] == 'inactive':
+          self.logger.info(api_key, self.log_name, workflow['name'] + ' is inactive. skipping.')
+          continue
+
         if subworkflow['integrationType'] == 'smartfile':
           if subworkflow['directionType'] == 'incoming':
             self.logger.info(api_key, self.log_name, 'creating account mapping using smartfile')

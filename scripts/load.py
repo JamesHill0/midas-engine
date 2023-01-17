@@ -61,6 +61,12 @@ class Load:
       for subworkflow in loadable_subworkflow['subworkflows']:
         api_key = loadable_subworkflow['api_key']
 
+        workflow = self.blitz.mapping_get_workflow_by_id({ 'x-api-key': api_key }, subworkflow['workflowId'])
+
+        if workflow['status'] == 'inactive':
+          self.logger.info(api_key, self.log_name, workflow['name'] + ' is inactive. skipping.')
+          continue
+
         if subworkflow['integrationType'] == 'salesforce':
           self.logger.info(api_key, self.log_name, 'loading into salesforce for workflow ' + workflow['name'])
           self.load_into_salesforce.run(api_key, subworkflow)
