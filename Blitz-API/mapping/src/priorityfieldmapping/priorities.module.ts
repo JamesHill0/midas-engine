@@ -4,11 +4,13 @@ import { PriorityFieldMappingValuesService } from './priority.field.mapping.valu
 import { PriorityFieldMappingValuesController } from './priority.field.mapping.values.controller';
 import { PriorityFieldMappingsController } from './priority.field.mappings.controller';
 import { PriorityFieldMappingsService } from './priority.field.mappings.service';
+import { AuthenticationService } from 'src/service/authentication.service';
+import { AccountsService } from 'src/service/account.service';
 
 @Module({
     imports: [HttpModule],
     exports: [],
     controllers: [PriorityFieldMappingsController, PriorityFieldMappingValuesController],
-    providers: [PriorityFieldMappingsService, PriorityFieldMappingValuesService, ConfigurationsService]
+    providers: [PriorityFieldMappingsService, PriorityFieldMappingValuesService, ConfigurationsService, AuthenticationService, AccountsService]
 })
 export class PrioritiesModule { }
