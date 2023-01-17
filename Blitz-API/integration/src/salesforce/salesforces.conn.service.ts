@@ -71,16 +71,16 @@ export class SalesforcesConnService {
     return await this.encodeTokens(conn);
   }
 
-  public async getOne(auth: Secret, tableName: string): Promise<any> {
+  public async getTableFields(auth: Secret, tableName: string): Promise<any> {
     let conn = await this.connection(auth, null);
 
     return new Promise((resolve, reject) => {
-      conn.query(`SELECT * FROM ${tableName} LIMIT 1`, {}, (err: any, result: any) => {
+      conn.sobject(tableName).describe((err: any, meta: Jsforce.DescribeSObjectResult) => {
         if (err) {
           console.log(err);
           reject('Internal Server Error');
         }
-        resolve(result['records'][0]);
+        resolve(meta.fields);
       })
     })
   }

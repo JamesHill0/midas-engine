@@ -157,11 +157,11 @@ export class SalesforcesController {
     }
   }
 
-  @Get(":id/jsforce/:tableName/first")
+  @Get(":id/jsforce/:tableName/getTableFields")
   public async getOneSFData(@Res() res, @Param('id') id, @Param('tableName') tableName): Promise<any> {
     try {
       let sf = await this.salesforcesService.findById(id);
-      let data = await this.salesforcesConnService.getOne(sf.secret, tableName);
+      let data = await this.salesforcesConnService.getTableFields(sf.secret, tableName);
       return res.status(HttpStatus.OK).json({
         data: data,
         message: 'Success',

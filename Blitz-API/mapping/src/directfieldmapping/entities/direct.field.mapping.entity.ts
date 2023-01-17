@@ -41,7 +41,7 @@ export class DirectFieldMappingEntity {
   @Column()
   fromField: string;
 
-  @Column()
+  @Column({ nullable: true })
   toField: string;
 
   constructor(partial: any) {

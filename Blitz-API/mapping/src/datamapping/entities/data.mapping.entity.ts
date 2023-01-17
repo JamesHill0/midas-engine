@@ -49,10 +49,10 @@ export class DataMappingEntity {
   @Column()
   toField: string;
 
-  @Column()
+  @Column({ nullable: true })
   formatType: DataFormatType;
 
-  @Column()
+  @Column({ nullable: true })
   formatting: string;
 
   @OneToMany(() => DataMappingOptionEntity, value => value.dataMapping, { eager: true, cascade: true, onUpdate: 'CASCADE' })
