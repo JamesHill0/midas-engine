@@ -27,5 +27,5 @@ export class AccountDto {
     @ApiProperty()
     mappings: MappingDto[];
 
-    result: JSON;
+    result: string;
 }

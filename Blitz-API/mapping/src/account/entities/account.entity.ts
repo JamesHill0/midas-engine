@@ -18,7 +18,7 @@ export class Account {
     protected: boolean;
     externalId: string;
     mappings: Mapping[];
-    result: JSON;
+    result: string;
 
     constructor(partial: any) {
         Object.assign(this, partial);
@@ -33,7 +33,7 @@ export class AccountCollection {
     protected: boolean;
     externalId: string;
     mappings: MappingCollection[];
-    result: JSON;
+    result: string;
 }
 
 @Entity('account')
@@ -58,5 +58,5 @@ export class AccountEntity {
     mappings: MappingEntity[];
 
     @Column()
-    result: JSON;
+    result: string;
 }
