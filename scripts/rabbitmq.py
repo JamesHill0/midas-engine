@@ -11,7 +11,6 @@ class RabbitMQ:
         self.host = e.rabbitmq_host()
         self.username = e.rabbitmq_username()
         self.password = e.rabbitmq_password()
-        self.pattern = e.rabbitmq_pattern()
 
     def __connect(self):
         credentials = pika.PlainCredentials(self.username, self.password)
@@ -22,7 +21,6 @@ class RabbitMQ:
 
     def publish(self, queue, pattern, data):
         try:
-            pattern = self.pattern + '.' + pattern
             conn = self.__connect()
             channel = conn.channel()
             channel.queue_declare(queue=queue, durable=True)
