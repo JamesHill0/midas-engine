@@ -8,6 +8,7 @@ import { Collection } from 'fireorm';
 
 export class DirectFieldMapping {
   id: string;
+  workflowId: string;
   externalId: string;
   fromField: string;
   toField: string;
@@ -20,6 +21,7 @@ export class DirectFieldMapping {
 @Collection('direct-field-mappings')
 export class DirectFieldMappingCollection {
   id: string;
+  workflowId: string;
   externalId: string;
   fromField: string;
   toField: string;
@@ -29,6 +31,9 @@ export class DirectFieldMappingCollection {
 export class DirectFieldMappingEntity {
   @PrimaryGeneratedColumn()
   id: string;
+
+  @Column()
+  workflowId: string;
 
   @Column()
   externalId: string;

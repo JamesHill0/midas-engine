@@ -12,6 +12,7 @@ import { DataMappingOption, DataMappingOptionCollection, DataMappingOptionEntity
 
 export class DataMapping {
   id: string;
+  workflowId: string;
   externalId: string;
   toField: string;
   formatType: DataFormatType;
@@ -26,6 +27,7 @@ export class DataMapping {
 @Collection('data-mappings')
 export class DataMappingCollection {
   id: string;
+  workflowId: string;
   externalId: string;
   toField: string;
   formatType: DataFormatType;
@@ -37,6 +39,9 @@ export class DataMappingCollection {
 export class DataMappingEntity {
   @PrimaryGeneratedColumn()
   id: string;
+
+  @Column()
+  workflowId: string;
 
   @Column()
   externalId: string;

@@ -12,6 +12,7 @@ import { PriorityFieldMappingValue, PriorityFieldMappingValueCollection, Priorit
 
 export class PriorityFieldMapping {
     id: string;
+    workflowId: string;
     externalId: string;
     fromField: string;
     values: PriorityFieldMappingValue[];
@@ -24,6 +25,7 @@ export class PriorityFieldMapping {
 @Collection('priority-field-mappings')
 export class PriorityFieldMappingCollection {
     id: string;
+    workflowId: string;
     externalId: string;
     fromField: string;
     values: PriorityFieldMappingValueCollection[];
@@ -33,6 +35,9 @@ export class PriorityFieldMappingCollection {
 export class PriorityFieldMappingEntity {
     @PrimaryGeneratedColumn()
     id: string;
+
+    @Column()
+    workflowId: string;
 
     @Column()
     externalId: string;

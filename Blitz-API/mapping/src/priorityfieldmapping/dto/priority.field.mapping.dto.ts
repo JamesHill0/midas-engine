@@ -10,6 +10,10 @@ export class PriorityFieldMappingDto {
 
     @ApiProperty()
     @IsString()
+    workflowId: string;
+
+    @ApiProperty()
+    @IsString()
     externalId: string;
 
     @ApiProperty()

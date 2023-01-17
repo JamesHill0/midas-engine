@@ -10,6 +10,10 @@ export class DataMappingDto {
 
   @ApiProperty()
   @IsString()
+  workflowId: string;
+
+  @ApiProperty()
+  @IsString()
   externalId: string;
 
   @ApiProperty()

@@ -8,6 +8,10 @@ export class DirectFieldMappingDto {
 
   @ApiProperty()
   @IsString()
+  workflowId: string;
+
+  @ApiProperty()
+  @IsString()
   externalId: string;
 
   @ApiProperty()
