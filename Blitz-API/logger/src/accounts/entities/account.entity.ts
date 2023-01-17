@@ -4,44 +4,44 @@ import { MessageType } from 'src/enums/message.type';
 import { Collection } from 'fireorm';
 
 export class Account {
-    id: string;
-    accountId: string;
-    type: MessageType;
-    message: string;
+  id: string;
+  accountId: string;
+  type: MessageType;
+  message: string;
 
-    constructor(partial: any) {
-        Object.assign(this, partial);
-    }
+  constructor(partial: any) {
+    Object.assign(this, partial);
+  }
 }
 
 @Collection('account')
 export class AccountCollection {
-    id: string;
-    accountId: string;
-    type: MessageType;
-    message: string;
+  id: string;
+  accountId: string;
+  type: MessageType;
+  message: string;
 }
 
 @Entity('account')
 export class AccountEntity {
-    @PrimaryGeneratedColumn()
-    id: string;
+  @PrimaryGeneratedColumn()
+  id: string;
 
-    @Column()
-    accountId: string;
+  @Column()
+  accountId: string;
 
-    @Column()
-    type: MessageType;
+  @Column()
+  type: MessageType;
 
-    @Column()
-    message: string;
+  @Column()
+  message: string;
 
-    @CreateDateColumn()
-    Created!: Date;
+  @CreateDateColumn()
+  Created!: Date;
 
-    @UpdateDateColumn()
-    Updated!: Date;
+  @UpdateDateColumn()
+  Updated!: Date;
 
-    @DeleteDateColumn()
-    DeletedAt?: Date;
+  @DeleteDateColumn()
+  DeletedAt?: Date;
 }

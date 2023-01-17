@@ -1,6 +1,7 @@
 from blitz import Blitz
 from load_into_salesforce import LoadIntoSalesforce
 from logger import Logger
+import datetime
 
 class Load:
   def __init__(self):
@@ -13,7 +14,12 @@ class Load:
     self.logger = Logger()
 
   def __check_schedule():
-    return { 'status': 'suspended' }
+    data = self.blitz.account_get_jobs_by_name('extract')
+    if data['status'] == 'running':
+      updated_date = datetime.datetime.strptime(data['Updated'], "%d%m%Y").date()
+      if (datetime.now() - updated_date).minutes > 60:
+        self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
+    return data
 
   def __get_accounts_api_keys(self):
     accounts = self.blitz.account_get_accounts()

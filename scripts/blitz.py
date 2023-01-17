@@ -14,9 +14,22 @@ class Blitz:
     if 'data' in response.json():
       return response.json()['data']
 
+  def __update(self, url, body):
+    response = requests.patch(url, data=json.dumps(body))
+    if 'data' in response.json():
+      return response.json()['data']
+
   def account_get_accounts(self):
     url = self.base_url + '/account/accounts'
     return self.__get_response(url, {})
+
+  def account_get_jobs_by_name(self):
+    url = self.base_url + '/account/jobs'
+    return self.__get_response(url, {})
+
+  def account_update_job(self, id, body):
+    url = self.base_url + '/account/jobs/' + id
+    return self.__update(url, body)
 
   def mapping_get_account_mapping_by_name(self, headers, name):
     url = self.base_url + '/mapping/accounts?q_name=' + name

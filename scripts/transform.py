@@ -3,6 +3,7 @@ from transform_using_direct_mapping import TransformUsingDirectMapping
 from transform_using_priority_mapping import TransformUsingPriorityMapping
 from transform_using_data_mapping import TransformUsingDataMapping
 from logger import Logger
+import datetime
 
 class Transform:
   def __init__(self):
@@ -17,7 +18,12 @@ class Transform:
     self.logger = Logger()
 
   def __check_schedule():
-    return { 'status': 'suspended' }
+    data = self.blitz.account_get_jobs_by_name('extract')
+    if data['status'] == 'running':
+      updated_date = datetime.datetime.strptime(data['Updated'], "%d%m%Y").date()
+      if (datetime.now() - updated_date).minutes > 60:
+        self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
+    return data
 
   def __get_accounts_api_keys(self):
     accounts = self.blitz.account_get_accounts()

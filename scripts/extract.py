@@ -3,6 +3,7 @@ from mapper import Mapper
 from extract_from_smartfile import ExtractFromSmartFile
 from extract_from_webhook import ExtractFromWebhook
 from logger import Logger
+import datetime
 
 class Extract:
   def __init__(self):
@@ -17,7 +18,12 @@ class Extract:
     self.logger = Logger()
 
   def __check_schedule():
-    return { 'status': 'suspended' }
+    data = self.blitz.account_get_jobs_by_name('extract')
+    if data['status'] == 'running':
+      updated_date = datetime.datetime.strptime(data['Updated'], "%d%m%Y").date()
+      if (datetime.now() - updated_date).minutes > 60:
+        self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
+    return data
 
   def __get_accounts_api_keys(self):
     accounts = blitz.account_get_accounts()

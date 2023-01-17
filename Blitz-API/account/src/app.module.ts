@@ -11,6 +11,7 @@ import { ConfigurationsService } from './configurations/configurations.service';
 import { AuthenticationService } from './service/authentication.service';
 import { AccountsService } from './account/accounts.service';
 import { ConfigurationsModule } from './configurations/configurations.module';
+import { JobsModule } from './job/jobs.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ConfigurationsModule } from './configurations/configurations.module';
     RedisModule.register(environment.redis),
     HttpModule,
     AccountsModule,
+    JobsModule,
     ConfigurationsModule
   ],
   controllers: [],
