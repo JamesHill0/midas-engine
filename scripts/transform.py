@@ -18,9 +18,9 @@ class Transform:
     self.logger = Logger()
 
   def __check_schedule():
-    data = self.blitz.account_get_jobs_by_name('extract')
+    data = self.blitz.account_get_jobs_by_name('transform')
     if data['status'] == 'running':
-      updated_date = datetime.datetime.strptime(data['Updated'], "%d%m%Y").date()
+      updated_date = datetime.datetime.strptime(data['updated'], "%d%m%Y").date()
       if (datetime.now() - updated_date).minutes > 60:
         self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
     return data
