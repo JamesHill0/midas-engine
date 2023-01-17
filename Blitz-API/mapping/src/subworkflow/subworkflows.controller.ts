@@ -64,7 +64,7 @@ export class SubworkflowsController {
   }
 
   @Patch('/:id')
-  public async update(@Res() res, @Param('id') id, dto: SubworkflowDto): Promise<any> {
+  public async update(@Res() res, @Param('id') id, dto: any): Promise<any> {
     try {
       let data = await this.subworkflowsService.update(id, dto);
       return res.status(HttpStatus.OK).json({

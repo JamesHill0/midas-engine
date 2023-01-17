@@ -2,7 +2,7 @@ import React from "react";
 import { navigateToUrl } from "single-spa";
 import { Space, Table, Tag } from "antd";
 
-function EtlWorkflowsTable({ workflowsList }) {
+function EtlWorkflowsTable({ workflowsList, updateWorkflowStatus }) {
   const columns = [
     {
       title: 'Name',
@@ -67,7 +67,7 @@ function EtlWorkflowsTable({ workflowsList }) {
       key: 'action',
       render: item => (
         <Space size="middle">
-          {<a>Toggle Status</a>}
+          {<a onClick={() => updateWorkflowStatus(item.id, item.status)}>Toggle Status</a>}
           {<a onClick={() => navigateToUrl(`/workflows/etl-mappings?id=${item.id}`)}>Mapping</a>}
           {<a onClick={() => navigateToUrl(`/workflows/etl-sub-workflows?id=${item.id}&name=${item.name}`)}>Subworkflows</a>}
           {<a onClick={() => navigateToUrl(`/workflows/etl-view-data?id=${item.id}&name=${item.name}`)}>View Data</a>}

@@ -32,6 +32,31 @@ function EtlWorkflows() {
     })
   }
 
+  function updateWorkflowStatus(workflowId, status) {
+    setIsLoading(true);
+
+    if (status == "inactive") {
+      status = "active";
+    } else if (status == "active") {
+      status = "inactive";
+    }
+
+    api.Mapping(`workflows/${workflowId}`).Patch({ "status": status }, response => {
+      if (response.Error == null) {
+        loadWorkflows();
+        setIsLoading(false);
+        return;
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+      setIsLoading(false);
+    })
+  }
+
   return (
     <div className="etl-workflows">
       {isLoading && <Loader />}
@@ -39,7 +64,7 @@ function EtlWorkflows() {
         <Breadcrumb.Item>ETL Workflows</Breadcrumb.Item>
       </Breadcrumb>
       <br/>
-      <EtlWorkflowsTable workflowsList={workflowsList} />
+      <EtlWorkflowsTable workflowsList={workflowsList} updateWorkflowStatus={updateWorkflowStatus} />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { Controller, Res, Param, Query, Body, Get, Post, HttpStatus, Patch, Delete } from '@nestjs/common';
 import { Ctx, MessagePattern, Payload, RmqContext, Transport } from '@nestjs/microservices';
+import { WorkflowDto } from './dto/workflow.dto';
 import { WorkflowsService } from './workflows.service';
 
 @Controller('workflows')
@@ -39,6 +40,24 @@ export class WorkflowsController {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         message: 'Internal Server Error',
         status: 500,
+      });
+    }
+  }
+
+  @Patch('/:id')
+  public async update(@Res() res, @Param('id') id, dto: any): Promise<any> {
+    try {
+      let data = await this.workflowsService.update(id, dto);
+      return res.status(HttpStatus.OK).json({
+        data: data,
+        message: 'Success',
+        status: HttpStatus.OK,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: 'Internal Server Error',
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
       });
     }
   }
