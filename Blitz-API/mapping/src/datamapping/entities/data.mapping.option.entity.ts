@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 import { Collection } from 'fireorm';
-import { DataMapping } from './data.mapping.entity';
+import { DataMapping, DataMappingEntity } from './data.mapping.entity';
 
 export class DataMappingOption {
   id: string;
@@ -42,9 +42,9 @@ export class DataMappingOptionEntity {
   @Column()
   toData: string;
 
-  @ManyToOne(() => DataMapping, dataMapping => dataMapping.options)
+  @ManyToOne(() => DataMappingEntity, dataMapping => dataMapping.options)
   @JoinColumn()
-  dataMapping: DataMapping;
+  dataMapping: DataMappingEntity;
 
   constructor(partial: any) {
     Object.assign(this, partial);
