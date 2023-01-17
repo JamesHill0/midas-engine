@@ -32,7 +32,7 @@ function EtlWorkflows() {
     })
   }
 
-  function updateWorkflowStatus(workflowId, status) {
+  function toggleWorkflowStatus(workflowId, status) {
     setIsLoading(true);
 
     if (status == "inactive") {
@@ -64,7 +64,7 @@ function EtlWorkflows() {
         <Breadcrumb.Item>ETL Workflows</Breadcrumb.Item>
       </Breadcrumb>
       <br/>
-      <EtlWorkflowsTable workflowsList={workflowsList} updateWorkflowStatus={updateWorkflowStatus} />
+      <EtlWorkflowsTable workflowsList={workflowsList} toggleWorkflowStatus={toggleWorkflowStatus} />
     </div>
   )
 }

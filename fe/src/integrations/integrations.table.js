@@ -61,16 +61,16 @@ function IntegrationsTable({ integrationsList }) {
         )
       }
     },
-    {
-      title: 'Action',
-      key: 'action',
-      render: item => (
-        <Space size="middle">
-          {item.status == "inactive" && <a>Create</a>}
-          {item.status == "active" && <a>Remove</a>}
-        </Space>
-      )
-    }
+    // {
+    //   title: 'Action',
+    //   key: 'action',
+    //   render: item => (
+    //     <Space size="middle">
+    //       {item.status == "inactive" && <a>Create</a>}
+    //       {item.status == "active" && <a>Remove</a>}
+    //     </Space>
+    //   )
+    // }
   ]
 
   return (

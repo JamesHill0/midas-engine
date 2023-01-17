@@ -1,7 +1,29 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, Select, notification } from "antd";
+import api from "../../../../data";
+function DirectFieldMappingsTable({ setIsLoading, directFieldMappingsList, fieldsList }) {
+  function handleChange(id, value) {
+    setIsLoading(true);
+    api.Mapping(`direct-field-mappings/${id}`).Patch({ 'toField': value }, response => {
+      if (response.Error == null) {
+        notification["success"]({
+          placement: "bottomRight",
+          message: "200",
+          description: "Direct Field Mapping updated successfully!"
+        })
+        setIsLoading(false);
+        return;
+      }
 
-function DirectFieldMappingsTable({ dataMappingsList }) {
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+      setIsLoading(false);
+    })
+  }
+
   const columns = [
     {
       title: 'Outgoing Field',
@@ -9,14 +31,21 @@ function DirectFieldMappingsTable({ dataMappingsList }) {
       key: 'fromField'
     },
     {
-      title: 'Incoming Field',
+      title: 'Map to Field',
       dataIndex: 'toField',
-      key: 'toField'
-    }
+      key: 'toField',
+      render: item => {
+        <Select
+          defaultValue={item.toField}
+          onChange={(value) => handleChange(item.id, value)}
+          options={fieldsList}
+        ></Select>
+      }
+    },
   ]
 
   return (
-    <Table columns={columns} dataSource={dataMappingsList} />
+    <Table columns={columns} dataSource={directFieldMappingsList} />
   )
 }
 

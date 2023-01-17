@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Space, Table, Tag } from "antd";
 
-function UsersTable({ usersList }) {
+function UsersTable({ usersList, toggleUserStatus, deleteUser }) {
   const columns = [
     {
       title: 'Username',
@@ -37,8 +37,8 @@ function UsersTable({ usersList }) {
       key: 'action',
       render: item => (
         <Space size="middle">
-          {<a>Toggle Status</a>}
-          {<a>Delete</a>}
+          {<a onClick={() => toggleUserStatus(item.id, item.status)}>Toggle Status</a>}
+          {<a onClick={() => deleteUser(item.id)}>Delete</a>}
         </Space>
       )
     }
