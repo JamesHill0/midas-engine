@@ -79,7 +79,8 @@ class DirectFieldMappingsTypeorm implements DirectFieldMappingsConfig {
 
   public async findAll(query: any): Promise<DirectFieldMapping[]> {
     const repository = await this.repository();
-    let selectQueryBuilder = repository.createQueryBuilder('direct-field-mappings');
+    const queryBuilderName = 'direct-field-mappings';
+    let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName);
 
     let limit = 0;
     if (query.limit) {
@@ -100,7 +101,7 @@ class DirectFieldMappingsTypeorm implements DirectFieldMappingsConfig {
     );
 
     queries.map((q) => {
-      selectQueryBuilder = selectQueryBuilder.where(`${q.type} = :value`, { value: q.value });
+      selectQueryBuilder = selectQueryBuilder.where(`${queryBuilderName}.${q.type} = :value`, { value: q.value });
     })
 
     if (limit == 0) {

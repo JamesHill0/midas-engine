@@ -14,7 +14,7 @@ function PriorityFieldMapping({ workflowId }) {
 
   function loadPriorityFieldMappings() {
     setIsLoading(true);
-    api.Mapping(`priority-field-mappings?q_workflow_id=${workflowId}`).Get({}, response => {
+    api.Mapping(`priority-field-mappings?q_workflowId=${workflowId}`).Get({}, response => {
       if (response.Error == null) {
         const data = response.Data;
         setPriorityFieldMappingsList(data);

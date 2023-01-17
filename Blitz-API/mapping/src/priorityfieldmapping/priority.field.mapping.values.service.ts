@@ -85,7 +85,8 @@ class PriorityFieldMappingValuesTypeorm implements PriorityFieldMappingValuesCon
 
     public async findAll(query: any): Promise<PriorityFieldMappingValue[]> {
         const repository = await this.repository();
-        let selectQueryBuilder = repository.createQueryBuilder('priority-values');
+        const queryBuilderName = 'priority-field-mapping-values';
+        let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName);
 
         let limit = 0;
         if (query.limit) {
@@ -106,7 +107,7 @@ class PriorityFieldMappingValuesTypeorm implements PriorityFieldMappingValuesCon
         );
 
         queries.map((q) => {
-            selectQueryBuilder = selectQueryBuilder.where(`${q.type} = :value`, { value: q.value });
+            selectQueryBuilder = selectQueryBuilder.where(`${queryBuilderName}.${q.type} = :value`, { value: q.value });
         })
 
         if (limit == 0) {

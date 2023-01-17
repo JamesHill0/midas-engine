@@ -83,7 +83,7 @@ class AccountsTypeorm implements AccountsConfig {
 
     public async findAll(query: any): Promise<Account[]> {
         const repository = await this.repository();
-        const queryBuilderName = "accounts";
+        const queryBuilderName = 'accounts';
         let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName).leftJoinAndSelect(`${queryBuilderName}.mappings`, 'mappings');
 
         let limit = 0;

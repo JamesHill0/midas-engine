@@ -10,7 +10,8 @@ export class JobsService {
   private readonly jobRepository: Repository<Job>
 
   public async findAll(query: any): Promise<Job[]> {
-    let selectQueryBuilder = this.jobRepository.createQueryBuilder('jobs');
+    const queryBuilderName = 'jobs';
+    let selectQueryBuilder = this.jobRepository.createQueryBuilder(queryBuilderName);
 
     let limit = 500;
     if (query.limit) {
@@ -31,7 +32,7 @@ export class JobsService {
     );
 
     queries.map((q) => {
-      selectQueryBuilder = selectQueryBuilder.where(`${q.type} = :value`, { value: q.value });
+      selectQueryBuilder = selectQueryBuilder.where(`${queryBuilderName}.${q.type} = :value`, { value: q.value });
     })
 
     return await selectQueryBuilder.limit(limit).getMany();

@@ -79,7 +79,8 @@ class WorkflowsTypeorm implements WorkflowsConfig {
 
   public async findAll(query: any): Promise<Workflow[]> {
     const repository = await this.repository();
-    let selectQueryBuilder = repository.createQueryBuilder('workflows');
+    const queryBuilderName = 'workflows'
+    let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName);
 
     let limit = 500;
     if (query.limit) {
@@ -100,7 +101,7 @@ class WorkflowsTypeorm implements WorkflowsConfig {
     );
 
     queries.map((q) => {
-      selectQueryBuilder = selectQueryBuilder.where(`${q.type} = :value`, { value: q.value });
+      selectQueryBuilder = selectQueryBuilder.where(`${queryBuilderName}.${q.type} = :value`, { value: q.value });
     })
 
     return await selectQueryBuilder.limit(limit).getMany();
