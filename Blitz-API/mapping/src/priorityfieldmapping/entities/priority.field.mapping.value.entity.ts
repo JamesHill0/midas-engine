@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 import { Collection } from 'fireorm';
-import { PriorityFieldMapping } from './priority.field.mapping.entity';
+import { PriorityFieldMappingEntity } from './priority.field.mapping.entity';
 
 export class PriorityFieldMappingValue {
     id: string;
@@ -42,9 +42,9 @@ export class PriorityFieldMappingValueEntity {
     @Column()
     level: number;
 
-    @ManyToOne(() => PriorityFieldMapping, priority => priority.values)
+    @ManyToOne(() => PriorityFieldMappingEntity, priority => priority.values)
     @JoinColumn()
-    priority: PriorityFieldMapping;
+    priority: PriorityFieldMappingEntity;
 
     constructor(partial: any) {
         Object.assign(this, partial);
