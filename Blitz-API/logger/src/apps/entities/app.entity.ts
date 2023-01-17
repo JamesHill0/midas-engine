@@ -42,11 +42,11 @@ export class AppEntity {
     message: string;
 
     @CreateDateColumn()
-    Created!: Date;
+    created!: Date;
 
     @UpdateDateColumn()
-    Updated!: Date;
+    updated!: Date;
 
     @DeleteDateColumn()
-    DeletedAt?: Date;
+    deletedAt?: Date;
 }

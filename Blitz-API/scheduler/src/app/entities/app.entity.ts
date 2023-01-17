@@ -1,9 +1,9 @@
-import { 
-    Entity, 
-    PrimaryGeneratedColumn, 
-    Column, 
-    CreateDateColumn, 
-    UpdateDateColumn, 
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    CreateDateColumn,
+    UpdateDateColumn,
     DeleteDateColumn
 } from 'typeorm';
 
@@ -39,11 +39,11 @@ export class AppEntity {
     status: StatusType;
 
     @CreateDateColumn()
-    Created!: Date;
+    created!: Date;
 
     @UpdateDateColumn()
-    Updated!: Date;
+    updated!: Date;
 
     @DeleteDateColumn()
-    DeletedAt?: Date;
+    deletedAt?: Date;
 }

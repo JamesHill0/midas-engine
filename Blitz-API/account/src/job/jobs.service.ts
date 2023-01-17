@@ -10,7 +10,7 @@ export class JobsService {
   private readonly jobRepository: Repository<Job>
 
   public async findAll(query: any): Promise<Job[]> {
-    const queryBuilderName = 'jobs';
+    const queryBuilderName = 'job';
     let selectQueryBuilder = this.jobRepository.createQueryBuilder(queryBuilderName);
 
     let limit = 500;

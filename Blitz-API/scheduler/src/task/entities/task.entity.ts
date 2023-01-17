@@ -1,10 +1,10 @@
-import { 
-    Entity, 
-    PrimaryGeneratedColumn, 
+import {
+    Entity,
+    PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
-    UpdateDateColumn, 
-    DeleteDateColumn 
+    UpdateDateColumn,
+    DeleteDateColumn
 } from 'typeorm';
 
 import { Collection } from 'fireorm';
@@ -48,11 +48,11 @@ export class TaskEntity {
     status: string;
 
     @CreateDateColumn()
-    Created!: Date;
+    created!: Date;
 
     @UpdateDateColumn()
-    Updated!: Date;
+    updated!: Date;
 
     @DeleteDateColumn()
-    DeleteAt?: Date;
+    deletedAt?: Date;
 }

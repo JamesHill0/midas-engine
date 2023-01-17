@@ -15,8 +15,8 @@ export class Job {
   status: JobStatusType;
 
   @CreateDateColumn()
-  Created!: Date;
+  created!: Date;
 
   @UpdateDateColumn()
-  Updated!: Date;
+  updated!: Date;
 }
