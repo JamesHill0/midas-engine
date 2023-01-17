@@ -16,6 +16,7 @@ export class Account {
     name: string;
     currentJob: JobType;
     protected: boolean;
+    workflowId: string;
     externalId: string;
     mappings: Mapping[];
     result: string;
@@ -31,6 +32,7 @@ export class AccountCollection {
     name: string;
     currentJob: JobType;
     protected: boolean;
+    workflowId: string;
     externalId: string;
     mappings: MappingCollection[];
     result: string;
@@ -49,6 +51,9 @@ export class AccountEntity {
 
     @Column()
     protected: boolean;
+
+    @Column()
+    workflowId: string;
 
     @Column()
     externalId: string;

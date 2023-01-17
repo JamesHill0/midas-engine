@@ -30,12 +30,13 @@ function EtlViewData() {
     setWorkflowName(urlParams.get("name"));
   }
 
-  function loadSubworkflow(callback) {
-    const workflowId = getWorkflowId();
-    api.Mapping(`subworkflows?q_jobType=transform`).Get({}, response => {
+  function loadDataList() {
+    setIsLoading(true);
+    api.Mapping(`accounts?q_workflowId=${getWorkflowId()}`).Get({}, response => {
       if (response.Error == null) {
-        const data = response.Data.find((d) => d.workflowId == workflowId);
-        callback(data);
+        const data = response.Data;
+        setDataList(data);
+        setIsLoading(false);
         return;
       }
 
@@ -44,33 +45,7 @@ function EtlViewData() {
         message: "500",
         description: "Internal Server Error"
       })
-      callback(null);
-    })
-  }
-
-  function loadDataList() {
-    setIsLoading(true);
-    loadSubworkflow((subworkflowData) => {
-      if (subworkflowData == null) {
-        setIsLoading(false);
-        return;
-      }
-
-      api.Mapping(`accounts?q_externalId=${subworkflowData.integrationId}`).Get({}, response => {
-        if (response.Error == null) {
-          const data = response.Data;
-          setDataList(data);
-          setIsLoading(false);
-          return;
-        }
-
-        notification["error"]({
-          placement: "bottomRight",
-          message: "500",
-          description: "Internal Server Error"
-        })
-        setIsLoading(false);
-      })
+      setIsLoading(false);
     });
   }
 

@@ -66,7 +66,7 @@ class Extract:
         api_key = extractable_subworkflow['api_key']
 
         if subworkflow['integrationType'] == 'smartfile':
-          if subworkflow['direction'] == 'incoming':
+          if subworkflow['directionType'] == 'incoming':
             self.logger.info(api_key, self.log_name, 'creating account mapping using smartfile')
             self.extract_from_smartfile.create_account_mapping(api_key, subworkflow)
             self.logger.info(api_key, self.log_name, 'finish creating account mapping using smartfile')
@@ -76,7 +76,7 @@ class Extract:
             self.logger.info(api_key, self.log_name, 'finish creating field mapping using smartfile')
 
         elif subworkflow['integrationType'] == 'webhook':
-          if subworkflow['direction'] == 'incoming':
+          if subworkflow['directionType'] == 'incoming':
             self.logger.info(api_key, self.log_name, 'creating account mapping using webhook')
             self.extract_from_webhook.create_account_mapping(api_key, subworkflow)
             self.logger.info(api_key, self.log_name, 'finish creating account mapping using webhook')

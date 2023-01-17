@@ -21,6 +21,9 @@ export class AccountDto {
     protected: boolean;
 
     @ApiProperty()
+    workflowId: string;
+
+    @ApiProperty()
     @IsString()
     externalId: string;
 

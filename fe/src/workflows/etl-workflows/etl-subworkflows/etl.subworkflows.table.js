@@ -11,8 +11,8 @@ function EtlSubworkflowsTable({ subworkflowsList }) {
     },
     {
       title: 'Direction',
-      dataIndex: 'direction',
-      key: 'direction',
+      dataIndex: 'directionType',
+      key: 'directionType',
       render: item => {
         let color = "green";
         switch (item) {

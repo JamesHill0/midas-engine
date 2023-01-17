@@ -22,7 +22,7 @@ class LoadIntoSalesForce:
 
     integration = {}
     for workflow_subworkflow in workflow_subworkflows:
-      if workflow_subworkflow['jobType'] == 'extraction' and workflow_subworkflow['direction'] == 'incoming':
+      if workflow_subworkflow['jobType'] == 'extraction' and workflow_subworkflow['directionType'] == 'incoming':
         integration_id = workflow_subworkflow['integrationId']
 
         if workflow_subworkflow['integrationType'] == 'smartfile':

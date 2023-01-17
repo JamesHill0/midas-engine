@@ -10,6 +10,11 @@ function EtlViewDataTable({ dataList }) {
       key: 'name'
     },
     {
+      title: 'Current Job',
+      dataIndex: 'currentJob',
+      key: 'currentJob'
+    },
+    {
       title: 'Protected',
       dataIndex: 'protected',
       key: 'protected'
