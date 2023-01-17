@@ -14,7 +14,9 @@ class Load:
     self.logger = Logger()
 
   def __check_schedule():
-    data = self.blitz.account_get_jobs_by_name('load')
+    datas = self.blitz.account_get_jobs_by_name('load')
+
+    data = datas[0]
     if data['status'] == 'running':
       updated_date = datetime.datetime.strptime(data['updated'], "%d%m%Y").date()
       if (datetime.now() - updated_date).minutes > 60:

@@ -39,7 +39,14 @@ function EtlWorkflowsTable({ workflowsList, toggleWorkflowStatus }) {
     {
       title: 'Field Mapping',
       dataIndex: 'mappingType',
-      key: 'mappingType'
+      key: 'mappingType',
+      render: item => {
+        if (item == 'priority-mapping') {
+          return 'Priority Mapping'
+        } else if (item == 'direct-mapping') {
+          return 'Direct Mapping'
+        }
+      }
     },
     {
       title: 'Data Mapping',

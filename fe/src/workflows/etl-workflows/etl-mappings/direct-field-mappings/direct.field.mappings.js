@@ -7,8 +7,8 @@ import DirectFieldMappingsTable from "./direct.field.mappings.table";
 
 function DirectFieldMappings({ workflowId }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [directFieldMappingsList, setDirectFieldMappingsList] = useState([])
-  const [fieldsList, setFieldsList] = useState([])
+  const [directFieldMappingsList, setDirectFieldMappingsList] = useState([]);
+  const [fieldsList, setFieldsList] = useState([]);
 
   useEffect(() => {
     loadDirectFieldMappings();
@@ -43,7 +43,7 @@ function DirectFieldMappings({ workflowId }) {
         let mappings = [];
         datas.map((account) => {
           account.mappings.map((mapping) => {
-            mappings.push(mapping['fromField']);
+            mappings.push({ 'label': mapping['fromField'], 'value': mapping['fromField'] });
           })
         })
 

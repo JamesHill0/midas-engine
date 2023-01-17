@@ -7,10 +7,12 @@ import PriorityFieldMappingsTable from "./priority.field.mappings.table";
 
 function PriorityFieldMappings({ workflowId }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [priorityFieldMappingsList, setPriorityFieldMappingsList] = useState([])
+  const [priorityFieldMappingsList, setPriorityFieldMappingsList] = useState([]);
+  const [fieldsList, setFieldsList] = useState([]);
 
   useEffect(() => {
     loadPriorityFieldMappings();
+    loadFieldsList();
   }, []);
 
   function loadPriorityFieldMappings() {
@@ -32,10 +34,41 @@ function PriorityFieldMappings({ workflowId }) {
     })
   }
 
+  function loadFieldsList() {
+    setIsLoading(true);
+    api.Mapping(`accounts?q_workflowId=${workflowId}`).Get({}, response => {
+      if (response.Error == null) {
+        const datas = response.Data;
+
+        let mappings = [];
+        datas.map((account) => {
+          account.mappings.map((mapping) => {
+            mappings.push({ 'label': mapping['fromField'], 'value': mapping['fromField'] });
+          })
+        })
+
+        setFieldsList(mappings);
+        setIsLoading(false);
+        return;
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+      setIsLoading(false);
+    })
+  }
+
   return (
     <div className="priority-field-mappings">
       {isLoading && <Loader />}
-      <PriorityFieldMappingsTable priorityFieldMappingsList={priorityFieldMappingsList} />
+      <PriorityFieldMappingsTable
+        setIsLoading={setIsLoading}
+        priorityFieldMappingsList={priorityFieldMappingsList}
+        fieldsList={fieldsList}
+      />
     </div>
   )
 }

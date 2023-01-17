@@ -2,14 +2,14 @@ import React from "react";
 import { Table, Select, notification } from "antd";
 import api from "../../../../data";
 function DirectFieldMappingsTable({ setIsLoading, directFieldMappingsList, fieldsList }) {
-  function handleChange(id, value) {
+  function handleChange(id, fromField, value) {
     setIsLoading(true);
     api.Mapping(`direct-field-mappings/${id}`).Patch({ 'toField': value }, response => {
       if (response.Error == null) {
         notification["success"]({
           placement: "bottomRight",
           message: "200",
-          description: "Direct Field Mapping updated successfully!"
+          description: `${fromField} has been setup to map to ${value} successfully!`
         })
         setIsLoading(false);
         return;
@@ -35,11 +35,12 @@ function DirectFieldMappingsTable({ setIsLoading, directFieldMappingsList, field
       dataIndex: 'toField',
       key: 'toField',
       render: item => {
-        <Select
+        return <Select
           defaultValue={item.toField}
-          onChange={(value) => handleChange(item.id, value)}
+          style={{width: 200}}
+          onChange={(value) => handleChange(item.id, item.fromField, value)}
           options={fieldsList}
-        ></Select>
+        />
       }
     },
   ]

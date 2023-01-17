@@ -55,7 +55,7 @@ function EtlMappings() {
       </Breadcrumb>
       <br />
       <Tabs type="card">
-        {workflow.mappingType == "priority-mapping" && <TabPane tab="Direct Mapping" key="1"><DirectFieldMappings workflowId={workflow.id} /></TabPane>}
+        {workflow.mappingType == "direct-mapping" && <TabPane tab="Direct Mapping" key="1"><DirectFieldMappings workflowId={workflow.id} /></TabPane>}
         {workflow.mappingType == "priority-mapping" && <TabPane tab="Priority Mapping" key="2"><PriorityFieldMappings workflowId={workflow.id} /></TabPane>}
         {workflow.needDataMapping && <TabPane tab="Data Mapping" key="3"><DataMappings workflowId={workflow.id}/></TabPane>}
       </Tabs>
