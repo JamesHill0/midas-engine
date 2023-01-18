@@ -17,7 +17,7 @@ services:
           RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
           RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
           RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
-      container_name: midas-etl-extract
+      container_name: midas-etl
       restart: unless-stopped
 
     # etl-extract:
