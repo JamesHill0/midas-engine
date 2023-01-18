@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 import { Collection } from 'fireorm';
-import { Account, AccountEntity } from 'src/account/entities/account.entity';
+import { Account, AccountEntity } from 'src/accountmapping/entities/account.mapping.entity';
 import { JobType } from 'src/enums/job.type';
 
 export class Mapping {

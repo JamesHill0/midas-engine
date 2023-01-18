@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Account, AccountCollection, AccountEntity } from './entities/account.entity';
+import { AccountMapping, AccountMappingCollection, AccountMappingEntity } from './entities/account.mapping.entity';
 import { getConnection, createConnection, Repository } from 'typeorm';
-import { AccountDto } from './dto/account.dto';
+import { AccountMappingDto } from './dto/account.mapping.dto';
 
 import { CredentialType } from 'src/enums/credential.type';
 
@@ -12,33 +12,33 @@ import { Mapping, MappingCollection, MappingEntity } from 'src/mapping/entities/
 import { MappingsService } from 'src/mapping/mappings.service';
 
 @Injectable()
-export class AccountsService {
+export class AccountMappingsService {
     constructor(
         private readonly mappingsService: MappingsService,
         private readonly configurationsService: ConfigurationsService
     ) { }
 
-    private async connection(): Promise<AccountsConfig> {
+    private async connection(): Promise<AccountMappingsConfig> {
         let config = await this.configurationsService.get('mapping');
         let conn = JSON.parse(config);
         if (conn.type == CredentialType.FIRE) {
-            return new AccountsFireorm(conn, this.mappingsService);
+            return new AccountMappingsFireorm(conn, this.mappingsService);
         } else {
-            return new AccountsTypeorm(conn, this.mappingsService);
+            return new AccountMappingsTypeorm(conn, this.mappingsService);
         }
     }
 
-    public async findAll(query: any): Promise<Account[]> {
+    public async findAll(query: any): Promise<AccountMapping[]> {
         const repository = await this.connection();
         return repository.findAll(query);
     }
 
-    public async findById(id: string): Promise<Account | null> {
+    public async findById(id: string): Promise<AccountMapping | null> {
         const repository = await this.connection();
         return await repository.findById(id);
     }
 
-    public async create(dto: AccountDto): Promise<Account> {
+    public async create(dto: AccountMappingDto): Promise<AccountMapping> {
         const repository = await this.connection();
         return await repository.create(dto);
     }
@@ -46,7 +46,7 @@ export class AccountsService {
     public async update(
         id: string,
         newValue: any,
-    ): Promise<Account | null> {
+    ): Promise<AccountMapping | null> {
         const repository = await this.connection();
         return await repository.update(id, newValue);
     }
@@ -57,31 +57,31 @@ export class AccountsService {
     }
 }
 
-interface AccountsConfig {
-    findAll(query: any): Promise<Account[]>;
-    findById(id: string): Promise<Account | null>;
-    create(dto: AccountDto): Promise<Account>;
-    update(id: string, newValue: any): Promise<Account | null>;
+interface AccountMappingsConfig {
+    findAll(query: any): Promise<AccountMapping[]>;
+    findById(id: string): Promise<AccountMapping | null>;
+    create(dto: AccountMappingDto): Promise<AccountMapping>;
+    update(id: string, newValue: any): Promise<AccountMapping | null>;
     delete(id: string);
 }
 
-class AccountsTypeorm implements AccountsConfig {
+class AccountMappingsTypeorm implements AccountMappingsConfig {
     constructor(
         private connection: any,
         private readonly mappingsService: MappingsService
     ) { }
 
-    private async repository(): Promise<Repository<AccountEntity>> {
+    private async repository(): Promise<Repository<AccountMappingEntity>> {
         try {
             const db = getConnection(this.connection['name']);
-            return db.getRepository(AccountEntity);
+            return db.getRepository(AccountMappingEntity);
         } catch (e) {
             const db = await createConnection(this.connection);
-            return db.getRepository(AccountEntity);
+            return db.getRepository(AccountMappingEntity);
         }
     }
 
-    public async findAll(query: any): Promise<Account[]> {
+    public async findAll(query: any): Promise<AccountMapping[]> {
         const repository = await this.repository();
         const queryBuilderName = 'accounts';
         let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName).leftJoinAndSelect(`${queryBuilderName}.mappings`, 'mappings');
@@ -114,17 +114,17 @@ class AccountsTypeorm implements AccountsConfig {
         return await selectQueryBuilder.limit(limit).getMany();
     }
 
-    public async findById(id: string): Promise<Account | null> {
+    public async findById(id: string): Promise<AccountMapping | null> {
         const repository = await this.repository();
         return await repository.findOneOrFail(id);
     }
 
-    private async findByName(name: string): Promise<Account[]> {
+    private async findByName(name: string): Promise<AccountMapping[]> {
         const repository = await this.repository();
         return await repository.find({ name: name });
     }
 
-    public async create(dto: AccountDto): Promise<Account> {
+    public async create(dto: AccountMappingDto): Promise<AccountMapping> {
         const repository = await this.repository();
         const results = await this.findByName(dto.name);
 
@@ -142,7 +142,7 @@ class AccountsTypeorm implements AccountsConfig {
     public async update(
         id: string,
         newValue: any,
-    ): Promise<Account | null> {
+    ): Promise<AccountMapping | null> {
         const data = await this.findById(id);
         if (!data.id) {
             // tslint:disable-next-line:no-console
@@ -159,7 +159,7 @@ class AccountsTypeorm implements AccountsConfig {
     }
 }
 
-class AccountsFireorm implements AccountsConfig {
+class AccountMappingsFireorm implements AccountMappingsConfig {
     constructor(
         private connection: any,
         private readonly mappingsService: MappingsService
@@ -181,31 +181,31 @@ class AccountsFireorm implements AccountsConfig {
         }
     }
 
-    private async repository(): Promise<fireorm.BaseFirestoreRepository<AccountCollection> | null> {
+    private async repository(): Promise<fireorm.BaseFirestoreRepository<AccountMappingCollection> | null> {
         await this.initialize();
-        return fireorm.getRepository(AccountCollection);
+        return fireorm.getRepository(AccountMappingCollection);
     }
 
-    public async findAll(): Promise<Account[]> {
+    public async findAll(): Promise<AccountMapping[]> {
         let accounts = [];
 
         const repository = await this.repository();
         let result = await repository.find();
         await Promise.all(result.map(async (res) => {
             res.mappings = await this.mappingsService.findByAccountId(res.id);
-            accounts.push(new Account(res));
+            accounts.push(new AccountMapping(res));
         }));
 
         return accounts;
     }
 
-    public async findById(id: string): Promise<Account | null> {
+    public async findById(id: string): Promise<AccountMapping | null> {
         const repository = await this.repository();
         let result = await repository.findById(id);
 
         result.mappings = await this.mappingsService.findByAccountId(result.id);
 
-        return new Account(result);
+        return new AccountMapping(result);
     }
 
     private async createMapping(dto: Mapping): Promise<Mapping> {
@@ -215,7 +215,7 @@ class AccountsFireorm implements AccountsConfig {
         return new Mapping(result);
     }
 
-    public async create(dto: AccountDto): Promise<Account> {
+    public async create(dto: AccountMappingDto): Promise<AccountMapping> {
         const repository = await this.repository();
 
         let mappings = dto.mappings;
@@ -231,13 +231,13 @@ class AccountsFireorm implements AccountsConfig {
         }
 
         result = await this.findById(result.id);
-        return new Account(result);
+        return new AccountMapping(result);
     }
 
     public async update(
         id: string,
         newValue: any,
-    ): Promise<Account | null> {
+    ): Promise<AccountMapping | null> {
         const data = await this.findById(id);
         if (!data.id) {
             // tslint:disable-next-line:no-console

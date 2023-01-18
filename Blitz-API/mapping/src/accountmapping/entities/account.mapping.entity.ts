@@ -11,7 +11,7 @@ import { Collection } from 'fireorm';
 import { Mapping, MappingCollection, MappingEntity } from 'src/mapping/entities/mapping.entity';
 import { JobType } from 'src/enums/job.type';
 
-export class Account {
+export class AccountMapping {
     id: string;
     name: string;
     currentJob: JobType;
@@ -27,7 +27,7 @@ export class Account {
 }
 
 @Collection('account')
-export class AccountCollection {
+export class AccountMappingCollection {
     id: string;
     name: string;
     currentJob: JobType;
@@ -39,7 +39,7 @@ export class AccountCollection {
 }
 
 @Entity('account')
-export class AccountEntity {
+export class AccountMappingEntity {
     @PrimaryGeneratedColumn()
     id: string;
 

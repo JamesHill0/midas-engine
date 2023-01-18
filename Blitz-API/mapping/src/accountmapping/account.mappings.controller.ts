@@ -1,7 +1,7 @@
 import { Controller, Res, Param, Query, Body, Get, Post, HttpStatus, Patch, Delete } from '@nestjs/common';
-import { AccountsService } from './accounts.service';
-import * as Accounts from 'src/service/account.service';
-import { AccountDto } from './dto/account.dto';
+import { AccountMappingsService } from './account.mappings.service';
+import { AccountsService} from 'src/service/account.service';
+import { AccountMappingDto } from './dto/account.mapping.dto';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { ConfigurationsService } from 'src/configurations/configurations.service';
 import { AuthenticationService } from 'src/service/authentication.service';
@@ -9,19 +9,19 @@ import { CredentialType } from 'src/enums/credential.type';
 import { createConnection, getConnection } from 'typeorm';
 
 @Controller('accounts')
-export class AccountsController {
+export class AccountMappingsController {
 
   constructor(
-    private readonly accountsService: AccountsService,
+    private readonly accountMappingsService: AccountMappingsService,
     private readonly configurationsService: ConfigurationsService,
     private readonly authenticationsService: AuthenticationService,
-    private readonly mainAccountsService: Accounts.AccountsService,
+    private readonly accountsService: AccountsService,
   ) { }
 
   @Get()
   public async findAll(@Query() query, @Res() res): Promise<any> {
     try {
-      let datas = await this.accountsService.findAll(query);
+      let datas = await this.accountMappingsService.findAll(query);
       return res.status(HttpStatus.OK).json({
         data: datas,
         message: 'Success',
@@ -39,7 +39,7 @@ export class AccountsController {
   @Get('/:id')
   public async findOne(@Res() res, @Param('id') id): Promise<any> {
     try {
-      let data = await this.accountsService.findById(id);
+      let data = await this.accountMappingsService.findById(id);
       return res.status(HttpStatus.OK).json({
         data: data,
         message: 'Success',
@@ -55,9 +55,9 @@ export class AccountsController {
   }
 
   @Post()
-  public async create(@Res() res, @Body() dto: AccountDto): Promise<any> {
+  public async create(@Res() res, @Body() dto: AccountMappingDto): Promise<any> {
     try {
-      let data = await this.accountsService.create(dto);
+      let data = await this.accountMappingsService.create(dto);
       return res.status(HttpStatus.OK).json({
         data: data,
         message: 'Success',
@@ -75,7 +75,7 @@ export class AccountsController {
   @Patch('/:id')
   public async update(@Res() res, @Param('id') id, @Body() dto: any): Promise<any> {
     try {
-      let data = await this.accountsService.update(id, dto);
+      let data = await this.accountMappingsService.update(id, dto);
       return res.status(HttpStatus.OK).json({
         data: data,
         message: 'Success',
@@ -93,7 +93,7 @@ export class AccountsController {
   @Delete('/:id')
   public async delete(@Res() res, @Param('id') id): Promise<any> {
     try {
-      await this.accountsService.delete(id);
+      await this.accountMappingsService.delete(id);
       return res.status(HttpStatus.OK).json({
         message: 'Success',
         status: 200,
@@ -114,7 +114,7 @@ export class AccountsController {
       await this.setUpConnection(apiKey);
 
       let dto = payload['data'];
-      const data = await this.accountsService.create(dto);
+      const data = await this.accountMappingsService.create(dto);
       const channel = context.getChannelRef();
       const originalMsg = context.getMessage();
 
@@ -133,7 +133,7 @@ export class AccountsController {
 
       let id = payload['id'];
       let dto = payload['data'];
-      const data = await this.accountsService.update(id, dto);
+      const data = await this.accountMappingsService.update(id, dto);
       const channel = context.getChannelRef();
       const originalMsg = context.getMessage();
 
@@ -166,7 +166,7 @@ export class AccountsController {
   }
 
   private async setUpConnection(apiKey: any) {
-    const account = await this.mainAccountsService.findByApiKey(apiKey);
+    const account = await this.accountsService.findByApiKey(apiKey);
 
     const conn = await this.authenticationsService.decrypt(account['secret']['key']);
     if (account['secret']['type'] == CredentialType.FIRE) {

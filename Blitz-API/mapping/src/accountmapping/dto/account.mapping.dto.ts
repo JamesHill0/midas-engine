@@ -3,7 +3,7 @@ import { IsNumber, IsString, IsBoolean } from 'class-validator';
 import { JobType } from 'src/enums/job.type';
 import { MappingDto } from 'src/mapping/dto/mapping.dto';
 
-export class AccountDto {
+export class AccountMappingDto {
     @ApiProperty({required: true})
     @IsString()
     readonly id: string;

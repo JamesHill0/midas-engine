@@ -3,7 +3,7 @@ import { environment } from './config/development.env';
 import { RedisModule } from 'nestjs-redis';
 
 // Module --
-import { AccountsModule } from './account/accounts.module';
+import { AccountMappingsModule } from './accountmapping/account.mappings.module';
 import { MappingsModule } from './mapping/mappings.module';
 import { ConfigurationsService } from './configurations/configurations.service';
 import { AuthenticationService } from './service/authentication.service';
@@ -20,7 +20,7 @@ import { DataMappingsModule } from './datamapping/data.mappings.module';
   imports: [
     RedisModule.register(environment.redis),
     HttpModule,
-    AccountsModule,
+    AccountMappingsModule,
     MappingsModule,
     PrioritiesModule,
     DirectFieldMappingsModule,
