@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 import { Collection } from 'fireorm';
-import { Account, AccountEntity } from 'src/accountmapping/entities/account.mapping.entity';
+import { AccountMapping, AccountMappingEntity } from 'src/accountmapping/entities/account.mapping.entity';
 import { JobType } from 'src/enums/job.type';
 
 export class Mapping {
@@ -58,9 +58,9 @@ export class MappingEntity {
   @Column()
   toData: string;
 
-  @ManyToOne(() => AccountEntity, account => account.mappings)
+  @ManyToOne(() => AccountMappingEntity, account => account.mappings)
   @JoinColumn()
-  account: AccountEntity;
+  account: AccountMappingEntity;
 
   constructor(partial: any) {
     Object.assign(this, partial);
