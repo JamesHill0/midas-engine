@@ -1,5 +1,4 @@
 from blitz import Blitz
-from mapper import Mapper
 from extract_from_smartfile import ExtractFromSmartFile
 from extract_from_webhook import ExtractFromWebhook
 from extract_from_salesforce import ExtractFromSalesforce
@@ -11,7 +10,6 @@ class Extract:
     self.log_name = 'extract'
 
     self.blitz = Blitz()
-    self.mapper = Mapper(True)
 
     self.extract_from_smartfile = ExtractFromSmartFile()
     self.extract_from_webhook = ExtractFromWebhook()
