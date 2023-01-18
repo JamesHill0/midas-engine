@@ -32,14 +32,14 @@ class Env:
     def postgres_password(self):
       return os.getenv("POSTGRES_PASSWORD")
 
-    def rabbitmq_host()
+    def rabbitmq_host(self):
       return os.getenv("RABBIT_MQ_HOST")
 
-    def rabbitmq_username()
+    def rabbitmq_username(self):
       return os.getenv("RABBIT_MQ_USERNAME")
 
-    def rabbitmq_password()
+    def rabbitmq_password(self):
       return os.getenv("RABBIT_MQ_PASSWORD")
 
-    def rabbitmq_pattern()
+    def rabbitmq_pattern(self):
       return os.getenv("RABBIT_MQ_PATTERN")

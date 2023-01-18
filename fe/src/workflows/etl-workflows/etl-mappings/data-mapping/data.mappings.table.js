@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Table, Space, notification } from "antd";
-import DataMappingsModal from "./data.mappings.modal";
 
 const FORMAT_TYPE_OPTIONS = [
   {
@@ -34,8 +33,6 @@ const FORMAT_TYPE_OPTIONS = [
 ]
 
 function DataMappingsTable({ dataMappingsList }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const columns = [
     {
       title: 'Outgoing Field',
@@ -73,7 +70,6 @@ function DataMappingsTable({ dataMappingsList }) {
   return (
     <div>
       <Table columns={columns} dataSource={dataMappingsList} />
-      <DataMappingsModal isModalOpen={isModalOpen} />
     </div>
   )
 }
