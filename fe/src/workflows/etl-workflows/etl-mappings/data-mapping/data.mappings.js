@@ -7,10 +7,10 @@ import DataMappingsTable from "./data.mappings.table";
 
 function DataMappings({ workflowId }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [dataMappingsList, setDataMappingsList] = useState([{ 'toField': 'Test', 'formatType': '', 'formatting': '' }]);
+  const [dataMappingsList, setDataMappingsList] = useState([]);
 
   useEffect(() => {
-    // loadDataMappings();
+    loadDataMappings();
   }, []);
 
   function loadDataMappings() {

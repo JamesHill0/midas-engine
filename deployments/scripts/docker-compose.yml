@@ -1,10 +1,9 @@
 version: "3"
 services:
-    etl-extract:
-      build:
-        context: ../../scripts
-        dockerfile: ./Dockerfile.extract
-        args:
+    etl:
+      build: ../../scripts
+      dockerfile: ./Dockerfile
+      args:
           LOGGER_ALERTING: ${LOGGER_ALERTING}
           LOGGER_SLACK: ${LOGGER_SLACK}
           SLACK_WEBHOOK: ${SLACK_WEBHOOK}
@@ -19,41 +18,61 @@ services:
           RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
       container_name: midas-etl-extract
       restart: unless-stopped
-    etl-transform:
-      build:
-        context: ../../scripts
-        dockerfile: ./Dockerfile.transform
-        args:
-          LOGGER_ALERTING: ${LOGGER_ALERTING}
-          LOGGER_SLACK: ${LOGGER_SLACK}
-          SLACK_WEBHOOK: ${SLACK_WEBHOOK}
-          API_BASE_URL: ${API_BASE_URL}
-          POSTGRES_HOST: ${POSTGRES_HOST}
-          POSTGRES_DATABASE: ${POSTGRES_DATABASE}
-          POSTGRES_USERNAME: ${POSTGRES_USERNAME}
-          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-          RABBIT_MQ_HOST: ${RABBIT_MQ_HOST}
-          RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
-          RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
-          RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
-      container_name: midas-etl-transform
-      restart: unless-stopped
-    etl-load:
-      build:
-        context: ../../scripts
-        dockerfile: ./Dockerfile.load
-        args:
-          LOGGER_ALERTING: ${LOGGER_ALERTING}
-          LOGGER_SLACK: ${LOGGER_SLACK}
-          SLACK_WEBHOOK: ${SLACK_WEBHOOK}
-          API_BASE_URL: ${API_BASE_URL}
-          POSTGRES_HOST: ${POSTGRES_HOST}
-          POSTGRES_DATABASE: ${POSTGRES_DATABASE}
-          POSTGRES_USERNAME: ${POSTGRES_USERNAME}
-          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-          RABBIT_MQ_HOST: ${RABBIT_MQ_HOST}
-          RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
-          RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
-          RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
-      container_name: midas-etl-load
-      restart: unless-stopped
+
+    # etl-extract:
+    #   build:
+    #     context: ../../scripts
+    #     dockerfile: ./Dockerfile.extract
+    #     args:
+    #       LOGGER_ALERTING: ${LOGGER_ALERTING}
+    #       LOGGER_SLACK: ${LOGGER_SLACK}
+    #       SLACK_WEBHOOK: ${SLACK_WEBHOOK}
+    #       API_BASE_URL: ${API_BASE_URL}
+    #       POSTGRES_HOST: ${POSTGRES_HOST}
+    #       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+    #       POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+    #       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #       RABBIT_MQ_HOST: ${RABBIT_MQ_HOST}
+    #       RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
+    #       RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
+    #       RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
+    #   container_name: midas-etl-extract
+    #   restart: unless-stopped
+    # etl-transform:
+    #   build:
+    #     context: ../../scripts
+    #     dockerfile: ./Dockerfile.transform
+    #     args:
+    #       LOGGER_ALERTING: ${LOGGER_ALERTING}
+    #       LOGGER_SLACK: ${LOGGER_SLACK}
+    #       SLACK_WEBHOOK: ${SLACK_WEBHOOK}
+    #       API_BASE_URL: ${API_BASE_URL}
+    #       POSTGRES_HOST: ${POSTGRES_HOST}
+    #       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+    #       POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+    #       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #       RABBIT_MQ_HOST: ${RABBIT_MQ_HOST}
+    #       RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
+    #       RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
+    #       RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
+    #   container_name: midas-etl-transform
+    #   restart: unless-stopped
+    # etl-load:
+    #   build:
+    #     context: ../../scripts
+    #     dockerfile: ./Dockerfile.load
+    #     args:
+    #       LOGGER_ALERTING: ${LOGGER_ALERTING}
+    #       LOGGER_SLACK: ${LOGGER_SLACK}
+    #       SLACK_WEBHOOK: ${SLACK_WEBHOOK}
+    #       API_BASE_URL: ${API_BASE_URL}
+    #       POSTGRES_HOST: ${POSTGRES_HOST}
+    #       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+    #       POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+    #       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    #       RABBIT_MQ_HOST: ${RABBIT_MQ_HOST}
+    #       RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
+    #       RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
+    #       RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
+    #   container_name: midas-etl-load
+    #   restart: unless-stopped
