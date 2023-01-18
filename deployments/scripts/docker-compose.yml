@@ -1,9 +1,10 @@
 version: "3"
 services:
     etl:
-      build: ../../scripts
-      dockerfile: ./Dockerfile
-      args:
+      build:
+        context: ../../scripts
+        dockerfile: ./Dockerfile
+        args:
           LOGGER_ALERTING: ${LOGGER_ALERTING}
           LOGGER_SLACK: ${LOGGER_SLACK}
           SLACK_WEBHOOK: ${SLACK_WEBHOOK}
