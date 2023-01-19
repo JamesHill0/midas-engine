@@ -65,5 +65,5 @@ class ExtractFromWebhook:
             }
           })
 
-  def create_field_mapping(self, api_key, subworkflow);
+  def create_field_mapping(self, api_key, subworkflow):
     return

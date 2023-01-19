@@ -18,7 +18,7 @@ class Env:
       return os.getenv("SLACK_WEBHOOK")
 
     def backend_api_base_url(self):
-      return os.getenv("API_URL")
+      return os.getenv("API_BASE_URL")
 
     def postgres_host(self):
       return os.getenv("POSTGRES_HOST")
