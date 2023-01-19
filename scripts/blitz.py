@@ -15,9 +15,18 @@ class Blitz:
       return response.json()['data']
 
   def __update(self, url, body):
-    response = requests.patch(url, data=json.dumps(body))
+    response = requests.patch(url, json=body)
     if 'data' in response.json():
       return response.json()['data']
+
+  def __post(self, url, body):
+    response = requests.post(url, json=body)
+    if 'data' in response.json():
+      return response.json()['data']
+
+  def authentication_decrypt(self, for_decryption):
+    url = self.base_url + '/authentication/auth/decrypt'
+    return self.__post(url, { "token": for_decryption })
 
   def account_get_accounts(self):
     url = self.base_url + '/account/accounts'

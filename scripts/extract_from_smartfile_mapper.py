@@ -42,31 +42,28 @@ class ExtractFromSmartFileMapper():
                         result[data_items[0].text] = data_items[1].text
                     elif len(data_items) == 1:
                         result[data_items[0].text] = ''
-            elif child.tag == 'PDFList' and self.download_pdf == True:
-                pdflists = []
-                for pdfs in child:
-                    pdflist = dict()
-                    for pdf in pdfs:
-                        if pdf.tag == 'PDFData':
-                            pdf_id = pdflist['FormName'] + '_' + pdflist['FormNumber']
-                            pdf_id = self.__downloader(name, {
-                                'id': pdf_id,
-                                'body': pdf.text
-                            })
-                            pdflist['generated_id'] = pdf_id
-                            continue
+            # elif child.tag == 'PDFList' and self.download_pdf == True:
+            #     pdflists = []
+            #     for pdfs in child:
+            #         pdflist = dict()
+            #         for pdf in pdfs:
+            #             if pdf.tag == 'PDFData':
+            #                 pdf_id = pdflist['FormName'] + '_' + pdflist['FormNumber']
+            #                 pdf_id = self.__downloader(name, {
+            #                     'id': pdf_id,
+            #                     'body': pdf.text
+            #                 })
+            #                 pdflist['generated_id'] = pdf_id
+            #                 continue
 
-                        pdflist[pdf.tag] = pdf.text
-                        pdflists.append(pdflist)
-                        result['pdf'] = pdflists
+            #             pdflist[pdf.tag] = pdf.text
+            #             pdflists.append(pdflist)
+            #             result['pdf'] = pdflists
             else:
                 result[child.tag] = child.text
 
         return result
 
-    def to_json(self, name, raw):
-        raw.decode_content = True
-        tree = ElementTree.parse(raw)
-        root = tree.getroot()
-
+    def to_json(self, name, response):
+        root = ElementTree.fromstring(response.content)
         return self.__mapper(name, root)

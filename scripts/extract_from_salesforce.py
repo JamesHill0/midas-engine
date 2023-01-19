@@ -19,7 +19,7 @@ class ExtractFromSalesforce:
         continue
       else:
         self.mq.publish('blitz-api-mapping', 'direct.field.mappings.created', {
-          'apiKey': api_key,
+          'apiKey': headers['x-api-key'],
           'data': {
             'workflowId': workflow['id'],
             'externalId': externalId,
@@ -37,11 +37,11 @@ class ExtractFromSalesforce:
       existing_priority_field_mappings[mapping['fromField']] = mapping['toField']
 
     for salesforce_field in salesforce_fields:
-      if existing_priority_field_mappings[salesforce_field['name']]:
+      if salesforce_field['name'] in existing_priority_field_mappings:
         continue
       else:
         self.mq.publish('blitz-api-mapping', 'priority.field.mappings.created', {
-          'apiKey': api_key,
+          'apiKey': headers['x-api-key'],
           'data': {
             'workflowId': workflow['id'],
             'externalId': externalId,
@@ -59,11 +59,11 @@ class ExtractFromSalesforce:
       existing_data_mappings[mapping['toField']] = mapping['toField']
 
     for salesforce_field in salesforce_fields:
-      if existing_data_mappings[salesforce_field['name']]:
+      if salesforce_field['name'] in existing_data_mappings:
         continue
       else:
         self.mq.publish('blitz-api-mapping', 'data.mappings.created', {
-          'apiKey': api_key,
+          'apiKey': headers['x-api-key'],
           'data': {
             'workflowId': workflow['id'],
             'externalId': externalId,

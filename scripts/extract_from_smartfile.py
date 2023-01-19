@@ -2,9 +2,13 @@ from blitz import Blitz
 from extract_from_smartfile_mapper import ExtractFromSmartFileMapper
 from rabbitmq import RabbitMQ
 
+from env import Env
+import requests
+
 class ExtractFromSmartFile:
   def __init__(self):
     self.blitz = Blitz()
+    self.env = Env()
     self.mapper = ExtractFromSmartFileMapper(True)
     self.mq = RabbitMQ()
 
@@ -28,11 +32,15 @@ class ExtractFromSmartFile:
       if f['isfile'] != True and f['mime'] != 'text/html':
         continue
 
-      raw = self.blitz.integration_smart_file_get_data(headers, subworkflow['integrationId'], filename)
-      if not raw:
+      authentication_result = self.blitz.authentication_decrypt(current_integration['secret']['key'])
+      smart_file_url = self.env.smart_file_url() + '/path/data/' + current_integration['secret']['directory'] + '/' + f['name']
+      smart_file_headers = { 'Authorization': 'Basic ' + authentication_result['encoded'] }
+      smart_file_result = requests.get(smart_file_url, headers=smart_file_headers)
+
+      if smart_file_result == '':
         continue
 
-      json_Data = self.mapper.to_json(f['name'], raw)
+      json_data = self.mapper.to_json(f['name'], smart_file_result)
 
       mappings = []
 

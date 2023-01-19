@@ -25,7 +25,7 @@ class TransformUsingDirectMapping:
         continue
 
       for mapping in account_mapping['mappings']:
-        if dfm[mapping['fromField']]:
+        if mapping['fromField'] in dfm:
           self.mq.publish('blitz-api-mapping', 'mappings.updated', {
             'apiKey': api_key,
             'id': mapping['id'],

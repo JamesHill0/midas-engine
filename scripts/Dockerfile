@@ -12,6 +12,7 @@ ARG RABBIT_MQ_HOST
 ARG RABBIT_MQ_USERNAME
 ARG RABBIT_MQ_PASSWORD
 ARG RABBIT_MQ_PATTERN
+ARG SMART_FILE_URL
 
 WORKDIR /app
 
@@ -63,6 +64,7 @@ RUN printf 'RABBIT_MQ_HOST="%s"\n' "${RABBIT_MQ_HOST}" >> ./.env
 RUN printf 'RABBIT_MQ_USERNAME="%s"\n' "${RABBIT_MQ_USERNAME}" >> ./.env
 RUN printf 'RABBIT_MQ_PASSWORD="%s"\n' "${RABBIT_MQ_PASSWORD}" >> ./.env
 RUN printf 'RABBIT_MQ_PATTERN="%s"\n' "${RABBIT_MQ_PATTERN}" >> ./.env
+RUN printf 'SMART_FILE_URL="%s"\n' "${SMART_FILE_URL}" >> ./.env
 
 RUN printf '*/5 * * * * python /app/extract.py\n' >> /etc/crontabs/root
 RUN printf '*/5 * * * * python /app/transform.py\n' >> /etc/crontabs/root

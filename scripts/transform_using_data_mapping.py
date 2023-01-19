@@ -59,7 +59,7 @@ class TransformUsingDataMapping:
         continue
 
       for mapping in account_mapping['mappings']:
-        if dm[mapping['fromField']]:
+        if mapping['fromField'] in dm:
           data_mapping = dm[mapping['fromField']]
           formatted_data = self.__format_map(mapping['fromData'], data_mapping)
 

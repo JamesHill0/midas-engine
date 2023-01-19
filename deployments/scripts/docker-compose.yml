@@ -17,6 +17,7 @@ services:
           RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
           RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
           RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
+          SMART_FILE_URL: ${SMART_FILE_URL}
       container_name: midas-etl
       restart: unless-stopped
 
@@ -37,6 +38,7 @@ services:
     #       RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
     #       RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
     #       RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
+    #       SMART_FILE_URL: ${SMART_FILE_URL}
     #   container_name: midas-etl-extract
     #   restart: unless-stopped
     # etl-transform:
@@ -56,6 +58,7 @@ services:
     #       RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
     #       RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
     #       RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
+    #       SMART_FILE_URL: ${SMART_FILE_URL}
     #   container_name: midas-etl-transform
     #   restart: unless-stopped
     # etl-load:
@@ -75,5 +78,6 @@ services:
     #       RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME}
     #       RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD}
     #       RABBIT_MQ_PATTERN: ${RABBIT_MQ_PATTERN}
+    #       SMART_FILE_URL: ${SMART_FILE_URL}
     #   container_name: midas-etl-load
     #   restart: unless-stopped

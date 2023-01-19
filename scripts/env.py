@@ -43,3 +43,6 @@ class Env:
 
     def rabbitmq_pattern(self):
       return os.getenv("RABBIT_MQ_PATTERN")
+
+    def smart_file_url(self):
+      return os.getenv("SMART_FILE_URL")
