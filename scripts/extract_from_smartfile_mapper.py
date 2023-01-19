@@ -6,7 +6,7 @@ import base64
 from xml.etree import ElementTree
 from env import Env
 
-class ExtractSmartFileMapper():
+class ExtractFromSmartFileMapper():
     def __init__(self, download_pdf):
         self.download_pdf = download_pdf
 

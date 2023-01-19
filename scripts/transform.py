@@ -66,7 +66,7 @@ class Transform:
     for transformable_subworkflow in transformable_subworkflows:
       for subworkflow in transformable_subworkflow['subworkflows']:
         api_key = transformable_subworkflow['api_key']
-        workflow = self.blitz.mapping_get_workflow({ 'x-api-key': api_key}, subworkflow['workflowId'])
+        workflow = self.blitz.mapping_get_workflow_by_id({ 'x-api-key': api_key}, subworkflow['workflowId'])
 
         if workflow['status'] == 'inactive':
           self.logger.info(api_key, self.log_name, workflow['name'] + ' is inactive. skipping.')
