@@ -4,7 +4,7 @@ import requests
 import json
 
 class Blitz:
-  def __init__(self, logger):
+  def __init__(self):
     e = Env()
 
     self.base_url = e.backend_api_base_url()
