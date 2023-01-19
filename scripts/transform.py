@@ -15,9 +15,9 @@ class Transform:
     self.transform_using_priority_mapping = TransformUsingPriorityMapping()
     self.transform_using_data_mapping = TransformUsingDataMapping()
 
-    self.logger = Logger()
+    self.logger = Logger('qa')
 
-  def __check_schedule():
+  def __check_schedule(self):
     datas = self.blitz.account_get_jobs_by_name('transform')
 
     data = datas[0]

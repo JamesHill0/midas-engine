@@ -15,9 +15,9 @@ class Extract:
     self.extract_from_webhook = ExtractFromWebhook()
     self.extract_from_salesforce = ExtractFromSalesforce()
 
-    self.logger = Logger()
+    self.logger = Logger('qa')
 
-  def __check_schedule():
+  def __check_schedule(self):
     datas = self.blitz.account_get_jobs_by_name('extract')
 
     data = datas[0]

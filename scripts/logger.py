@@ -21,7 +21,7 @@ class Logger:
             'data': {
               'name': name,
               'type': 'info',
-              'mode': mode,
+              'mode': self.mode,
               'message': message
             }
           })
@@ -37,7 +37,7 @@ class Logger:
             'data': {
               'name': name,
               'type': 'error',
-              'mode': mode,
+              'mode': self.mode,
               'message': message
             }
           })
@@ -54,7 +54,7 @@ class Logger:
             'data': {
               'name': name,
               'type': 'exception',
-              'mode': mode,
+              'mode': self.mode,
               'message': message
             }
           })

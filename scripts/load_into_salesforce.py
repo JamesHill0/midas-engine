@@ -1,7 +1,7 @@
 from blitz import Blitz
 from rabbitmq import RabbitMQ
 
-class LoadIntoSalesForce:
+class LoadIntoSalesforce:
   def __init__(self):
     self.blitz = Blitz()
     self.mq = RabbitMQ()

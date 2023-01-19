@@ -11,9 +11,9 @@ class Load:
 
     self.load_into_salesforce = LoadIntoSalesforce()
 
-    self.logger = Logger()
+    self.logger = Logger('qa')
 
-  def __check_schedule():
+  def __check_schedule(self):
     datas = self.blitz.account_get_jobs_by_name('load')
 
     data = datas[0]
