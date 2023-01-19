@@ -27,6 +27,7 @@ export class SalesforcesConnService {
     //   return conn;
     // }
     if (auth != null) {
+      authBasic = new SecretDto();
       authBasic.url = auth.url;
       authBasic.username = auth.username;
       authBasic.password = auth.password;
