@@ -157,7 +157,7 @@ export class SalesforcesController {
     }
   }
 
-  @Get(":id/jsforce/:tableName/getTableFields/:tableName")
+  @Get(":id/jsforce/:tableName/getTableFields")
   public async getTableFields(@Res() res, @Param('id') id, @Param('tableName') tableName): Promise<any> {
     try {
       let sf = await this.salesforcesService.findById(id);
