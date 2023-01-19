@@ -116,6 +116,7 @@ services:
             SECRET: ${SECRET}
             SERVICE_AUTHENTICATION: http://authentication:8001
             SERVICE_ACCOUNT: http://account:8002
+            SERVICE_RABBITMQ: amqp://${RABBIT_MQ_USERNAME}:${RABBIT_MQ_PASSWORD}@${RABBIT_MQ_HOST}:5672
             REDIS_NAME: ${REDIS_NAME}
             REDIS_URL: ${REDIS_URL}
             ALLOWED_HOSTS: ${ALLOWED_HOSTS}
