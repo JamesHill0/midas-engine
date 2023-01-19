@@ -42,9 +42,9 @@ function Appbar() {
     <Layout className="layout">
       <Header>
         <Menu theme="dark" mode="horizontal" style={{ display: "inherit" }} className="menu">
-          {/* <Menu.Item key={"dashboard"} onClick={() => navigateToUrl("/dashboard")}>
+          <Menu.Item key={"dashboard"} onClick={() => navigateToUrl("/dashboard")}>
             Dashboard
-          </Menu.Item> */}
+          </Menu.Item>
           <Menu.Item key={"integration"} onClick={() => navigateToUrl("/integrations")}>
             Integrations
           </Menu.Item>

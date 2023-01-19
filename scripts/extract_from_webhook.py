@@ -31,7 +31,7 @@ class ExtractFromWebhook:
 
       name = current_integration['uniqueId']
       if len(mappings) > 0:
-        account_mapping = self.__check_if_account_mapping_is_existing(headers, name):
+        account_mapping = self.__check_if_account_mapping_is_existing(headers, name)
 
         if account_mapping:
           if account_mapping['currentJob'] == 'extraction':

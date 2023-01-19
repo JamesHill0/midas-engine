@@ -23,8 +23,8 @@ class Blitz:
     url = self.base_url + '/account/accounts'
     return self.__get_response(url, {})
 
-  def account_get_jobs_by_name(self):
-    url = self.base_url + '/account/jobs'
+  def account_get_jobs_by_name(self, name):
+    url = self.base_url + '/account/jobs?q_name=' + name
     return self.__get_response(url, {})
 
   def account_update_job(self, id, body):
