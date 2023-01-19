@@ -6,10 +6,12 @@ import api from "../data";
 import { toLocal } from "../utils/common";
 
 import DashboardControlPanel from "./dashboard.control.panel";
+import DashboardWorkflowsTable from "./dashboard.workflows.table";
 
 function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [intervals, setIntervals] = useState([]);
+  const [workflowsList, setWorkflowsList] = useState([]);
   const [config, setConfig] = useState({
     messages: {
       extract: {
@@ -32,6 +34,7 @@ function Dashboard() {
 
   useEffect(() => {
     loadData();
+    loadWorkflows();
   }, []);
 
   function loadData() {
@@ -61,11 +64,56 @@ function Dashboard() {
     })
   }
 
+  function loadWorkflows() {
+    setIsLoading(true);
+    api.Mapping("workflows").Get({}, response => {
+      if (response.Error == null) {
+        const data = response.Data;
+        setWorkflowsList(data);
+        setIsLoading(false);
+        return;
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+      setIsLoading(false);
+    })
+  }
+
+  function toggleWorkflowStatus(workflowId, status) {
+    setIsLoading(true);
+
+    if (status == "inactive") {
+      status = "active";
+    } else if (status == "active") {
+      status = "inactive";
+    }
+
+    api.Mapping(`workflows/${workflowId}`).Patch({ "status": status }, response => {
+      if (response.Error == null) {
+        loadWorkflows();
+        setIsLoading(false);
+        return;
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+      setIsLoading(false);
+    })
+  }
+
   return (
     < div className="dashboard" >
       {isLoading && <Loader />}
       <Row gutter={10}>
         <Col span={12}>
+          <DashboardWorkflowsTable workflowsList={workflowsList} toggleWorkflowStatus={toggleWorkflowStatus} />
         </Col>
         <Col span={12}>
           <DashboardControlPanel title={"ETL - Extract"} message={config.messages.extract} />
