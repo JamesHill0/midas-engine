@@ -11,6 +11,18 @@ export class Secret {
     id: string;
 
     @Column()
+    username: string;
+
+    @Column()
+    password: string;
+
+    @Column()
+    url: string;
+
+    @Column()
+    securityToken: string;
+
+    @Column()
     accessToken: string;
 
     @Column()

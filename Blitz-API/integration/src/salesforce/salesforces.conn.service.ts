@@ -13,14 +13,24 @@ export class SalesforcesConnService {
   ) { }
 
   private async connection(auth: Secret, authBasic: SecretDto): Promise<Jsforce.Connection> {
-    if (auth != null && auth.accessToken != null && auth.instanceUrl != null) {
-      let accessToken = await this.authenticationService.decrypt(auth.accessToken);
-      let instanceUrl = await this.authenticationService.decrypt(auth.instanceUrl);
+    // if (auth != null && auth.accessToken != null && auth.instanceUrl != null) {
+    //   let accessToken = await this.authenticationService.decrypt(auth.accessToken);
+    //   let instanceUrl = await this.authenticationService.decrypt(auth.instanceUrl);
+    //   let refreshToken = await this.authenticationService.decrypt(auth.refreshToken);
 
-      return new Jsforce.Connection({
-        accessToken: accessToken["encoded"],
-        instanceUrl: instanceUrl["encoded"],
-      });
+    //   let conn = new Jsforce.Connection({
+    //     accessToken: accessToken["encoded"],
+    //     instanceUrl: instanceUrl["encoded"],
+    //     refreshToken: refreshToken["encoded"],
+    //   });
+
+    //   return conn;
+    // }
+    if (auth != null) {
+      authBasic.url = auth.url;
+      authBasic.username = auth.username;
+      authBasic.password = auth.password;
+      authBasic.securityToken = auth.securityToken;
     }
 
     let loginUrl = await this.authenticationService.decrypt(authBasic.url);
@@ -75,11 +85,17 @@ export class SalesforcesConnService {
     let conn = await this.connection(auth, null);
 
     return new Promise((resolve, reject) => {
-      conn.sobject(tableName).describe((err: any, meta: Jsforce.DescribeSObjectResult) => {
+      conn.describe(tableName, (err: any, meta: Jsforce.DescribeSObjectResult) => {
         if (err) {
           console.log(err);
           reject('Internal Server Error');
         }
+
+        if (meta == null) {
+          console.log('Meta not found');
+          reject('Internal Server Error');
+        }
+
         resolve(meta.fields);
       })
     })
