@@ -64,8 +64,8 @@ RUN printf 'RABBIT_MQ_USERNAME="%s"\n' "${RABBIT_MQ_USERNAME}" >> ./.env
 RUN printf 'RABBIT_MQ_PASSWORD="%s"\n' "${RABBIT_MQ_PASSWORD}" >> ./.env
 RUN printf 'RABBIT_MQ_PATTERN="%s"\n' "${RABBIT_MQ_PATTERN}" >> ./.env
 
-RUN printf '*/30 * * * * python /app/extract.py\n' >> /etc/crontabs/root
-RUN printf '*/30 * * * * python /app/transform.py\n' >> /etc/crontabs/root
-RUN printf '*/30 * * * * python /app/load.py\n' >> /etc/crontabs/root
+RUN printf '*/5 * * * * python /app/extract.py\n' >> /etc/crontabs/root
+RUN printf '*/5 * * * * python /app/transform.py\n' >> /etc/crontabs/root
+RUN printf '*/5 * * * * python /app/load.py\n' >> /etc/crontabs/root
 
 CMD ["crond", "-f"]
