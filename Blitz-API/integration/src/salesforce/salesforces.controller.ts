@@ -158,7 +158,7 @@ export class SalesforcesController {
   }
 
   @Get(":id/jsforce/:tableName/getTableFields")
-  public async getOneSFData(@Res() res, @Param('id') id, @Param('tableName') tableName): Promise<any> {
+  public async getTableFields(@Res() res, @Param('id') id, @Param('tableName') tableName): Promise<any> {
     try {
       let sf = await this.salesforcesService.findById(id);
       let data = await this.salesforcesConnService.getTableFields(sf.secret, tableName);
@@ -176,7 +176,7 @@ export class SalesforcesController {
     }
   }
 
-  @Get(":id/jsforce/:tableName/:sfId")
+  @Get(":id/jsforce/:tableName/getById/:sfId")
   public async getSFDataById(@Res() res, @Param('id') id, @Param('tableName') tableName, @Param('sfId') sfId): Promise<any> {
     try {
       let sf = await this.salesforcesService.findById(id);
