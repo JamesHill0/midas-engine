@@ -107,7 +107,7 @@ export class AccountMappingsController {
     }
   }
 
-  @MessagePattern('account.mappings.created')
+  @MessagePattern('accounts.mappings.created')
   async handleAccountMappingsCreated(@Payload() payload: any, @Ctx() context: RmqContext) {
     try {
       const apiKey = payload['apiKey'];
@@ -125,7 +125,7 @@ export class AccountMappingsController {
     }
   }
 
-  @MessagePattern('account.mappings.updated')
+  @MessagePattern('accounts.mappings.updated')
   async handleAccountMappingsUpdated(@Payload() payload: any, @Ctx() context: RmqContext) {
     try {
       const apiKey = payload['apiKey'];

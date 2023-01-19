@@ -16,7 +16,7 @@ class Logger:
         logging.info(message)
 
         if api_key:
-          self.mq.publish('blitz-api-mapping', 'logger.apps.created', {
+          self.mq.publish('blitz-api-logger', 'logger.apps.created', {
             'apiKey': api_key,
             'data': {
               'name': name,
@@ -32,7 +32,7 @@ class Logger:
         logging.error(message)
 
         if api_key:
-          self.mq.publish('blitz-api-mapping', 'logger.apps.created', {
+          self.mq.publish('blitz-api-logger', 'logger.apps.created', {
             'apiKey': api_key,
             'data': {
               'name': name,
@@ -49,7 +49,7 @@ class Logger:
         logging.exception(message)
 
         if api_key:
-          self.mq.publish('blitz-api-mapping', 'logger.apps.created', {
+          self.mq.publish('blitz-api-logger', 'logger.apps.created', {
             'apiKey': api_key,
             'data': {
               'name': name,

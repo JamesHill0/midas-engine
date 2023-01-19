@@ -25,6 +25,19 @@ async function bootstrap() {
     transport: Transport.TCP,
     port: port,
     logger: console,
+  })
+
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      url: [process.env.SERVICE_RABBITMQ],
+      queue: 'blitz-api-logging',
+      noAck: false,
+      queueOptions: {
+        durable: true,
+      },
+    },
+
   });
 
   if (ConfigService.get('app.mode') !== 'PROD') {
