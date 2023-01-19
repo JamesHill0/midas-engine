@@ -69,7 +69,7 @@ class ExtractFromSmartFile:
             'apiKey': api_key,
             'data': {
               'name': name,
-              'currentJob': 'pre-transformation'
+              'currentJob': 'pre-transformation',
               'protected': False,
               'externalId': current_integration['externalId'],
               'mappings': mappings
