@@ -80,7 +80,7 @@ class ExtractFromSalesforce:
 
     integration = self.blitz.integration_salesforce_get_by_id(headers, subworkflow['integrationId'])
 
-    salesforce_fields = self.blitz.integration_salesforce_sf_get_one(headers, subworkflow['integrationId'], subworkflow['tableName'])
+    salesforce_fields = self.blitz.integration_salesforce_sf_get_table_fields(headers, subworkflow['integrationId'], subworkflow['tableName'])
 
     if workflow['mappingType'] == 'direct-mapping':
       self.__create_direct_mapping(headers, integration, salesforce_fields, workflow)

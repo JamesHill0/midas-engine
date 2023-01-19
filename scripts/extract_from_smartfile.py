@@ -17,6 +17,11 @@ class ExtractFromSmartFile:
     files = self.blitz.integration_smart_file_info_list_files(headers, subworkflow['integrationId'])
     current_integration = self.blitz.integration_smart_file_get_by_id(headers, subworkflow['integrationId'])
 
+    print(files)
+
+    if not files:
+      return
+
     for f in files:
       filename = f['name']
 

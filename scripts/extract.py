@@ -28,7 +28,7 @@ class Extract:
     return data
 
   def __get_accounts_api_keys(self):
-    accounts = blitz.account_get_accounts()
+    accounts = self.blitz.account_get_accounts()
 
     api_keys = []
     for account in accounts:
@@ -75,33 +75,33 @@ class Extract:
 
         if subworkflow['integrationType'] == 'smartfile':
           if subworkflow['directionType'] == 'incoming':
-            self.logger.info(api_key, self.log_name, 'creating account mapping using smartfile')
+            self.logger.info(api_key, self.log_name, 'creating account mapping using smartfile for ' + workflow['name'])
             self.extract_from_smartfile.create_account_mapping(api_key, subworkflow)
-            self.logger.info(api_key, self.log_name, 'finish creating account mapping using smartfile')
+            self.logger.info(api_key, self.log_name, 'finish creating account mapping using smartfile for ' + workflow['name'])
           else:
-            self.logger.info(api_key, self.log_name, 'creating field mapping using smartfile')
+            self.logger.info(api_key, self.log_name, 'creating field mapping using smartfile for ' + workflow['name'])
             self.extract_from_smartfile.create_field_mapping(api_key, subworkflow)
-            self.logger.info(api_key, self.log_name, 'finish creating field mapping using smartfile')
+            self.logger.info(api_key, self.log_name, 'finish creating field mapping using smartfile for ' + workflow['name'])
 
         elif subworkflow['integrationType'] == 'webhook':
           if subworkflow['directionType'] == 'incoming':
-            self.logger.info(api_key, self.log_name, 'creating account mapping using webhook')
+            self.logger.info(api_key, self.log_name, 'creating account mapping using webhook for ' + workflow['name'])
             self.extract_from_webhook.create_account_mapping(api_key, subworkflow)
-            self.logger.info(api_key, self.log_name, 'finish creating account mapping using webhook')
+            self.logger.info(api_key, self.log_name, 'finish creating account mapping using webhook for ' + workflow['name'])
           else:
-            self.logger.info(api_key, self.log_name, 'creating field mapping using webhook')
+            self.logger.info(api_key, self.log_name, 'creating field mapping using webhook for ' + workflow['name'])
             self.extract_from_webhook.create_field_mapping(api_key, subworkflow)
-            self.logger.info(api_key, self.log_name, 'finish creating field mapping using webhook')
+            self.logger.info(api_key, self.log_name, 'finish creating field mapping using webhook for ' + workflow['name'])
 
         elif subworkflow['integrationType'] == 'salesforce':
           if subworkflow['directionType'] == 'incoming':
-            self.logger.info(api_key, self.log_name, 'creating account mapping using salesforce')
+            self.logger.info(api_key, self.log_name, 'creating account mapping using salesforce for ' + workflow['name'])
             self.extract_from_salesforce.create_account_mapping(api_key, subworkflow)
-            self.logger.info(api_key, self.log_name, 'finish creating account mapping using salesforce')
+            self.logger.info(api_key, self.log_name, 'finish creating account mapping using salesforce for ' + workflow['name'])
           else:
-            self.logger.info(api_key, self.log_name, 'creating field mapping using salesforce')
+            self.logger.info(api_key, self.log_name, 'creating field mapping using salesforce for ' + workflow['name'])
             self.extract_from_salesforce.create_field_mapping(api_key, subworkflow)
-            self.logger.info(api_key, self.log_name, 'finish creating field mapping using salesforce')
+            self.logger.info(api_key, self.log_name, 'finish creating field mapping using salesforce for ' + workflow['name'])
 
   def run(self):
     try:

@@ -10,7 +10,7 @@ class ExtractFromWebhook:
     account_mapping = self.blitz.mapping_get_account_mapping_by_name(headers, name)
     return account_mapping
 
-  def create_account_mapping(self, api_key, subworkflow);
+  def create_account_mapping(self, api_key, subworkflow):
     headers = { 'x-api-key': api_key }
     integrationId = subworkflow['integrationId']
     webhook_integration = self.blitz.integration_webhook_get_by_id(headers, integrationId)

@@ -11,6 +11,7 @@ class Blitz:
 
   def __get_response(self, url, headers):
     response = requests.get(url, headers=headers)
+    print(response)
     if 'data' in response.json():
       return response.json()['data']
 
