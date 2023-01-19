@@ -88,7 +88,7 @@ class Blitz:
     return self.__get_response(url, headers)
 
   def integration_salesforce_sf_get_table_fields(self, headers, salesforce_id, table_name):
-    url = self.base_url + '/integration/salesforces/' + str(salesforce_id) + '/jsforce/' + table_name + '/getTableFields'
+    url = self.base_url + '/integration/salesforces/' + str(salesforce_id) + '/jsforce/' + str(table_name) + '/getTableFields'
     return self.__get_response(url, headers)
 
   def integration_webhook_get_by_id(self, headers, webhook_id):
