@@ -39,7 +39,7 @@ export class SmartFilesConnService {
 
     const response = await this.httpService.get(`${url}/${name}`, { headers: headerRequest }).toPromise();
     if (response.status != 200) throw 'Internal Server Error';
-    return response.data;
+    return response;
   }
 
   public async info(auth: Secret): Promise<any> {

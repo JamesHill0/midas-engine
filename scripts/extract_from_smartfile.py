@@ -17,10 +17,10 @@ class ExtractFromSmartFile:
     files = self.blitz.integration_smart_file_info_list_files(headers, subworkflow['integrationId'])
     current_integration = self.blitz.integration_smart_file_get_by_id(headers, subworkflow['integrationId'])
 
-    print(files)
-
     if not files:
       return
+
+    files = files[0]
 
     for f in files:
       filename = f['name']
@@ -29,10 +29,10 @@ class ExtractFromSmartFile:
         continue
 
       raw = self.blitz.integration_smart_file_get_data(headers, subworkflow['integrationId'], filename)
-      if raw['data'] == '':
+      if not raw:
         continue
 
-      json_Data = self.mapper.to_json(raw['data'])
+      json_Data = self.mapper.to_json(f['name'], raw)
 
       mappings = []
 
