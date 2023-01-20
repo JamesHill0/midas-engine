@@ -5,11 +5,12 @@ import { AuthenticationService } from 'src/service/authentication.service';
 import { AccountMappingsController } from './account.mappings.controller';
 import { AccountMappingsService } from './account.mappings.service';
 import { AccountsService } from 'src/service/account.service';
+import { ConnectionService } from 'src/service/connection.service';
 
 @Module({
     imports: [HttpModule],
     exports: [],
     controllers: [AccountMappingsController],
-    providers: [AccountMappingsService, MappingsService, ConfigurationsService, AuthenticationService, AccountsService]
+    providers: [AccountMappingsService, MappingsService, ConfigurationsService, AuthenticationService, AccountsService, ConnectionService]
 })
 export class AccountMappingsModule { }

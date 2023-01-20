@@ -15,6 +15,7 @@ import { AuthenticationService } from './service/authentication.service';
 import { AccountsService } from './service/account.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthenticationInterceptor } from './interceptor/authentication.interceptor';
+import { ConnectionService } from './service/connection.service';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AuthenticationInterceptor } from './interceptor/authentication.intercep
     ConfigurationsService,
     AuthenticationService,
     AccountsService,
+    ConnectionService,
     {
       provide: APP_INTERCEPTOR,
       useClass: AuthenticationInterceptor,

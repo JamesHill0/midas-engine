@@ -1,20 +1,14 @@
 import { Controller, Res, Param, Query, Body, Get, Post, HttpStatus, Patch, Delete } from '@nestjs/common';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
-import { ConfigurationsService } from 'src/configurations/configurations.service';
-import { AccountsService } from 'src/service/account.service';
-import { AuthenticationService } from 'src/service/authentication.service';
 import { DataMappingsService } from './data.mappings.service';
 import { DataMappingDto } from './dto/data.mapping.dto';
-import { CredentialType } from 'src/enums/credential.type';
-import { createConnection, getConnection } from 'typeorm';
+import { ConnectionService } from 'src/service/connection.service';
 
 @Controller('data-mappings')
 export class DataMappingsController {
   constructor(
     private readonly dataMappingsService: DataMappingsService,
-    private readonly configurationsService: ConfigurationsService,
-    private readonly authenticationsService: AuthenticationService,
-    private readonly accountsService: AccountsService
+    private readonly connectionService: ConnectionService,
   ) { }
 
   @Get()
@@ -110,7 +104,7 @@ export class DataMappingsController {
   async handleDataMappingsCreated(@Payload() payload: any, @Ctx() context: RmqContext) {
     try {
       const apiKey = payload['apiKey'];
-      await this.setUpConnection(apiKey);
+      await this.connectionService.setUpConnectionUsingApiKey(apiKey);
 
       let dto = payload['data'];
       const data = await this.dataMappingsService.create(dto);
@@ -121,65 +115,6 @@ export class DataMappingsController {
       return data;
     } catch (err) {
       console.log(err);
-    }
-  }
-
-  private async createDatabase(connection: any) {
-    try {
-      const db = getConnection('master');
-      await db.query(`CREATE DATABASE "${connection['database']}"`);
-      db.close();
-    } catch (e) {
-      const db = await createConnection({
-        type: connection['type'],
-        host: connection['host'],
-        port: connection['port'],
-        username: connection['username'],
-        password: connection['password'],
-        database: 'postgres',
-        name: 'master',
-        synchronize: false
-      });
-      await db.query(`CREATE DATABASE "${connection['database']}"`);
-      db.close();
-    }
-  }
-
-  private async setUpConnection(apiKey: any) {
-    const account = await this.accountsService.findByApiKey(apiKey);
-
-    const conn = await this.authenticationsService.decrypt(account['secret']['key']);
-    if (account['secret']['type'] == CredentialType.FIRE) {
-      let connection = {
-        type: CredentialType.FIRE,
-        key: conn
-      }
-      await this.configurationsService.set('mapping', JSON.stringify(connection));
-    } else {
-      let dbName = `${account['number']}-mapping`;
-      let connection = {
-        type: conn['type'],
-        host: conn['host'],
-        port: conn['port'],
-        username: conn['username'],
-        password: conn['password'],
-        database: dbName,
-        name: dbName,
-        entities: ['dist/**/*.entity{.ts,.js}'],
-        synchronize: true,
-      };
-
-      try {
-        if (account['database']) {
-          connection['database'] = account['database'];
-          connection['name'] = account['database'];
-        } else {
-          await this.createDatabase(connection);
-        }
-      } finally {
-        console.log('setting mapping configuration session')
-        await this.configurationsService.set('mapping', JSON.stringify(connection));
-      }
     }
   }
 }

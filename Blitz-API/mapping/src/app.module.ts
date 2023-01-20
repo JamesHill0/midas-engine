@@ -15,6 +15,7 @@ import { WorkflowsModule } from './workflow/workflows.module';
 import { SubworkflowsModule } from './subworkflow/subworkflows.module';
 import { DirectFieldMappingsModule } from './directfieldmapping/direct.field.mappings.module';
 import { DataMappingsModule } from './datamapping/data.mappings.module';
+import { ConnectionService } from './service/connection.service';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { DataMappingsModule } from './datamapping/data.mappings.module';
     ConfigurationsService,
     AuthenticationService,
     AccountsService,
+    ConnectionService,
     {
       provide: APP_INTERCEPTOR,
       useClass: AuthenticationInterceptor,
