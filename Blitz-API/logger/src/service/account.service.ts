@@ -3,23 +3,23 @@ import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable()
 export class AccountsService {
-    constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService) { }
 
-    public async findById(id: string, authBearerToken: string) {
-        const headerRequest = {
-            'Authorization': authBearerToken
-        }
-        const response = await this.httpService.get(`${process.env.SERVICE_ACCOUNT}/accounts/${id}`, { headers: headerRequest }).toPromise();
-        if (response.status != 200) throw 'Internal Server Error';
-        return response.data.data;
+  public async findById(id: string, authBearerToken: string) {
+    const headerRequest = {
+      'Authorization': authBearerToken
     }
+    const response = await this.httpService.get(`${process.env.SERVICE_ACCOUNT}/accounts/${id}`, { headers: headerRequest }).toPromise();
+    if (response.status != 200) throw 'Internal Server Error';
+    return response.data.data;
+  }
 
-    public async findByApiKey(apiKey: string) {
-        const headerRequest = {
-            'x-api-key': apiKey
-        }
-        const response = await this.httpService.get(`${process.env.SERVICE_ACCOUNT}/accounts/api-key/${apiKey}`, { headers: headerRequest }).toPromise();
-        if (response.status != 200) throw 'Internal Server Error';
-        return response.data.data;
+  public async findByApiKey(apiKey: string) {
+    const headerRequest = {
+      'x-api-key': apiKey
     }
+    const response = await this.httpService.get(`${process.env.SERVICE_ACCOUNT}/accounts/api-key/${apiKey}`, { headers: headerRequest }).toPromise();
+    if (response.status != 200) throw 'Internal Server Error';
+    return response.data.data;
+  }
 }
