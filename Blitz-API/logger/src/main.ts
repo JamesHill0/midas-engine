@@ -30,7 +30,7 @@ async function bootstrap() {
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
-      url: [process.env.SERVICE_RABBITMQ],
+      urls: [process.env.SERVICE_RABBITMQ],
       queue: 'blitz-api-logger',
       noAck: false,
       queueOptions: {
