@@ -31,7 +31,7 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       url: [process.env.SERVICE_RABBITMQ],
-      queue: 'blitz-api-logging',
+      queue: 'blitz-api-logger',
       noAck: false,
       queueOptions: {
         durable: true,
