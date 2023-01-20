@@ -102,10 +102,10 @@ export class AppsController {
 
   @MessagePattern('logger.apps.created')
   async handleLoggerAppCreated(@Payload() payload: any, @Ctx() context: RmqContext) {
-    try {
-      const apiKey = payload['apiKey'];
-      await this.connectionService.setUpConnectionUsingApiKey(apiKey);
+    const apiKey = payload['apiKey'];
+    await this.connectionService.setUpConnectionUsingApiKey(apiKey);
 
+    try {
       let dto = payload['data'];
       const data = await this.appsService.create(dto);
       const channel = context.getChannelRef();
@@ -116,5 +116,6 @@ export class AppsController {
     } catch (err) {
       console.log(err);
     }
+
   }
 }

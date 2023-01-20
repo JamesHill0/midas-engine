@@ -296,10 +296,10 @@ export class SalesforcesController {
 
   @MessagePattern('integrations.salesforce.bulk.update')
   async handleSalseforceBulkUpdate(@Payload() payload: any, @Ctx() context: RmqContext) {
-    try {
-      const apiKey = payload['apiKey']
-      await this.connectionService.setUpConnectionUsingApiKey(apiKey);
+    const apiKey = payload['apiKey']
+    await this.connectionService.setUpConnectionUsingApiKey(apiKey);
 
+    try {
       let integrationId = payload['integrationId'];
       let tableName = payload['tableName'];
       let datas = payload['datas'];

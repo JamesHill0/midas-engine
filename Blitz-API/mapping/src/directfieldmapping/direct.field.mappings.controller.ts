@@ -102,10 +102,10 @@ export class DirectFieldMappingsController {
 
   @MessagePattern('direct.field.mappings.created')
   async handleDirectFieldMappingsCreated(@Payload() payload: any, @Ctx() context: RmqContext) {
-    try {
-      const apiKey = payload['apiKey'];
-      await this.connectionService.setUpConnectionUsingApiKey(apiKey);
+    const apiKey = payload['apiKey'];
+    await this.connectionService.setUpConnectionUsingApiKey(apiKey);
 
+    try {
       let dto = payload['data'];
       const data = await this.directFieldMappingsService.create(dto);
       const channel = context.getChannelRef();

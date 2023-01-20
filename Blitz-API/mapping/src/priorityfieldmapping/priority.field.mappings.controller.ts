@@ -102,10 +102,10 @@ export class PriorityFieldMappingsController {
 
   @MessagePattern('priority.field.mappings.created')
   async handlePriorityFieldMappingsCreated(@Payload() payload: any, @Ctx() context: RmqContext) {
-    try {
-      const apiKey = payload['apiKey'];
-      await this.connectionService.setUpConnectionUsingApiKey(apiKey);
+    const apiKey = payload['apiKey'];
+    await this.connectionService.setUpConnectionUsingApiKey(apiKey);
 
+    try {
       let dto = payload['data'];
       const data = await this.priorityFieldMappingsService.create(dto);
       const channel = context.getChannelRef();

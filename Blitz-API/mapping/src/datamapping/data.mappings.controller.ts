@@ -102,10 +102,10 @@ export class DataMappingsController {
 
   @MessagePattern('data.mappings.created')
   async handleDataMappingsCreated(@Payload() payload: any, @Ctx() context: RmqContext) {
-    try {
-      const apiKey = payload['apiKey'];
-      await this.connectionService.setUpConnectionUsingApiKey(apiKey);
+    const apiKey = payload['apiKey'];
+    await this.connectionService.setUpConnectionUsingApiKey(apiKey);
 
+    try {
       let dto = payload['data'];
       const data = await this.dataMappingsService.create(dto);
       const channel = context.getChannelRef();

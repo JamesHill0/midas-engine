@@ -103,10 +103,10 @@ export class AccountMappingsController {
 
   @MessagePattern('accounts.mappings.created')
   async handleAccountMappingsCreated(@Payload() payload: any, @Ctx() context: RmqContext) {
-    try {
-      const apiKey = payload['apiKey'];
-      await this.connectionService.setUpConnectionUsingApiKey(apiKey);
+    const apiKey = payload['apiKey'];
+    await this.connectionService.setUpConnectionUsingApiKey(apiKey);
 
+    try {
       let dto = payload['data'];
       const data = await this.accountMappingsService.create(dto);
       const channel = context.getChannelRef();
@@ -121,10 +121,10 @@ export class AccountMappingsController {
 
   @MessagePattern('accounts.mappings.updated')
   async handleAccountMappingsUpdated(@Payload() payload: any, @Ctx() context: RmqContext) {
-    try {
-      const apiKey = payload['apiKey'];
-      await this.connectionService.setUpConnectionUsingApiKey(apiKey);
+    const apiKey = payload['apiKey'];
+    await this.connectionService.setUpConnectionUsingApiKey(apiKey);
 
+    try {
       let id = payload['id'];
       let dto = payload['data'];
       const data = await this.accountMappingsService.update(id, dto);
