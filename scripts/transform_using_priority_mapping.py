@@ -11,10 +11,7 @@ class TransformUsingPriorityMapping:
     current_integration = self.blitz.integration_salesforce_get_by_id(headers, subworkflow['integrationId'])
 
     priority_field_mappings = self.blitz.mapping_get_priority_field_mapping_by_external_id(headers, subworkflow['integrationId'])
-    accounts_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, current_integration['externalId'])
-
-    if not account_mappings:
-      return
+    account_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, current_integration['externalId'])
 
     for account_mapping in account_mappings:
       if account_mapping['currentJob'] != 'transformation':

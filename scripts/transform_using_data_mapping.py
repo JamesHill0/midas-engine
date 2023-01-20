@@ -45,10 +45,7 @@ class TransformUsingDataMapping:
     current_integration = self.blitz.integration_salesforce_get_by_id(headers, subworkflow['integrationId'])
 
     data_mappings = self.blitz.mapping_get_data_mapping_by_external_id(headers, current_integration['externalId'])
-    accounts_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, current_integration['externalId'])
-
-    if not account_mappings:
-      return
+    account_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, current_integration['externalId'])
 
     dm = {}
     for data_mapping in data_mappings:
