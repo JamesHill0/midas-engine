@@ -4,6 +4,7 @@ import { AccountsService } from "./account.service";
 import { AuthenticationService } from "./authentication.service";
 import { CredentialType } from "src/enums/credential.type";
 import { createConnection, getConnection } from 'typeorm';
+import { raw } from "express";
 
 @Injectable()
 export class ConnectionService {
@@ -36,11 +37,16 @@ export class ConnectionService {
 
   public async createDatabase(connection: any) {
     try {
-      const db = getConnection('master');
-      await db.query(`CREATE DATABASE "${connection['database']}"`);
-      db.close();
-    } catch (e) {
-      const db = await createConnection({
+      let db = getConnection('master');
+      let raw_data = await db.query(`SELECT datname FROM pg_catalog.pg_database WHERE datname=${connection['database']}`);
+
+      if (raw_data == null) {
+        await db.query(`CREATE DATABASE "${connection['database']}"`);
+        db.close()
+        return;
+      }
+
+      db = await createConnection({
         type: connection['type'],
         host: connection['host'],
         port: connection['port'],
@@ -50,8 +56,16 @@ export class ConnectionService {
         name: 'master',
         synchronize: false
       });
-      await db.query(`CREATE DATABASE "${connection['database']}"`);
-      db.close();
+
+      raw_data = await db.query(`SELECT datname FROM pg_catalog.pg_database WHERE datname=${connection['database']}`);
+
+      if (raw_data == null) {
+        await db.query(`CREATE DATABASE "${connection['database']}"`);
+        db.close();
+        return;
+      }
+    } catch (e) {
+      console.log(e);
     }
   }
 
