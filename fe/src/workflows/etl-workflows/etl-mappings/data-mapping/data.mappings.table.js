@@ -49,10 +49,10 @@ function DataMappingsTable({ dataMappingsList }) {
       dataIndex: 'formatting',
       key: 'formatting',
       render: item => {
-        if (item.formatType == 'conversion') {
+        if (item == 'conversion') {
           return 'NOT APPLICABLE';
         } else {
-          return item.formatType;
+          return item;
         }
       }
     },
