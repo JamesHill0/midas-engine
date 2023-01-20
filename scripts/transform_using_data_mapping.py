@@ -47,6 +47,9 @@ class TransformUsingDataMapping:
     data_mappings = self.blitz.mapping_get_data_mapping_by_external_id(headers, current_integration['externalId'])
     accounts_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, current_integration['externalId'])
 
+    if not account_mappings:
+      return
+
     dm = {}
     for data_mapping in data_mappings:
       dm[data_mapping['toField']] = data_mapping

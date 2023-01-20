@@ -39,6 +39,9 @@ class LoadIntoSalesforce:
 
     account_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, integration['externalId'])
 
+    if not account_mappings:
+      return
+
     for_creation = []
     for_update = []
 
