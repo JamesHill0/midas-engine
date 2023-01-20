@@ -3,63 +3,91 @@ import { Col, Row, Card, Statistic } from "antd";
 import { Loader } from "../utils/ui_helper";
 import api from "../data";
 
-import { toLocal } from "../utils/common";
+import { capitalize, toLocal } from "../utils/common";
 
 import DashboardControlPanel from "./dashboard.control.panel";
 import DashboardWorkflowsTable from "./dashboard.workflows.table";
+
+const initialMessage = {
+  status: "stopped",
+  logs: "Initializing script logs...\n",
+  updated: ""
+}
 
 function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [intervals, setIntervals] = useState([]);
   const [workflowsList, setWorkflowsList] = useState([]);
-  const [config, setConfig] = useState({
-    messages: {
-      extract: {
-        status: "stopped",
-        logs: "Initializing script logs...\n",
-        updated: ""
-      },
-      transform: {
-        status: "stopped",
-        logs: "Initializing script logs...\n",
-        updated: ""
-      },
-      load: {
-        status: "stopped",
-        logs: "Initializing script logs...\n",
-        updated: ""
-      }
-    }
-  })
+  const [extract, setExtract] = useState(initialMessage);
+  const [transform, setTransform] = useState(initialMessage);
+  const [load, setLoad] = useState(initialMessage);
 
   useEffect(() => {
     loadData();
+    loadExtractLogs();
+    loadTransformLogs();
+    loadLoadLogs();
     loadWorkflows();
   }, []);
 
   function loadData() {
     let interval = setInterval(() => {
-      loadLoggingData(`extract`);
-      loadLoggingData(`transform`);
-      loadLoggingData(`load`);
+      loadExtractLogs();
+      loadTransformLogs();
+      loadLoadLogs();
     }, 15000);
 
     intervals.push(interval);
     setIntervals(intervals);
   }
 
-  function loadLoggingData(logger) {
-    api.Logger(`apps?q_name=${logger}`).Get({}, response => {
+  function loadExtractLogs() {
+    api.Logger(`apps?q_name=extract`).Get({}, response => {
       if (response.Error == null) {
         let data = response.Data;
-        config.messages[logger].logs = [];
+        let newConfig = extract;
+        newConfig.logs = [];
         if (data.length > 0) {
           data.map((d) => {
-            config.messages[logger].logs += `[ ${d.type} ][ ${toLocal(d.Created)}] ${d.message}\n`;
+            newConfig.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
           });
-        }
 
-        setConfig(config);
+          setExtract(newConfig);
+        }
+      }
+    })
+  }
+
+  function loadTransformLogs() {
+    api.Logger(`apps?q_name=transform`).Get({}, response => {
+      if (response.Error == null) {
+        let data = response.Data;
+        let newConfig = transform;
+        newConfig.logs = [];
+        if (data.length > 0) {
+          data.map((d) => {
+            newConfig.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
+          });
+
+          setTransform(newConfig);
+        }
+      }
+    })
+  }
+
+  function loadLoadLogs() {
+    api.Logger(`apps?q_name=load`).Get({}, response => {
+      if (response.Error == null) {
+        let data = response.Data;
+        let newConfig = load;
+        newConfig.logs = [];
+        if (data.length > 0) {
+          data.map((d) => {
+            newConfig.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
+          });
+
+          setLoad(newConfig);
+        }
       }
     })
   }
@@ -116,13 +144,13 @@ function Dashboard() {
           <DashboardWorkflowsTable workflowsList={workflowsList} toggleWorkflowStatus={toggleWorkflowStatus} />
         </Col>
         <Col span={12}>
-          <DashboardControlPanel title={"ETL - Extract"} message={config.messages.extract} />
+          <DashboardControlPanel title={"ETL - Extract"} message={extract} />
         </Col>
         <Col span={12}>
-          <DashboardControlPanel title={"ETL - Transform"} message={config.messages.transform} />
+          <DashboardControlPanel title={"ETL - Transform"} message={transform} />
         </Col>
         <Col span={12}>
-          <DashboardControlPanel title={"ETL - Load"} message={config.messages.load} />
+          <DashboardControlPanel title={"ETL - Load"} message={load} />
         </Col>
       </Row>
     </div >

@@ -12,7 +12,7 @@ class ExtractFromSalesforce:
 
     existing_direct_field_mappings = {}
     for mapping in mapping_type:
-      existing_direct_field_mappings[mapping['fromField']] = mapping['toField']
+      existing_direct_field_mappings[mapping['fromField']] = ''
 
     for salesforce_field in salesforce_fields:
       if existing_direct_field_mappings[salesforce_field['name']]:
@@ -34,7 +34,7 @@ class ExtractFromSalesforce:
 
     existing_priority_field_mappings = {}
     for mapping in mapping_type:
-      existing_priority_field_mappings[mapping['fromField']] = mapping['toField']
+      existing_priority_field_mappings[mapping['fromField']] = ''
 
     for salesforce_field in salesforce_fields:
       if salesforce_field['name'] in existing_priority_field_mappings:
@@ -46,7 +46,6 @@ class ExtractFromSalesforce:
             'workflowId': workflow['id'],
             'externalId': externalId,
             'fromField': salesforce_field['name'],
-            'toField': ''
           }
         })
 
@@ -56,7 +55,7 @@ class ExtractFromSalesforce:
 
     existing_data_mappings = {}
     for mapping in mapping_type:
-      existing_data_mappings[mapping['toField']] = mapping['toField']
+      existing_data_mappings[mapping['toField']] = ''
 
     for salesforce_field in salesforce_fields:
       if salesforce_field['name'] in existing_data_mappings:
