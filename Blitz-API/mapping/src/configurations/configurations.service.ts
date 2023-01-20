@@ -8,16 +8,16 @@ export class ConfigurationsService {
         private readonly redisService: RedisService,
     ) { }
 
-    async root(): Promise<any> {
+    public async root(): Promise<any> {
         return await this.redisService.getClient(environment.redis.name)
     }
 
-    async set(type: string, data: string) {
+    public async set(type: string, data: string) {
         const client = await this.root();
         await client.set(type, data);
     }
 
-    async get(type: string): Promise<string> {
+    public async get(type: string): Promise<string> {
         const client = await this.root();
         return await client.get(type);
     }

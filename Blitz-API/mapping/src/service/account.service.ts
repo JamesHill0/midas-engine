@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class AccountsService {
   constructor(private httpService: HttpService) { }
 
-  async findById(id: string, authBearerToken: string) {
+  public async findById(id: string, authBearerToken: string) {
     const headerRequest = {
       'Authorization': authBearerToken
     }
@@ -14,7 +14,7 @@ export class AccountsService {
     return response.data.data;
   }
 
-  async findByApiKey(apiKey: string) {
+  public async findByApiKey(apiKey: string) {
     const headerRequest = {
       'x-api-key': apiKey
     }
