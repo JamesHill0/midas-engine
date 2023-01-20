@@ -24,11 +24,11 @@ import { ConnectionService } from './service/connection.service';
         ConfigurationsService,
         AuthenticationService,
         AccountsService,
+        ConnectionService,
         {
             provide: APP_INTERCEPTOR,
             useClass: AuthenticationInterceptor,
         },
-        ConnectionService,
     ],
 })
 export class AppModule { }

@@ -9,7 +9,7 @@ import { createConnection, getConnection } from 'typeorm';
 export class ConnectionService {
   constructor(
     private readonly authenticationService: AuthenticationService,
-    private readonly accountService: AccountsService,
+    private readonly accountsService: AccountsService,
     private readonly configurationsService: ConfigurationsService
   ) { }
 
@@ -23,11 +23,11 @@ export class ConnectionService {
   }
 
   public async getAccountById(id: string, authBearerToken: string): Promise<any> {
-    return await this.accountService.findById(id, authBearerToken);
+    return await this.accountsService.findById(id, authBearerToken);
   }
 
   public async getAccountByApiKey(apiKey: string): Promise<any> {
-    return await this.accountService.findByApiKey(apiKey);
+    return await this.accountsService.findByApiKey(apiKey);
   }
 
   public async decrypt(secretKey: string): Promise<any> {
@@ -56,7 +56,7 @@ export class ConnectionService {
   }
 
   public async setUpConnectionUsingApiKey(apiKey: any) {
-    const account = await this.accountService.findByApiKey(apiKey);
+    const account = await this.accountsService.findByApiKey(apiKey);
 
     const conn = await this.authenticationService.decrypt(account['secret']['key']);
     if (account['secret']['type'] == CredentialType.FIRE) {
