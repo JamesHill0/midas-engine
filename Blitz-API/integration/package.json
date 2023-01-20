@@ -31,6 +31,8 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/cryptr": "^4.0.1",
     "@types/uuid-apikey": "^1.4.0",
+    "amqp-connection-manager": "^3.2.2",
+    "amqplib": "^0.8.0",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",

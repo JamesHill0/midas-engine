@@ -27,6 +27,18 @@ async function bootstrap() {
     logger: console,
   });
 
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      urls: [process.env.SERVICE_RABBITMQ],
+      queue: 'blitz-api-integration',
+      noAck: false,
+      queueOptions: {
+        durable: true,
+      },
+    },
+  });
+
   if (ConfigService.get('app.mode') !== 'PROD') {
 
     const options = new DocumentBuilder()
