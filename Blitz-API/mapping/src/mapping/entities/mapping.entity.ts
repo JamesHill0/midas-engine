@@ -49,13 +49,13 @@ export class MappingEntity {
   @Column()
   fromField: string;
 
-  @Column()
+  @Column({ nullable: true })
   toField: string;
 
   @Column()
   fromData: string;
 
-  @Column()
+  @Column({ nullable: true })
   toData: string;
 
   @ManyToOne(() => AccountMappingEntity, account => account.mappings)
