@@ -23,8 +23,7 @@ class ExtractFromSalesforce:
           'data': {
             'workflowId': workflow['id'],
             'externalId': externalId,
-            'fromField': salesforce_field['name'],
-            'toField': ''
+            'fromField': salesforce_field['name']
           }
         })
 
