@@ -62,6 +62,6 @@ export class AccountMappingEntity {
     @JoinColumn()
     mappings: MappingEntity[];
 
-    @Column()
+    @Column({ nullable: true })
     result: string;
 }

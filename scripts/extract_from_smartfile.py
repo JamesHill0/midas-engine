@@ -84,6 +84,7 @@ class ExtractFromSmartFile:
               'name': name,
               'currentJob': 'pre-transformation',
               'protected': False,
+              'workflowId': subworkflow['workflowId'],
               'externalId': current_integration['externalId'],
               'mappings': mappings
             }
