@@ -49,7 +49,6 @@ class ExtractFromSmartFile:
           continue
 
         mappings.append({
-          'id': '',
           'editable': False,
           'fromFieldName': key,
           'toFieldName': '',
