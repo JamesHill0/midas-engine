@@ -48,6 +48,9 @@ class ExtractFromSmartFile:
         if key == '' or json_data[key] == '' or not key or not json_data[key]:
           continue
 
+        if isinstance(json_data[key], (dict, list)):
+          continue
+
         mappings.append({
           'editable': False,
           'fromField': key,

@@ -24,6 +24,9 @@ class ExtractFromWebhook:
         if key == '' or data[key] == '' or not key or not data[key]:
           continue
 
+        if isinstance(json_data[key], (dict, list)):
+          continue
+
         mappings.append({
           'editable': False,
           'fromField': key,
