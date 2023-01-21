@@ -20,11 +20,14 @@ class ExtractFromWebhook:
     for external_data in external_datas:
       mappings = []
       data = external_data['data']
-      for key in data:
+      for key in data.keys():
+        if key == '' or data[key] == '' or not key or not data[key]:
+          continue
+
         mappings.append({
           'editable': False,
-          'fromFieldName': key,
-          'toFieldName': '',
+          'fromField': key,
+          'toField': '',
           'fromData': data[key],
           'toData': ''
         })

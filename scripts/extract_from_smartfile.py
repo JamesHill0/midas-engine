@@ -45,14 +45,14 @@ class ExtractFromSmartFile:
       mappings = []
 
       for key in json_data.keys():
-        if not key:
+        if key == '' or json_data[key] == '' or not key or not json_data[key]:
           continue
 
         mappings.append({
           'editable': False,
-          'fromFieldName': key,
-          'toFieldName': '',
-          'fromData': json_data[key],
+          'fromField': key,
+          'toField': '',
+          'fromData': str(json_data[key]),
           'toData': ''
         })
 
