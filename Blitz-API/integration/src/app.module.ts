@@ -1,5 +1,4 @@
 import { HttpModule, Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { environment } from './config/development.env';
 import { RedisModule } from 'nestjs-redis';
 
@@ -20,17 +19,6 @@ import { ConnectionService } from './service/connection.service';
 
 @Module({
   imports: [
-    ClientsModule.register([{
-      name: 'UPDATE_ACCOUNT_MAPPING_SERVICE',
-      transport: Transport.RMQ,
-      options: {
-        urls: [process.env.SERVICE_RABBITMQ],
-        queue: 'blitz-api-mapping',
-        queueOptions: {
-          durable: true
-        }
-      }
-    }]),
     RedisModule.register(environment.redis),
     HttpModule,
     DatabasesModule,
