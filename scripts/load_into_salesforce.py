@@ -94,7 +94,7 @@ class LoadIntoSalesforce:
         'apiKey': api_key,
         'integrationId': subworkflow['integrationId'],
         'tableName': subworkflow['tableName'],
-        'account_mapping_ids': for_create_account_mapping_ids
+        'account_mapping_ids': for_create_account_mapping_ids,
         'data': for_creation
       })
 
