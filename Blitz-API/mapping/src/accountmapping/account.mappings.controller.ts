@@ -101,7 +101,7 @@ export class AccountMappingsController {
     }
   }
 
-  @Get('/getFields')
+  @Post('/getFields')
   public async getFields(@Query() query, @Res() res): Promise<any> {
     try {
       let account_mappings = await this.accountMappingsService.findAll(query);
