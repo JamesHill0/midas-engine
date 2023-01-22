@@ -61,7 +61,12 @@ class TransformUsingDataMapping:
       for mapping in account_mapping['mappings']:
         if mapping['fromField'] in dm:
           data_mapping = dm[mapping['fromField']]
-          formatted_data = self.__format_map(mapping['fromData'], data_mapping)
+
+          formatted_data = ''
+          try:
+            formatted_data = self.__format_map(mapping['fromData'], data_mapping)
+          except:
+            continue
 
           if formatted_data:
             self.mq.publish('blitz-api-mapping', 'mappings.updated', {

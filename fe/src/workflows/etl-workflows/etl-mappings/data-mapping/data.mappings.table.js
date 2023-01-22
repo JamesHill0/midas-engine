@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Table, Space, notification, Drawer } from "antd";
+import { Table, Space, Select, notification, Drawer, Input } from "antd";
 
 import DataMappingOptionsTable from "./data.mapping.options.table";
 import DataMappingForm from "./data.mapping.form";
+import api from "../../../../data";
 
 const FORMAT_TYPE_OPTIONS = [
   {
@@ -37,16 +38,78 @@ const FORMAT_TYPE_OPTIONS = [
 
 function DataMappingsTable({ dataMappingsList }) {
   const [setupDrawer, setSetupDrawer] = useState(false);
+  const [selectedDataMapping, setSelectedDataMapping] = useState({});
   const [drawerTitle, setupDrawerTitle] = useState('');
 
-  function showSetupDrawer(item) {
+  function showAddOptionDrawer(item) {
     setupDrawerTitle(`Setup Data Mapping for ${item.toField}`);
+    setSelectedDataMapping(item);
     setSetupDrawer(true);
   }
 
-  function closeSetupDrawer() {
+  function closeAddOptionDrawer() {
     setupDrawerTitle('');
     setSetupDrawer(false);
+  }
+
+  function handleUpdateFormatType(item, value) {
+    api.Mapping(`data-mappings/${item.id}`).Patch({ "formatType": value }, response => {
+      if (response.Error == null) {
+        notification["success"]({
+          placement: "bottomRight",
+          message: "200",
+          description: `Data mapping for ${item.toField} format type has been updated!`
+        })
+        window.location.reload();
+        return
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+    })
+  }
+
+  function handleUpdateFormatting(item, value) {
+    api.Mapping(`data-mappings/${item.id}`).Patch({ "formatting": value }, response => {
+      if (response.Error == null) {
+        notification["success"]({
+          placement: "bottomRight",
+          message: "200",
+          description: `Data mapping for ${item.toField} formatting has been updated!`
+        })
+        window.location.reload();
+        return
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+    })
+  }
+
+  function handleRemoveMapping(item) {
+    api.Mapping(`data-mappings/${item.id}`).Patch({ "formatType": "", "formatting": "" }, response => {
+      if (response.Error == null) {
+        notification["success"]({
+          placement: "bottomRight",
+          message: "200",
+          description: `Data mapping for ${item.toField} has been removed!`
+        })
+        window.location.reload();
+        return
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+    })
   }
 
   const columns = [
@@ -57,17 +120,28 @@ function DataMappingsTable({ dataMappingsList }) {
     },
     {
       title: 'Format Type',
-      dataIndex: 'formatType',
-      key: 'formatType'
+      key: 'formatType',
+      render: item => {
+        return <Select
+          defaultValue={item.formatType}
+          style={{ width: 200 }}
+          onChange={(value) => handleUpdateFormatType(item, value)}
+          options={FORMAT_TYPE_OPTIONS}
+        />
+      }
     },
     {
       title: 'Formatting',
       key: 'formatting',
       render: item => {
-        if (item.formatType == 'conversion') {
+        if (item.formatType == null) {
+          return 'UNASSIGNED'
+        }
+
+        if (!['date', 'number'].includes(item.formatType)) {
           return 'NOT APPLICABLE';
         } else {
-          return item;
+          return <Input onChange={(value) => handleUpdateFormatting(item, value)} />;
         }
       }
     },
@@ -76,9 +150,8 @@ function DataMappingsTable({ dataMappingsList }) {
       key: 'action',
       render: item => (
         <Space size="middle">
-          {<a onClick={() => showSetupDrawer(item)}>Setup</a>}
-          {item.formatType != '' && <a>Remove Mapping</a>}
-          {item.formatType == 'conversion' && <a>Add Option</a>}
+          {(item.formatType != null && item.formatType != '') && <a onClick={() => handleRemoveMapping(item)}>Remove Mapping</a>}
+          {item.formatType == 'conversion' && <a onClick={() => showAddOptionDrawer(item)}>Add Option</a>}
         </Space>
       )
     }
@@ -105,11 +178,11 @@ function DataMappingsTable({ dataMappingsList }) {
       <Drawer
         title={drawerTitle}
         placement="right"
-        onClose={closeSetupDrawer}
+        onClose={closeAddOptionDrawer}
         getContainer={false}
         visible={setupDrawer}
       >
-        <DataMappingForm closeSetupDrawer={closeSetupDrawer} formatTypeOptions={FORMAT_TYPE_OPTIONS} />
+        <DataMappingForm closeAddOptionDrawer={closeAddOptionDrawer} dataMapping={selectedDataMapping} />
       </Drawer>
     </div>
   )

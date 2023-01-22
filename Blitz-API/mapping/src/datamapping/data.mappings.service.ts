@@ -80,7 +80,7 @@ class DataMappingsTypeorm implements DataMappingsConfig {
   public async findAll(query: any): Promise<DataMapping[]> {
     const repository = await this.repository();
     const queryBuilderName = 'data-mappings';
-    let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName);
+    let selectQueryBuilder = repository.createQueryBuilder(queryBuilderName).leftJoinAndSelect(`${queryBuilderName}.options`, 'data-mapping-options');
 
     let limit = 0;
     if (query.limit) {

@@ -5,10 +5,12 @@ import PriorityFieldMappingForm from "./priority.field.mapping.form";
 
 function PriorityFieldMappingsTable({ setIsLoading, priorityFieldMappingsList, fieldsList }) {
   const [setupDrawer, setSetupDrawer] = useState(false);
+  const [selectedPriorityFieldMapping, setSelectedPriorityFieldMapping] = useState({});
   const [drawerTitle, setupDrawerTitle] = useState('');
 
   function showSetupDrawer(item) {
     setupDrawerTitle(`Setup Priority Mapping for ${item.fromField}`);
+    setSelectedPriorityFieldMapping(item);
     setSetupDrawer(true);
   }
 
@@ -53,7 +55,7 @@ function PriorityFieldMappingsTable({ setIsLoading, priorityFieldMappingsList, f
         getContainer={false}
         visible={setupDrawer}
       >
-        <PriorityFieldMappingForm closeSetupDrawer={closeSetupDrawer} fieldsList={fieldsList} />
+        <PriorityFieldMappingForm closeSetupDrawer={closeSetupDrawer} fieldsList={fieldsList} priorityFieldMapping={selectedPriorityFieldMapping} />
       </Drawer>
     </div>
   )

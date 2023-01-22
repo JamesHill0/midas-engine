@@ -36,20 +36,10 @@ function PriorityFieldMappings({ workflowId }) {
 
   function loadFieldsList() {
     setIsLoading(true);
-    api.Mapping(`accounts/getFields?q_workflowId=${workflowId}`).Get({}, response => {
+    api.Mapping(`accounts/getFields?q_workflowId=${workflowId}`).Post({}, response => {
       if (response.Error == null) {
         const datas = response.Data;
-
-        let mappings = [];
-        datas.map((account) => {
-          account.mappings.map((mapping) => {
-            if (!mapping.includes(mapping['fromField'])) {
-              mappings.push(mapping['fromField']);
-            }
-          })
-        })
-
-        setFieldsList(mappings);
+        setFieldsList(datas);
         setIsLoading(false);
         return;
       }

@@ -11,6 +11,7 @@ function DirectFieldMappingsTable({ setIsLoading, directFieldMappingsList, field
           message: "200",
           description: `${fromField} has been setup to map to ${value} successfully!`
         })
+        window.location.reload();
         setIsLoading(false);
         return;
       }

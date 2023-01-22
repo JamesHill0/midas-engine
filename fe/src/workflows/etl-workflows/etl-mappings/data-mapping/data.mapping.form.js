@@ -1,13 +1,30 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, notification } from "antd";
+import api from "../../../../data";
 
-const { Option } = Select;
-
-function DataMappingForm({ closeSetupDrawer, formatTypeOptions }) {
-  const [formatType, setFormatType] = useState('');
-
+function DataMappingForm({ closeSetupDrawer, dataMapping }) {
   function handleSubmit(value) {
-    console.log(value);
+    api.Mapping(`data-mapping-options`).Post({
+      'dataMappingId': dataMapping.id,
+      'fromData': value.fromData,
+      'toData': value.toData
+    }, response => {
+      if (response.Error == null) {
+        notification["success"]({
+          placement: "bottomRight",
+          message: "200",
+          description: `Data mapping option created for ${dataMapping.toField}!`
+        })
+        window.location.reload();
+        return;
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+    })
     closeSetupDrawer();
   }
 
@@ -18,37 +35,22 @@ function DataMappingForm({ closeSetupDrawer, formatTypeOptions }) {
         textAlign: "left"
       }}
     >
-      Format Type:<br />
-      <Form.Item name="formatType" rules={[{
+      From Data:<br />
+      <Form.Item name="fromData" rules={[{
         required: true,
-        message: "Please input the format type"
+        message: "Please input the possible original data"
       }]}>
-        <Select
-          style={{ marginTop: 10, width: 300 }}
-          showSearch
-          placeholder="Select format type"
-          optionFilterProp="children"
-          filterOptions={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          onChange={(value) => setFormatType(value)}
-          options={formatTypeOptions}
-        >
-        </Select>
+        <Input />
 
       </Form.Item>
-      {(formatType !== '' && ['date', 'number'].includes(formatType)) && <div>
-        Formatting:<br />
-        <Form.Item name="formatting" rules={[{
-          required: () => {
-            if (formatType !== 'DIRECT CONVERSION') return true;
-            return false;
-          },
-          message: "Please input the formatting"
-        }]}>
-          <Input
-            style={{ marginTop: 10 }}
-          ></Input>
-        </Form.Item>
-      </div>}
+      To Data:<br />
+      <Form.Item name="toData" rules={[{
+        required: true,
+        message: "Please input the data translation"
+      }]}>
+        <Input />
+
+      </Form.Item>
 
       <Form.Item>
         <Button

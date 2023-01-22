@@ -1,10 +1,32 @@
 import React from "react";
-import { Form, InputNumber, Button, Select } from "antd";
+import { Form, InputNumber, Button, Select, notification } from "antd";
+import api from "../../../../data";
 
 const { Option } = Select;
 
-function PriorityFieldMappingForm({ closeSetupDrawer, fieldsList }) {
+function PriorityFieldMappingForm({ closeSetupDrawer, fieldsList, priorityFieldMapping }) {
   function handleSubmit(value) {
+    api.Mapping('priority-field-mapping-values').Post({
+      'priorityId': priorityFieldMapping.id,
+      'toField': value.toField,
+      'level': value.level
+    }, response => {
+      if (response.Error == null) {
+        notification["success"]({
+          placement: "bottomRight",
+          message: "200",
+          description: `Priority Field mapping value set for ${value.toField} to level ${value.level}!`
+        })
+        window.location.reload();
+        return;
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+    })
     closeSetupDrawer();
   }
 
