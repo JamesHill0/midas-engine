@@ -73,13 +73,17 @@ export class SmartFilesConnService {
     }
 
     let page = data['pages'] + 1
-    for (let currentPage = 2; currentPage < page; currentPage++) {
-      response = await this.httpService.get(`${url}?children=true&page=${currentPage}`, { headers: headerRequest }).toPromise();
-      data = response.data;
-      if (data['children'].length > 0) {
-        files.push(data['children']);
+    files = await new Promise(async (resolve, _) => {
+      for (let currentPage = 2; currentPage < page; currentPage++) {
+        response = await this.httpService.get(`${url}?children=true&page=${currentPage}`, { headers: headerRequest }).toPromise();
+        data = response.data;
+        if (data['children'].length > 0) {
+          files.push(data['children']);
+        }
       }
-    }
+
+      resolve(files);
+    })
 
     return files;
   }

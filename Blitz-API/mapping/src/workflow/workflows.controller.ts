@@ -45,7 +45,7 @@ export class WorkflowsController {
   }
 
   @Patch('/:id')
-  public async update(@Res() res, @Param('id') id, dto: any): Promise<any> {
+  public async update(@Res() res, @Param('id') id, @Body() dto: any): Promise<any> {
     try {
       let data = await this.workflowsService.update(id, dto);
       return res.status(HttpStatus.OK).json({

@@ -142,9 +142,7 @@ export class SalesforcesConnService {
 
         let data = { "results": [] }
         for (let i = 0; i < ret.length; i++) {
-          if (ret[i].success) {
-            data["results"].push(ret);
-          }
+          data["results"].push(ret[i]);
         }
 
         resolve(data);
@@ -178,9 +176,7 @@ export class SalesforcesConnService {
 
         let data = { "results": [] }
         for (let i = 0; i < ret.length; i++) {
-          if (ret[i].success) {
-            data["results"].push(ret);
-          }
+          data["results"].push(ret[i]);
         }
 
         resolve(data);

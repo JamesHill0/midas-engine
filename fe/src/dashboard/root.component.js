@@ -8,7 +8,7 @@ import { capitalize, toLocal } from "../utils/common";
 import DashboardControlPanel from "./dashboard.control.panel";
 import DashboardWorkflowsTable from "./dashboard.workflows.table";
 
-const initialMessage = {
+let initialMessage = {
   status: "stopped",
   logs: "Initializing script logs...\n",
   updated: ""
@@ -37,8 +37,9 @@ function Dashboard() {
       loadLoadLogs();
     }, 15000);
 
-    intervals.push(interval);
-    setIntervals(intervals);
+    let newIntervals = intervals;
+    newIntervals.push(interval);
+    setIntervals(newIntervals);
   }
 
   function loadExtractLogs() {

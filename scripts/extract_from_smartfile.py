@@ -45,7 +45,10 @@ class ExtractFromSmartFile:
       mappings = []
 
       for key in json_data.keys():
-        if key == '' or json_data[key] == '' or not key or not json_data[key]:
+        if key == '' or not key or key == 'PDFList':
+          continue
+
+        if json_data[key] == '' or not json_data[key]:
           continue
 
         if isinstance(json_data[key], (dict, list)):
@@ -65,7 +68,7 @@ class ExtractFromSmartFile:
 
         if len(account_mapping) == 0:
           existing_account_mapping = account_mapping[0]
-          if existing_account_mapping['currentJob'] == 'extraction':
+          if existing_account_mapping['currentJob'] == 'extract':
 
             data = {}
             for mapping in existing_account_mapping['mappings']:

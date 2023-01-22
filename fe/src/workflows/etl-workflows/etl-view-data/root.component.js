@@ -49,6 +49,23 @@ function EtlViewData() {
     });
   }
 
+  function toggleAccountMappingStatus(id, status) {
+    setIsLoading(true);
+    api.Mapping(`accounts/${id}`).Patch({ 'currentJob': status }, response => {
+      if (response.Error == null) {
+        window.location.reload();
+        return;
+      }
+
+      notification["error"]({
+        placement: "bottomRight",
+        message: "500",
+        description: "Internal Server Error"
+      })
+      setIsLoading(false);
+    })
+  }
+
   return (
     <div className="etl-view-data">
       {isLoading && <Loader />}
@@ -58,7 +75,7 @@ function EtlViewData() {
         <Breadcrumb.Item>View Data</Breadcrumb.Item>
       </Breadcrumb>
       <br />
-      <EtlViewDataTable dataList={dataList} />
+      <EtlViewDataTable dataList={dataList} toggleAccountMappingStatus={toggleAccountMappingStatus} />
     </div>
   )
 }

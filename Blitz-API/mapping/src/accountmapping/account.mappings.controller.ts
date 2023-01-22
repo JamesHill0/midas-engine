@@ -101,6 +101,38 @@ export class AccountMappingsController {
     }
   }
 
+  @Get('/getFields')
+  public async getFields(@Query() query, @Res() res): Promise<any> {
+    try {
+      let account_mappings = await this.accountMappingsService.findAll(query);
+
+      let datas = await new Promise(async (resolve, _) => {
+        let mappings = [];
+        account_mappings.map((account_mapping) => {
+          account_mapping.mappings.map((mapping) => {
+            if (!mappings.includes(mapping['fromField'])) {
+              mappings.push(mapping['fromField'])
+            }
+          })
+        })
+
+        resolve(mappings);
+      })
+
+      return res.status(HttpStatus.OK).json({
+        data: datas,
+        message: 'Success',
+        status: 200,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: 'Internal Server Error',
+        status: 500,
+      });
+    }
+  }
+
   @MessagePattern('accounts.mappings.created')
   async handleAccountMappingsCreated(@Payload() payload: any, @Ctx() context: RmqContext) {
     try {

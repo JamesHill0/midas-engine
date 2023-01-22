@@ -41,6 +41,7 @@ export class MappingViewModel {
                 if (response.data) {
                     this.Data = response.data;
                 }
+                this.Error = response.Error;
                 this.Message = response.message;
                 callback(this);
             }
@@ -53,6 +54,7 @@ export class MappingViewModel {
                 if (response.data) {
                     this.Data = response.data;
                 }
+                this.Error = response.Error;
                 this.Message = response.message;
                 callback(this);
             }

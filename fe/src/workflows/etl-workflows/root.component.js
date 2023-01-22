@@ -43,8 +43,7 @@ function EtlWorkflows() {
 
     api.Mapping(`workflows/${workflowId}`).Patch({ "status": status }, response => {
       if (response.Error == null) {
-        loadWorkflows();
-        setIsLoading(false);
+        window.location.reload();
         return;
       }
 

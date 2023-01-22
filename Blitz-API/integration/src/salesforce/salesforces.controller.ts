@@ -1,4 +1,4 @@
-import { Controller, Res, Param, Body, Get, Post, HttpStatus, Logger, Patch, Delete } from '@nestjs/common';
+import { Controller, Res, Param, Body, Get, Post, HttpStatus, Logger, Patch, Delete, Inject } from '@nestjs/common';
 import { AuthenticationService } from 'src/service/authentication.service';
 import { SalesforcesService } from './salesforces.service'
 import { SalesforcesConnService } from './salesforces.conn.service';
@@ -8,7 +8,7 @@ import { AccountsService } from 'src/service/account.service';
 import { ConfigurationsService } from 'src/configurations/configurations.service';
 import { createConnection, getConnection } from 'typeorm';
 import { CredentialType } from 'src/enums/credential.type';
-import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
+import { ClientProxy, Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { ConnectionService } from 'src/service/connection.service';
 
 @Controller('salesforces')
@@ -18,7 +18,8 @@ export class SalesforcesController {
     private readonly salesforcesService: SalesforcesService,
     private readonly salesforcesConnService: SalesforcesConnService,
     private readonly authenticationsService: AuthenticationService,
-    private readonly connectionService: ConnectionService
+    private readonly connectionService: ConnectionService,
+    @Inject('UPDATE_ACCOUNT_MAPPING_SERVICE') private updateAccountMappingService: ClientProxy
   ) { }
 
   @Get()
@@ -284,6 +285,17 @@ export class SalesforcesController {
       let sf = await this.salesforcesService.findById(integrationId);
       let data = await this.salesforcesConnService.bulkCreate(sf.secret, tableName, datas);
 
+      let account_mapping_ids = payload['account_mapping_ids'];
+      data["results"].map((result, index) => {
+        this.updateAccountMappingService.emit('accounts.mapping.updated', {
+          'apiKey': apiKey,
+          'id': account_mapping_ids[index],
+          'data': {
+            'result': result
+          }
+        })
+      })
+
       const channel = context.getChannelRef();
       const originalMsg = context.getMessage();
 
@@ -306,6 +318,17 @@ export class SalesforcesController {
 
       let sf = await this.salesforcesService.findById(integrationId);
       let data = await this.salesforcesConnService.bulkUpdate(sf.secret, tableName, datas);
+
+      let account_mapping_ids = payload['account_mapping_ids'];
+      data["results"].map((result, index) => {
+        this.updateAccountMappingService.emit('accounts.mapping.updated', {
+          'apiKey': apiKey,
+          'id': account_mapping_ids[index],
+          'data': {
+            'result': result
+          }
+        })
+      })
 
       const channel = context.getChannelRef();
       const originalMsg = context.getMessage();

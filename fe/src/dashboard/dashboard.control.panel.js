@@ -1,8 +1,6 @@
 import React from "react";
 import { Card, Input, Tag } from "antd";
 
-import { SyncOutlined, ExclamationCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
-
 const { TextArea } = Input;
 
 function DashboardControlPanel({ title, message }) {
