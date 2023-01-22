@@ -134,7 +134,7 @@ function DataMappingsTable({ dataMappingsList }) {
       title: 'Formatting',
       key: 'formatting',
       render: item => {
-        if (item.formatType == null) {
+        if (item.formatType == null || item.formatType == '') {
           return 'UNASSIGNED'
         }
 
@@ -165,7 +165,7 @@ function DataMappingsTable({ dataMappingsList }) {
         dataSource={dataMappingsList}
         expandable={{
           expandedRowRender: (record) => {
-            <DataMappingOptionsTable dataMapping={record} />
+            return <DataMappingOptionsTable dataMapping={record} />
           },
           rowExpandable: (record) => {
             if (record.formatType == 'conversion') {

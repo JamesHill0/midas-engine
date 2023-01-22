@@ -3,7 +3,7 @@ import { Space, Table, notification } from "antd";
 import api from "../../../../data";
 
 function PriorityFieldMappingValuesTable({ priorityFieldMapping }) {
-  function deletePriorityFieldMappingValue(id) {
+  function handleDeletePriorityFieldMappingValue(id) {
     api.Mapping(`priority-field-mapping-values/${id}`).Delete({}, response => {
       console.log(response);
       if (response.Error == null) {
@@ -40,7 +40,7 @@ function PriorityFieldMappingValuesTable({ priorityFieldMapping }) {
       key: 'action',
       render: item => (
         <Space size="middle">
-          {<a onClick={() => deletePriorityFieldMappingValue(item.id)}>Delete</a>}
+          {<a onClick={() => handleDeletePriorityFieldMappingValue(item.id)}>Delete</a>}
         </Space>
       )
     }
