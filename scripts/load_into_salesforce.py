@@ -1,10 +1,14 @@
 from blitz import Blitz
 from rabbitmq import RabbitMQ
+from logger import Logger
 
 class LoadIntoSalesforce:
   def __init__(self):
+    self.log_name = 'load'
     self.blitz = Blitz()
     self.mq = RabbitMQ()
+
+    self.logger = Logger('qa')
 
   def __create_salesforce_object(self, account_mapping):
     salesforce_object = {}
@@ -20,8 +24,13 @@ class LoadIntoSalesforce:
     headers = { 'x-api-key': api_key }
     workflow_id = subworkflow['workflowId']
 
+    self.logger.info(api_key, self.log_name, 'retrieving salesforce integration')
     current_integration = self.blitz.integration_salesforce_get_by_id(headers, subworkflow['integrationId'])
+    self.logger.info(api_key, self.log_name, 'successfully retrived salesforce integration : ' + current_integration['externalId'])
+
+    self.logger.info(api_key, self.log_name, 'retrieving subworkflows by workflow')
     workflow_subworkflows = self.blitz.mapping_get_subworkflows_by_workflow_id(headers, workflow_id)
+    self.logger.info(api_key, self.log_name, 'successfully retrieved subworkflows by workflow')
 
     integration = {}
     for workflow_subworkflow in workflow_subworkflows:
@@ -40,7 +49,9 @@ class LoadIntoSalesforce:
     if not integration:
       return
 
+    self.logger.info(api_key, self.log_name, 'retrieving account mappings : ' + integration['externalId'])
     account_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, integration['externalId'])
+    self.logger.info(api_key, self.log_name, 'successfully retrieved account mappings : ' + integration['externalId'])
 
     if not account_mappings:
       return
@@ -54,7 +65,9 @@ class LoadIntoSalesforce:
       if account_mapping['currentJob'] != 'load':
         continue
 
+      self.logger.info(api_key, self.log_name, 'creating a salesforce object using account mapping')
       salesforce_object = self.__create_salesforce_object(account_mapping)
+      self.logger.info(api_key, self.log_name, 'successfully created as salesforce object using account mapping')
 
       if not account_mapping['result']:
         # do create
@@ -76,6 +89,7 @@ class LoadIntoSalesforce:
       })
 
     if len(for_creation) > 0:
+      self.logger.info(api_key, self.log_name, 'sending request to salesforce integration for bulk creation')
       self.mq.publish('blitz-api-integration', 'integrations.salesforce.bulk.created', {
         'apiKey': api_key,
         'integrationId': subworkflow['integrationId'],
@@ -85,6 +99,7 @@ class LoadIntoSalesforce:
       })
 
     if len(for_update) > 0:
+      self.logger.info(api_key, self.log_name, 'sending request to salesforce integration for bulk update')
       self.mq.publish('blitz-api-integration', 'integrations.salesforce.bulk.updated', {
         'apiKey': api_key,
         'integrationId': subworkflow['integrationId'],
