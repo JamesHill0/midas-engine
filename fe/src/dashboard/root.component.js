@@ -24,9 +24,6 @@ function Dashboard() {
 
   useEffect(() => {
     loadData();
-    loadExtractLogs();
-    loadTransformLogs();
-    loadLoadLogs();
     loadWorkflows();
   }, []);
 
@@ -43,16 +40,15 @@ function Dashboard() {
   }
 
   function loadExtractLogs() {
-    api.Logger(`apps?q_name=extract`).Get({}, response => {
+    api.Logger(`apps?q_name=extract&limit=50`).Get({}, response => {
       if (response.Error == null) {
         let data = response.Data;
-        let newConfig = extract;
-        newConfig.logs = [];
+        let newConfig = initialMessage;
+        newConfig.logs = '';
         if (data.length > 0) {
           data.map((d) => {
             newConfig.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
           });
-
           setExtract(newConfig);
         }
       }
@@ -60,11 +56,11 @@ function Dashboard() {
   }
 
   function loadTransformLogs() {
-    api.Logger(`apps?q_name=transform`).Get({}, response => {
+    api.Logger(`apps?q_name=transform&limit=50`).Get({}, response => {
       if (response.Error == null) {
         let data = response.Data;
-        let newConfig = transform;
-        newConfig.logs = [];
+        let newConfig = initialMessage;
+        newConfig.logs = '';
         if (data.length > 0) {
           data.map((d) => {
             newConfig.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
@@ -77,11 +73,11 @@ function Dashboard() {
   }
 
   function loadLoadLogs() {
-    api.Logger(`apps?q_name=load`).Get({}, response => {
+    api.Logger(`apps?q_name=load&limit=50`).Get({}, response => {
       if (response.Error == null) {
         let data = response.Data;
-        let newConfig = load;
-        newConfig.logs = [];
+        let newConfig = initialMessage;
+        newConfig.logs = '';
         if (data.length > 0) {
           data.map((d) => {
             newConfig.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
