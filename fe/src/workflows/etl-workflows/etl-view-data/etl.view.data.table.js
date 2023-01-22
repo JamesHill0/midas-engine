@@ -25,12 +25,12 @@ function EtlViewDataTable({ dataList }) {
     <Table
       columns={columns}
       dataSource={dataList}
-      expandable={{
-        expandedRowRender: (record) => {
+      // expandable={{
+      //   expandedRowRender: (record) => {
 
-        },
-        rowExpandable: true
-      }}
+      //   },
+      //   rowExpandable: true
+      // }}
     />
   )
 }

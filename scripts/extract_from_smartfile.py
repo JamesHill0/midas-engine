@@ -63,11 +63,12 @@ class ExtractFromSmartFile:
       if len(mappings) > 0:
         account_mapping = self.__check_if_account_mapping_is_existing(headers, name)
 
-        if account_mapping:
-          if account_mapping['currentJob'] == 'extraction':
+        if len(account_mapping) == 0:
+          existing_account_mapping = account_mapping[0]
+          if existing_account_mapping['currentJob'] == 'extraction':
 
             data = {}
-            for mapping in account_mapping['mappings']:
+            for mapping in existing_account_mapping['mappings']:
               data.append({ 'id': mapping['id'] })
 
             self.mq.publish('blitz-api-mapping', 'mappings.deleted', {
@@ -77,7 +78,7 @@ class ExtractFromSmartFile:
 
             self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', {
               'apiKey': api_key,
-              'id': account_mapping['id'],
+              'id': existing_account_mapping['id'],
               'data': {
                 'currentJob': 'pre-transformation',
                 'mappings': mappings
