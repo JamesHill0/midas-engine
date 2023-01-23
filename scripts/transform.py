@@ -22,10 +22,19 @@ class Transform:
 
     data = datas[0]
     if data['status'] == 'running':
+      self.logger.info('', self.log_name, 'job is still running. checking again later')
       updated_date = datetime.datetime.strptime(data['updated'], "%d%m%Y").date()
-      if (datetime.now() - updated_date).minutes > 60:
+      if (datetime.now() - updated_date).minutes > 180:
         self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
+      return
     return data
+
+  def __terminate_schedule(self):
+    datas = self.blitz.account_get_jobs_by_name('transform')
+
+    data = datas[0]
+    self.logger.info('', self.log_name, 'job finished running')
+    self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
 
   def __get_accounts_api_keys(self):
     accounts = self.blitz.account_get_accounts()
@@ -90,8 +99,10 @@ class Transform:
   def run(self):
     try:
       self.__execute()
+      self.__terminate_schedule()
     except:
       self.logger.exception('', self.log_name, 'something went wrong')
+      self.__terminate_schedule()
 
 if __name__ == '__main__':
   app = Transform()
