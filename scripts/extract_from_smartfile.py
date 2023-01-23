@@ -61,15 +61,18 @@ class ExtractFromSmartFile:
       self.logger.info(api_key, self.log_name, 'creating account mappings for file : ' + f['name'])
       for key in json_data.keys():
         if key == '' or key == 'PDFList':
-          self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key)
+          self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key + ' key is not accepted')
           continue
 
         if json_data[key] == '':
-          self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key)
+          self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key + ' value is blank')
           continue
 
-        if isinstance(json_data[key], (dict, list)):
-          self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key)
+        if isinstance(json_data[key], (float, int, str)):
+          # do nothing
+          self.logger.info(api_key, self.log_name, 'adding mapping for : ' + key + ' type of ' + type(json_data[key]))
+        else:
+          self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key + ' type of ' + type(json_data[key]))
           continue
 
         mappings.append({
