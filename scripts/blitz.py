@@ -37,7 +37,7 @@ class Blitz:
     return self.__get_response(url, {})
 
   def account_update_job(self, id, body):
-    url = self.base_url + '/account/jobs/' + id
+    url = self.base_url + '/account/jobs/' + str(id)
     return self.__update(url, body)
 
   def mapping_get_account_mapping_by_name(self, headers, name):
