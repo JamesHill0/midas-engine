@@ -60,11 +60,11 @@ class ExtractFromSmartFile:
 
       self.logger.info(api_key, self.log_name, 'creating account mappings for file : ' + f['name'])
       for key in json_data.keys():
-        if key == '' or not key or key == 'PDFList':
+        if key == '' or key == 'PDFList':
           self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key)
           continue
 
-        if json_data[key] == '' or not json_data[key]:
+        if json_data[key] == '':
           self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key)
           continue
 
