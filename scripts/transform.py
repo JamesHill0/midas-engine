@@ -26,7 +26,9 @@ class Transform:
       updated_date = datetime.datetime.strptime(data['updated'], "%d%m%Y").date()
       if (datetime.now() - updated_date).minutes > 180:
         self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
-      return
+      return { 'status': 'suspended' }
+
+    self.blitz.account_update_job(data['id'], { 'status': 'running' })
     return data
 
   def __terminate_schedule(self):
@@ -63,6 +65,8 @@ class Transform:
     if app_state['status'] == 'running' or app_state['status'] == 'suspended':
       self.logger.info('', self.log_name, 'did not create a new run instance')
       return
+
+    self.blitz.account_update_job(app_state['id'], { 'status': 'running' })
 
     self.logger.info('', self.log_name, 'retrieving all accounts')
     api_keys = self.__get_accounts_api_keys()
