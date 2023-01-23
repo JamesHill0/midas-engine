@@ -70,9 +70,9 @@ class ExtractFromSmartFile:
 
         if isinstance(json_data[key], (float, int, str)):
           # do nothing
-          self.logger.info(api_key, self.log_name, 'adding mapping for : ' + key + ' type of ' + type(json_data[key]))
+          self.logger.info(api_key, self.log_name, f'adding mapping for : {key} type of {type(json_data[key])}')
         else:
-          self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key + ' type of ' + type(json_data[key]))
+          self.logger.info(api_key, self.log_name, f'skipping creating mapping : {key} type of {type(json_data[key])}')
           continue
 
         mappings.append({
