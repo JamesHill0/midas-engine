@@ -21,6 +21,19 @@ class ExtractFromSmartFile:
     account_mapping = self.blitz.mapping_get_account_mapping_by_name(headers, name)
     return account_mapping
 
+  def __filter_json_data(self, json_data):
+    key, value = json_data
+    if key == '' or key == 'PDFList':
+      return False
+
+    if filtered_json_data[key] == '':
+      return False
+
+    if isinstance(filtered_json_data[key], (float, int, str)):
+      return True
+    else:
+      return False
+
   def create_account_mapping(self, api_key, subworkflow):
     headers = { 'x-api_key': api_key }
     self.logger.info(api_key, self.log_name, 'retrieving smart file lists')
@@ -58,28 +71,15 @@ class ExtractFromSmartFile:
 
       mappings = []
 
+      self.logger.info(api_key, self.log_name, 'filtering json data for file : ' + f['name'])
+      filtered_json_data = dict(filter(self.__filter_json_data, json_data.items()))
       self.logger.info(api_key, self.log_name, 'creating account mappings for file : ' + f['name'])
-      for key in json_data.keys():
-        if key == '' or key == 'PDFList':
-          self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key + ' key is not accepted')
-          continue
-
-        if json_data[key] == '':
-          self.logger.info(api_key, self.log_name, 'skipping creating mapping : ' + key + ' value is blank')
-          continue
-
-        if isinstance(json_data[key], (float, int, str)):
-          # do nothing
-          self.logger.info(api_key, self.log_name, f'adding mapping for : {key} type of {type(json_data[key])}')
-        else:
-          self.logger.info(api_key, self.log_name, f'skipping creating mapping : {key} type of {type(json_data[key])}')
-          continue
-
+      for key in filtered_json_data.keys():
         mappings.append({
           'editable': False,
           'fromField': key,
           'toField': '',
-          'fromData': str(json_data[key]),
+          'fromData': str(filtered_json_data[key]),
           'toData': ''
         })
 
