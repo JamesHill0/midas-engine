@@ -26,10 +26,10 @@ class ExtractFromSmartFile:
     if key == '' or key == 'PDFList':
       return False
 
-    if filtered_json_data[key] == '':
+    if json_data[key] == '':
       return False
 
-    if isinstance(filtered_json_data[key], (float, int, str)):
+    if isinstance(json_data[key], (float, int, str)):
       return True
     else:
       return False
