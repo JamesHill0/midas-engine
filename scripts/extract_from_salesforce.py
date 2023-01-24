@@ -15,7 +15,7 @@ class ExtractFromSalesforce:
     externalId = integration['externalId']
     self.logger.info(headers['x-api-key'], self.log_name, 'retrieving existing direct field mapping by external id')
     mapping_type = self.blitz.mapping_get_direct_field_mapping_by_external_id(headers, externalId)
-    self.logger.info(headers['x-api-key'], self.log_name, 'successfully retrieved existing direct field mappings'])
+    self.logger.info(headers['x-api-key'], self.log_name, 'successfully retrieved existing direct field mappings')
 
     existing_direct_field_mappings = {}
     for mapping in mapping_type:
@@ -40,7 +40,7 @@ class ExtractFromSalesforce:
     externalId = integration['externalId']
     self.logger.info(headers['x-api-key'], self.log_name, 'retrieving existing priority field mapping by external id')
     mapping_type = self.blitz.mapping_get_priority_field_mapping_by_external_id(headers, externalId)
-    self.logger.info(headers['x-api-key', self.log_name, 'successfully retrieved existing priority field mappings'])
+    self.logger.info(headers['x-api-key'], self.log_name, 'successfully retrieved existing priority field mappings')
 
     existing_priority_field_mappings = {}
     for mapping in mapping_type:
@@ -65,7 +65,7 @@ class ExtractFromSalesforce:
     externalId = integration['externalId']
     self.logger.info(headers['x-api-key'], self.log_name, 'retrieving existing data mapping by external id')
     mapping_type = self.blitz.mapping_get_data_mapping_by_external_id(headers, externalId)
-    self.logger.info(headers['x-api-key', self.log_name, 'successfully retrieved existing data mappings'])
+    self.logger.info(headers['x-api-key'], self.log_name, 'successfully retrieved existing data mappings')
 
     existing_data_mappings = {}
     for mapping in mapping_type:
