@@ -88,7 +88,7 @@ class ExtractFromSmartFile:
         self.logger.info(api_key, self.log_name, 'checking if there are existing account mapping : ' + f['name'])
         account_mapping = self.__check_if_account_mapping_is_existing(headers, name)
 
-        if len(account_mapping) == 0:
+        if len(account_mapping) > 0:
           existing_account_mapping = account_mapping[0]
           if existing_account_mapping['currentJob'] == 'extract':
 
