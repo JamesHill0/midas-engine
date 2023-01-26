@@ -48,81 +48,81 @@ class ExtractFromSmartFile:
       self.logger.info(api_key, self.log_name, 'no file found skipping')
       return
 
-    files = files[0]
 
-    for f in files:
-      filename = f['name']
+    for fileList in files:
+      for f in fileList:
+        filename = f['name']
 
-      if f['isfile'] != True and f['mime'] != 'text/html':
-        continue
+        if f['isfile'] != True and f['mime'] != 'text/html':
+          continue
 
-      self.logger.info(api_key, self.log_name, 'downloading smart file : ' + f['name'])
-      authentication_result = self.blitz.authentication_decrypt(current_integration['secret']['key'])
-      smart_file_url = self.env.smart_file_url() + '/path/data/' + current_integration['secret']['directory'] + '/' + f['name']
-      smart_file_headers = { 'Authorization': 'Basic ' + authentication_result['encoded'] }
-      smart_file_result = requests.get(smart_file_url, headers=smart_file_headers)
-      self.logger.info(api_key, self.log_name, 'successfully downloaded smart file : ' + f['name'])
+        self.logger.info(api_key, self.log_name, 'downloading smart file : ' + f['name'])
+        authentication_result = self.blitz.authentication_decrypt(current_integration['secret']['key'])
+        smart_file_url = self.env.smart_file_url() + '/path/data/' + current_integration['secret']['directory'] + '/' + f['name']
+        smart_file_headers = { 'Authorization': 'Basic ' + authentication_result['encoded'] }
+        smart_file_result = requests.get(smart_file_url, headers=smart_file_headers)
+        self.logger.info(api_key, self.log_name, 'successfully downloaded smart file : ' + f['name'])
 
-      if smart_file_result == '':
-        self.logger.info(api_key, self.log_name, 'skipping smart file processing as response is empty : ' + f['name'])
-        continue
+        if smart_file_result == '':
+          self.logger.info(api_key, self.log_name, 'skipping smart file processing as response is empty : ' + f['name'])
+          continue
 
-      json_data = self.mapper.to_json(f['name'], smart_file_result)
+        json_data = self.mapper.to_json(f['name'], smart_file_result)
 
-      mappings = []
+        mappings = []
 
-      self.logger.info(api_key, self.log_name, 'filtering json data for file : ' + f['name'])
-      filtered_json_data = dict(filter(self.__filter_json_data, json_data.items()))
-      self.logger.info(api_key, self.log_name, 'creating account mappings for file : ' + f['name'])
-      for key in filtered_json_data.keys():
-        mappings.append({
-          'editable': False,
-          'fromField': key,
-          'toField': '',
-          'fromData': str(filtered_json_data[key]),
-          'toData': ''
-        })
+        self.logger.info(api_key, self.log_name, 'filtering json data for file : ' + f['name'])
+        filtered_json_data = dict(filter(self.__filter_json_data, json_data.items()))
+        self.logger.info(api_key, self.log_name, 'creating account mappings for file : ' + f['name'])
+        for key in filtered_json_data.keys():
+          mappings.append({
+            'editable': False,
+            'fromField': key,
+            'toField': '',
+            'fromData': str(filtered_json_data[key]),
+            'toData': ''
+          })
 
-      name = current_integration['externalId'] + '-' + filename
-      if len(mappings) > 0:
-        self.logger.info(api_key, self.log_name, 'checking if there are existing account mapping : ' + f['name'])
-        account_mapping = self.__check_if_account_mapping_is_existing(headers, name)
+        name = current_integration['externalId'] + '-' + filename
+        if len(mappings) > 0:
+          self.logger.info(api_key, self.log_name, 'checking if there are existing account mapping : ' + f['name'])
+          account_mapping = self.__check_if_account_mapping_is_existing(headers, name)
 
-        if len(account_mapping) > 0:
-          existing_account_mapping = account_mapping[0]
-          if existing_account_mapping['currentJob'] == 'extract':
+          if len(account_mapping) > 0:
+            existing_account_mapping = account_mapping[0]
+            if existing_account_mapping['currentJob'] == 'extract':
 
-            data = {}
-            for mapping in existing_account_mapping['mappings']:
-              data.append({ 'id': mapping['id'] })
+              data = {}
+              for mapping in existing_account_mapping['mappings']:
+                data.append({ 'id': mapping['id'] })
 
-            self.mq.publish('blitz-api-mapping', 'mappings.deleted', {
+              self.mq.publish('blitz-api-mapping', 'mappings.deleted', {
+                'apiKey': api_key,
+                'data': data
+              })
+
+              self.logger.info(api_key, self.log_name, 'sending account mapping for update : ' + f['name'])
+              self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', {
+                'apiKey': api_key,
+                'id': existing_account_mapping['id'],
+                'data': {
+                  'currentJob': 'pre-transformation',
+                  'mappings': mappings
+                }
+              })
+          else:
+            self.logger.info(api_key, self.log_name, 'sending account mapping for creation : ' + f['name'])
+            self.mq.publish('blitz-api-mapping', 'accounts.mappings.created', {
               'apiKey': api_key,
-              'data': data
-            })
-
-            self.logger.info(api_key, self.log_name, 'sending account mapping for update : ' + f['name'])
-            self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', {
-              'apiKey': api_key,
-              'id': existing_account_mapping['id'],
               'data': {
+                'name': name,
                 'currentJob': 'pre-transformation',
+                'protected': False,
+                'workflowId': subworkflow['workflowId'],
+                'externalId': current_integration['externalId'],
                 'mappings': mappings
               }
             })
-        else:
-          self.logger.info(api_key, self.log_name, 'sending account mapping for creation : ' + f['name'])
-          self.mq.publish('blitz-api-mapping', 'accounts.mappings.created', {
-            'apiKey': api_key,
-            'data': {
-              'name': name,
-              'currentJob': 'pre-transformation',
-              'protected': False,
-              'workflowId': subworkflow['workflowId'],
-              'externalId': current_integration['externalId'],
-              'mappings': mappings
-            }
-          })
 
   def create_field_mapping(self, api_key, subworkflow):
     return
