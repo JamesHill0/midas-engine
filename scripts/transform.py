@@ -89,7 +89,6 @@ class Transform:
           self.logger.info(api_key, self.log_name, 'transforming field using direct mapping for workflow ' + workflow['name'])
           self.transform_using_data_mapping.run(api_key, subworkflow)
           self.logger.info(api_key, self.log_name, 'finish transforming field using direct mapping for workflow ' + workflow['name'])
-
         elif workflow['mappingType'] == 'priority-mapping':
           self.logger.info(api_key, self.log_name, 'transforming field using priority mapping for workflow ' + workflow['name'])
           self.transform_using_priority_mapping.run(api_key, subworkflow)
