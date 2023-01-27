@@ -85,19 +85,23 @@ class Transform:
           self.logger.info(api_key, self.log_name, workflow['name'] + ' is inactive. skipping.')
           continue
 
-        if workflow['mappingType'] == 'direct-mapping':
-          self.logger.info(api_key, self.log_name, 'transforming field using direct mapping for workflow ' + workflow['name'])
-          self.transform_using_data_mapping.run(api_key, subworkflow)
-          self.logger.info(api_key, self.log_name, 'finish transforming field using direct mapping for workflow ' + workflow['name'])
-        elif workflow['mappingType'] == 'priority-mapping':
-          self.logger.info(api_key, self.log_name, 'transforming field using priority mapping for workflow ' + workflow['name'])
-          self.transform_using_priority_mapping.run(api_key, subworkflow)
-          self.logger.info(api_key, self.log_name, 'finish transforming field using priority mapping for workflow ' + workflow['name'])
+        try:
+          if workflow['mappingType'] == 'direct-mapping':
+            self.logger.info(api_key, self.log_name, 'transforming field using direct mapping for workflow ' + workflow['name'])
+            self.transform_using_data_mapping.run(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish transforming field using direct mapping for workflow ' + workflow['name'])
+          elif workflow['mappingType'] == 'priority-mapping':
+            self.logger.info(api_key, self.log_name, 'transforming field using priority mapping for workflow ' + workflow['name'])
+            self.transform_using_priority_mapping.run(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish transforming field using priority mapping for workflow ' + workflow['name'])
 
-        if workflow['needDataMapping'] == True:
-          self.logger.info(api_key, self.log_name, 'transforming data using data mapping for workflow ' + workflow['name'])
-          self.transform_using_data_mapping.run(api_key, subworkflow)
-          self.logger.info(api_key, self.log_name, 'finish transforming data using data mapping for workflow ' + workflow['name'])
+          if workflow['needDataMapping'] == True:
+            self.logger.info(api_key, self.log_name, 'transforming data using data mapping for workflow ' + workflow['name'])
+            self.transform_using_data_mapping.run(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish transforming data using data mapping for workflow ' + workflow['name'])
+        except:
+          self.logger.info(api_key, self.log_name, workflow['name'] + ' encountered an error. skipping.')
+          continue
 
   def run(self):
     try:

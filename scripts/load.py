@@ -81,10 +81,14 @@ class Load:
           self.logger.info(api_key, self.log_name, workflow['name'] + ' is inactive. skipping.')
           continue
 
-        if subworkflow['integrationType'] == 'salesforce':
-          self.logger.info(api_key, self.log_name, 'loading into salesforce for workflow ' + workflow['name'])
-          self.load_into_salesforce.run(api_key, subworkflow)
-          self.logger.info(api_key, self.log_name, 'finish loading into salesforce for workflow ' + workflow['name'])
+        try:
+          if subworkflow['integrationType'] == 'salesforce':
+            self.logger.info(api_key, self.log_name, 'loading into salesforce for workflow ' + workflow['name'])
+            self.load_into_salesforce.run(api_key, subworkflow)
+            self.logger.info(api_key, self.log_name, 'finish loading into salesforce for workflow ' + workflow['name'])
+        except:
+          self.logger.info(api_key, self.log_name, workflow['name'] + ' encountered an error. skipping.')
+          continue
 
   def run(self):
     try:
