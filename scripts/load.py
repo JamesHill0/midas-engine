@@ -1,7 +1,9 @@
 from blitz import Blitz
 from load_into_salesforce import LoadIntoSalesforce
 from logger import Logger
-import datetime
+
+from dateutil.parser import parse
+from datetime import datetime, timezone
 
 class Load:
   def __init__(self):
@@ -19,8 +21,9 @@ class Load:
     data = datas[0]
     if data['status'] == 'running':
       self.logger.info('', self.log_name, 'job is still running. checking again later')
-      updated_date = datetime.datetime.strptime(data['updated'], "%d%m%Y").date()
-      if (datetime.now() - updated_date).minutes > 1440:
+      updated_date = parse(data['updated'])
+      result_date = datetime.now() - updated_date.replace(tzinfo=None)
+      if (test.days) > 0:
         self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
       return { 'status': 'suspended' }
 
