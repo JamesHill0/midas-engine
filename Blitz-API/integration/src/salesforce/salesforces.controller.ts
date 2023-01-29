@@ -307,7 +307,7 @@ export class SalesforcesController {
     }
   }
 
-  @MessagePattern('integrations.salesforce.bulk.update')
+  @MessagePattern('integrations.salesforce.bulk.updated')
   async handleSalseforceBulkUpdate(@Payload() payload: any, @Ctx() context: RmqContext) {
     try {
       const apiKey = payload['apiKey']
