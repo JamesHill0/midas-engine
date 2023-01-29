@@ -18,7 +18,7 @@ class TransformUsingPriorityMapping:
 
     current_integration = {}
     for integration in integrations:
-      if integration['id'] == subworkflow['integrationId'] and integration['name'].lower() == subworkflow['integrationType'].lower():
+      if str(integration['id']) == subworkflow['integrationId'] and integration['name'].lower() == subworkflow['integrationType'].lower():
         current_integration = integration
         break
 
