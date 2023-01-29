@@ -8,94 +8,116 @@ import { capitalize, toLocal } from "../utils/common";
 import DashboardControlPanel from "./dashboard.control.panel";
 import DashboardWorkflowsTable from "./dashboard.workflows.table";
 
-let initialMessage = {
-  status: "stopped",
-  logs: "Initializing script logs...\n",
-  updated: ""
-}
 
-function Dashboard() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [intervals, setIntervals] = useState([]);
-  const [workflowsList, setWorkflowsList] = useState([]);
-  const [extract, setExtract] = useState(initialMessage);
-  const [transform, setTransform] = useState(initialMessage);
-  const [load, setLoad] = useState(initialMessage);
-
-  useEffect(() => {
-    loadData();
-    loadWorkflows();
-  }, []);
-
-  function loadData() {
-    let interval = setInterval(() => {
-      loadExtractLogs();
-      loadTransformLogs();
-      loadLoadLogs();
-    }, 15000);
-
-    let newIntervals = intervals;
-    newIntervals.push(interval);
-    setIntervals(newIntervals);
+export default class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      intervals: [],
+      messages: {
+        extract: {
+          status: "stopped",
+          logs: "Initializing script logs...\n",
+          updated: ""
+        },
+        transform: {
+          status: "stopped",
+          logs: "Initializing script logs...\n",
+          updated: ""
+        },
+        load: {
+          status: "stopped",
+          logs: "Initializing script logs...\n",
+          updated: ""
+        },
+      },
+      workflowsList: [],
+    }
   }
 
-  function loadExtractLogs() {
+  componentDidMount() {
+    try {
+      let { intervals } = this.state;
+      this.loadData();
+      let interval = setInterval(() => {
+        this.loadData();
+      }, 15000);
+      intervals.push(interval)
+      this.setState({ intervals: intervals, isLoading: false });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  componentWillUnmount() {
+    let { intervals } = this.state;
+    intervals.map((interval) => {
+      clearInterval(interval);
+    });
+  }
+
+  loadData() {
+    this.loadWorkflows();
+    this.loadExtractLogs();
+    this.loadTransformLogs();
+    this.loadLoadLogs();
+  }
+
+  loadExtractLogs() {
     api.Logger(`apps?q_name=extract&limit=50`).Get({}, response => {
       if (response.Error == null) {
         let data = response.Data;
-        let newConfig = initialMessage;
-        newConfig.logs = '';
+        let messages = this.state.messages;
+        messages.extract.logs = [];
         if (data.length > 0) {
           data.map((d) => {
-            newConfig.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
+            messages.extract.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
           });
-          setExtract(newConfig);
+          this.setState({ messages: messages })
         }
       }
     })
   }
 
-  function loadTransformLogs() {
+  loadTransformLogs() {
     api.Logger(`apps?q_name=transform&limit=50`).Get({}, response => {
       if (response.Error == null) {
         let data = response.Data;
-        let newConfig = initialMessage;
-        newConfig.logs = '';
+        let messages = this.state.messages;
+        messages.transform.logs = [];
         if (data.length > 0) {
           data.map((d) => {
-            newConfig.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
+            messages.transform.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
           });
-
-          setTransform(newConfig);
+          this.setState({ messages: messages })
         }
       }
     })
   }
 
-  function loadLoadLogs() {
+  loadLoadLogs() {
     api.Logger(`apps?q_name=load&limit=50`).Get({}, response => {
       if (response.Error == null) {
         let data = response.Data;
-        let newConfig = initialMessage;
-        newConfig.logs = '';
+        let messages = this.state.messages;
+        messages.load.logs = [];
         if (data.length > 0) {
           data.map((d) => {
-            newConfig.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
+            messages.load.logs += `[ ${d.type.toUpperCase()} ][ ${toLocal(d.created)}] ${d.message}\n`;
           });
-
-          setLoad(newConfig);
+          this.setState({ messages: messages })
         }
       }
     })
   }
 
-  function loadWorkflows() {
-    setIsLoading(true);
+  loadWorkflows() {
+    this.setState({ isLoading: true })
     api.Mapping("workflows").Get({}, response => {
       if (response.Error == null) {
         const data = response.Data;
-        setWorkflowsList(data);
-        setIsLoading(false);
+        this.setState({ workflowsList: data, isLoading: false })
         return;
       }
 
@@ -104,54 +126,29 @@ function Dashboard() {
         message: "500",
         description: "Internal Server Error"
       })
-      setIsLoading(false);
+      this.setState({ isLoading: false })
     })
   }
 
-  function toggleWorkflowStatus(workflowId, status) {
-    setIsLoading(true);
-
-    if (status == "inactive") {
-      status = "active";
-    } else if (status == "active") {
-      status = "inactive";
-    }
-
-    api.Mapping(`workflows/${workflowId}`).Patch({ "status": status }, response => {
-      if (response.Error == null) {
-        loadWorkflows();
-        setIsLoading(false);
-        return;
-      }
-
-      notification["error"]({
-        placement: "bottomRight",
-        message: "500",
-        description: "Internal Server Error"
-      })
-      setIsLoading(false);
-    })
+  render() {
+    return (
+      <div className="dashboard" >
+        {this.state.isLoading && <Loader />}
+        <Row gutter={10}>
+          <Col span={12}>
+            <DashboardWorkflowsTable workflowsList={this.state.workflowsList} />
+          </Col>
+          <Col span={12}>
+            <DashboardControlPanel title={"ETL - Extract"} message={this.state.messages.extract} />
+          </Col>
+          <Col span={12}>
+            <DashboardControlPanel title={"ETL - Transform"} message={this.state.messages.transform} />
+          </Col>
+          <Col span={12}>
+            <DashboardControlPanel title={"ETL - Load"} message={this.state.messages.load} />
+          </Col>
+        </Row>
+      </div >
+    )
   }
-
-  return (
-    < div className="dashboard" >
-      {isLoading && <Loader />}
-      <Row gutter={10}>
-        <Col span={12}>
-          <DashboardWorkflowsTable workflowsList={workflowsList} toggleWorkflowStatus={toggleWorkflowStatus} />
-        </Col>
-        <Col span={12}>
-          <DashboardControlPanel title={"ETL - Extract"} message={extract} />
-        </Col>
-        <Col span={12}>
-          <DashboardControlPanel title={"ETL - Transform"} message={transform} />
-        </Col>
-        <Col span={12}>
-          <DashboardControlPanel title={"ETL - Load"} message={load} />
-        </Col>
-      </Row>
-    </div >
-  )
 }
-
-export default Dashboard;

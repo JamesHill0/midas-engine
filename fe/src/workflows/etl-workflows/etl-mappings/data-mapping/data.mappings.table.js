@@ -141,7 +141,7 @@ function DataMappingsTable({ dataMappingsList }) {
         if (!['date', 'number'].includes(item.formatType)) {
           return 'NOT APPLICABLE';
         } else {
-          return <Input onChange={(value) => handleUpdateFormatting(item, value)} />;
+          return <Input defaultValue={item.formatting} onBlur={(event) => handleUpdateFormatting(item, event.target.value)} />;
         }
       }
     },

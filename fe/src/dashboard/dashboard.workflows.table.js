@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Table, Tag } from "antd";
 
-function DashboardWorkflowsTable({ workflowsList, toggleWorkflowStatus }) {
+function DashboardWorkflowsTable({ workflowsList }) {
   const columns = [
     {
       title: 'Name',
