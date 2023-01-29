@@ -13,10 +13,10 @@ class LoadIntoSalesforce:
   def __create_salesforce_object(self, account_mapping):
     salesforce_object = {}
     for mapping in account_mapping['mappings']:
-      if mapping['toFieldName'] == '' or mapping['toData'] == '':
+      if mapping['toField'] == '' or mapping['toData'] == '':
         continue
 
-      salesforce_object[mapping['toFieldName']] = salesforce_object[mapping['toData']]
+      salesforce_object[mapping['toField']] = salesforce_object[mapping['toData']]
 
     return salesforce_object
 
