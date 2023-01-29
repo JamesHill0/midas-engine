@@ -1,8 +1,8 @@
 from dateutil.parser import parse
 from datetime import datetime, timezone
 
-get_date_obj = parse("2023-01-27T12:00:01.089Z")
+parsed_date = parse('01/01/1955')
 
-test = datetime.now() - get_date_obj.replace(tzinfo=None)
+formatted_date = parsed_date.strftime('%Y-%m-%d')
 
-print(test.days)
+print(str(formatted_date))

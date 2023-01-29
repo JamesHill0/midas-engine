@@ -1,7 +1,9 @@
 from blitz import Blitz
-import datetime
 import pandas as pd
 from logger import Logger
+
+from dateutil.parser import parse
+from datetime import datetime, timezone
 
 class TransformUsingDataMapping:
   def __init__(self):
@@ -14,8 +16,9 @@ class TransformUsingDataMapping:
     format_type = data_mapping['formatType']
 
     if format_type == 'date':
-      date_result = datetime.datetime.strptime(from_data, data_mapping['formatting'])
-      return date_result.date()
+      parsed_date = parse(from_data)
+      formatted_date = parsed_date.strftime(data_mapping['formatting'])
+      return formatted_date
     elif format_type == 'number':
       ctr = 0
       result_string = ""
