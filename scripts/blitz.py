@@ -92,6 +92,10 @@ class Blitz:
     url = self.base_url + '/mapping/subworkflows?q_jobType=load'
     return self.__get_response(url, headers)
 
+  def integration_get_integrations(self, headers):
+    url = self.base_url + '/integration/integrations'
+    return self.__get_response(url, headers)
+
   def integration_smart_file_info_list_files(self, headers, smart_file_id):
     url = self.base_url + '/integration/smartfiles/' + str(smart_file_id) + '/info/list_files'
     return self.__get_response(url, headers)

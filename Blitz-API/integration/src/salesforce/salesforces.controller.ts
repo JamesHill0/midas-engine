@@ -291,6 +291,7 @@ export class SalesforcesController {
           'apiKey': apiKey,
           'id': account_mapping_ids[index],
           'data': {
+            'currentJob': 'done',
             'result': result
           }
         })
@@ -325,6 +326,7 @@ export class SalesforcesController {
           'apiKey': apiKey,
           'id': account_mapping_ids[index],
           'data': {
+            'currentJob': 'done',
             'result': result
           }
         })

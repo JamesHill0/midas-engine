@@ -84,7 +84,7 @@ class LoadIntoSalesforce:
         'apiKey': api_key,
         'id': account_mapping['id'],
         'data': {
-          'currentJob': 'done',
+          'currentJob': 'post-load',
         }
       })
 

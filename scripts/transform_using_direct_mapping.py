@@ -12,9 +12,15 @@ class TransformUsingDirectMapping:
 
   def run(self, api_key, subworkflow):
     headers = { 'x-api-key': api_key }
-    self.logger.info(api_key, self.log_name, 'retrieving salesforce integration')
-    current_integration = self.blitz.integration_salesforce_get_by_id(headers, subworkflow['integrationId'])
-    self.logger.info(api_key, self.log_name, 'successfully retrieved salesforce integration : ' + current_integration['externalId'])
+    self.logger.info(api_key, self.log_name, 'retrieving integrations')
+    integrations = self.blitz.integration_get_integrations(headers)
+    self.logger.info(api_key, self.log_name, 'successfully retrieved integrations')
+
+    current_integration = {}
+    for integration in integrations:
+      if integration['id'] == subworkflow['integrationId']:
+        current_integration = integration
+        break
 
     self.logger.info(api_key, self.log_name, 'retrieving existing direct field mapping')
     direct_field_mappings = self.blitz.mapping_get_direct_field_mapping_by_workflow_id(headers, subworkflow['workflowId'])
