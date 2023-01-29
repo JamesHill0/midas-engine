@@ -80,7 +80,7 @@ class LoadIntoSalesforce:
         for_update_account_mapping_ids.append(account_mapping['id'])
         for_update.append(salesforce_object)
 
-      self.mq.publish('blitz-api-mapping', 'accounts.mapping.updated', {
+      self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', {
         'apiKey': api_key,
         'id': account_mapping['id'],
         'data': {

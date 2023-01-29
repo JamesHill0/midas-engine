@@ -52,7 +52,7 @@ class TransformUsingDirectMapping:
             }
           })
 
-      self.mq.publish('blitz-api-mapping', 'accounts.mapping.updated', {
+      self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', {
         'apiKey': api_key,
         'id': account_mapping['id'],
         'data': {
