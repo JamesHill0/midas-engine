@@ -50,9 +50,9 @@ class TransformUsingDataMapping:
     current_integration = self.blitz.integration_salesforce_get_by_id(headers, subworkflow['integrationId'])
     self.logger.info(api_key, self.log_name, 'successfully retrieved salesforce integration : ' + current_integration['externalId'])
 
-    self.logger.info(api_key, self.log_name, 'retrieving existing data mappings : ' + current_integration['externalId'])
-    data_mappings = self.blitz.mapping_get_data_mapping_by_external_id(headers, current_integration['externalId'])
-    self.logger.info(api_key, self.log_name, 'successfully retrieved existing data mappings : ' + current_integration['externalId'])
+    self.logger.info(api_key, self.log_name, 'retrieving existing data mappings')
+    data_mappings = self.blitz.mapping_get_data_mapping_by_workflow_id(headers, subworkflow['workflowId'])
+    self.logger.info(api_key, self.log_name, 'successfully retrieved existing data mappings')
 
     self.logger.info(api_key, self.log_name, 'retrieving account mappings : ' + current_integration['externalId'])
     account_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, current_integration['externalId'])

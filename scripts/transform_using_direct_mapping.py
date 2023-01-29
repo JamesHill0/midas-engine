@@ -16,9 +16,9 @@ class TransformUsingDirectMapping:
     current_integration = self.blitz.integration_salesforce_get_by_id(headers, subworkflow['integrationId'])
     self.logger.info(api_key, self.log_name, 'successfully retrieved salesforce integration : ' + current_integration['externalId'])
 
-    self.logger.info(api_key, self.log_name, 'retrieving existing direct field mapping : ' + current_integration['externalId'])
-    direct_field_mappings = self.blitz.mapping_get_direct_field_mapping_by_external_id(headers, current_integration['externalId'])
-    self.logger.info(api_key, self.log_name, 'successfully retrieved direct field mapping : ' + current_integration['externalId'])
+    self.logger.info(api_key, self.log_name, 'retrieving existing direct field mapping')
+    direct_field_mappings = self.blitz.mapping_get_direct_field_mapping_by_workflow_id(headers, subworkflow['workflowId'])
+    self.logger.info(api_key, self.log_name, 'successfully retrieved direct field mapping')
 
     dfm = {}
     for direct_field_mapping in direct_field_mappings:

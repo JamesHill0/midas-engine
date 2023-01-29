@@ -52,12 +52,24 @@ class Blitz:
     url = self.base_url + '/mapping/direct-field-mappings?q_externalId=' + str(external_id)
     return self.__get_response(url, headers)
 
+  def mapping_get_direct_field_mapping_by_workflow_id(self, headers, workflow_id):
+    url = self.base_url + '/mapping/direct-field-mappings?q_workflowId=' + str(workflow_id)
+    return self.__get_response(url, headers)
+
   def mapping_get_priority_field_mapping_by_external_id(self, headers, external_id):
     url = self.base_url + '/mapping/priority-field-mappings?q_externalId=' + str(external_id)
     return self.__get_response(url, headers)
 
+  def mapping_get_priority_field_mapping_by_workflow_id(self, headers, workflow_id):
+    url = self.base_url + '/mapping/priority-field-mappings?q_workflowId=' + str(workflow_id)
+    return self.__get_response(url, headers)
+
   def mapping_get_data_mapping_by_external_id(self, headers, external_id):
     url = self.base_url + '/mapping/data-mappings?q_externalId=' + str(external_id)
+    return self.__get_response(url, headers)
+
+  def mapping_get_data_mapping_by_workflow_id(self, headers, workflow_id):
+    url = self.base_url + '/mapping/data-mappings?q_workflowId=' + str(workflow_id)
     return self.__get_response(url, headers)
 
   def mapping_get_workflow_by_id(self, headers, workflow_id):
