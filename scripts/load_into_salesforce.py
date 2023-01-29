@@ -78,7 +78,7 @@ class LoadIntoSalesforce:
         for_creation.append(salesforce_object)
       else:
         # do update
-        salesforce_id = account_mapping['result']['salesforce_id']
+        salesforce_id = account_mapping['result']['id']
         salesforce_object['Id'] = salesforce_id
         for_update_account_mapping_ids.append(account_mapping['id'])
         for_update.append(salesforce_object)
