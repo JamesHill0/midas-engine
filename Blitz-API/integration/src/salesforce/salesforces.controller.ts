@@ -322,7 +322,7 @@ export class SalesforcesController {
 
       let account_mapping_ids = payload['account_mapping_ids'];
       data["results"].map((result, index) => {
-        this.updateAccountMappingService.emit('accounts.mapping.updated', {
+        this.updateAccountMappingService.emit('accounts.mappings.updated', {
           'apiKey': apiKey,
           'id': account_mapping_ids[index],
           'data': {
