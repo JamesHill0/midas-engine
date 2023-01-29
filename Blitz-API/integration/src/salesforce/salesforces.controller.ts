@@ -280,7 +280,7 @@ export class SalesforcesController {
 
       let integrationId = payload['integrationId'];
       let tableName = payload['tableName'];
-      let datas = payload['datas'];
+      let datas = payload['data'];
 
       let sf = await this.salesforcesService.findById(integrationId);
       let data = await this.salesforcesConnService.bulkCreate(sf.secret, tableName, datas);
@@ -315,7 +315,7 @@ export class SalesforcesController {
 
       let integrationId = payload['integrationId'];
       let tableName = payload['tableName'];
-      let datas = payload['datas'];
+      let datas = payload['data'];
 
       let sf = await this.salesforcesService.findById(integrationId);
       let data = await this.salesforcesConnService.bulkUpdate(sf.secret, tableName, datas);
