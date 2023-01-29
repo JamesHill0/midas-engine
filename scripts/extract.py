@@ -118,16 +118,16 @@ class Extract:
               self.logger.info(api_key, self.log_name, 'creating field mapping using salesforce for ' + workflow['name'])
               self.extract_from_salesforce.create_field_mapping(api_key, subworkflow)
               self.logger.info(api_key, self.log_name, 'finish creating field mapping using salesforce for ' + workflow['name'])
-        except:
-          self.logger.info(api_key, self.log_name, workflow['name'] + ' encountered an error. skipping.')
+        except Exception as e:
+          self.logger.info(api_key, self.log_name, workflow['name'] + ' encountered an error. skipping : ' + str(e))
           continue
 
   def run(self):
     try:
       self.__execute()
       self.__terminate_schedule()
-    except:
-      self.logger.exception('', self.log_name, 'something went wrong')
+    except Exception as e:
+      self.logger.exception('', self.log_name, 'something went wrong : ' + str(e))
       self.__terminate_schedule()
 
 if __name__ == '__main__':
