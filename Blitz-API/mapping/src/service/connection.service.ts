@@ -38,7 +38,7 @@ export class ConnectionService {
   public async createDatabase(connection: any) {
     try {
       let db = getConnection('master');
-      let raw_data = await db.query(`SELECT datname FROM pg_catalog.pg_database WHERE datname=${connection['database']}`);
+      let raw_data = await db.query(`SELECT datname FROM pg_catalog.pg_database WHERE datname='${connection['database']}'`);
 
       if (raw_data == null) {
         await db.query(`CREATE DATABASE "${connection['database']}"`);
@@ -57,7 +57,7 @@ export class ConnectionService {
         synchronize: false
       });
 
-      raw_data = await db.query(`SELECT datname FROM pg_catalog.pg_database WHERE datname=${connection['database']}`);
+      raw_data = await db.query(`SELECT datname FROM pg_catalog.pg_database WHERE datname='${connection['database']}'`);
 
       if (raw_data == null) {
         await db.query(`CREATE DATABASE "${connection['database']}"`);
