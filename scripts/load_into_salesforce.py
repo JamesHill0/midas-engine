@@ -62,7 +62,9 @@ class LoadIntoSalesforce:
 
     for_creation = []
     for_create_account_mapping_ids = []
+
     for_update = []
+    for_update_sf_ids = []
     for_update_account_mapping_ids = []
 
     for account_mapping in account_mappings:
@@ -86,6 +88,7 @@ class LoadIntoSalesforce:
         salesforce_id = result['id']
         salesforce_object['Id'] = salesforce_id
         for_update_account_mapping_ids.append(account_mapping['id'])
+        for_update_sf_ids.append(salesforce_id)
         for_update.append(salesforce_object)
         self.logger.info(api_key, self.log_name, 'successfully added salesforce object for update: ' + result['id'])
 
@@ -114,5 +117,6 @@ class LoadIntoSalesforce:
         'integrationId': subworkflow['integrationId'],
         'tableName': subworkflow['tableName'],
         'account_mapping_ids': for_update_account_mapping_ids,
+        'existing_sf_ids': for_update_sf_ids,
         'data': for_update
       })

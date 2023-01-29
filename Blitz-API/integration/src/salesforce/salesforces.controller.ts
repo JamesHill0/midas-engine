@@ -335,12 +335,10 @@ export class SalesforcesController {
       let data = await this.salesforcesConnService.bulkUpdate(sf.secret, tableName, datas);
 
       let account_mapping_ids = payload['account_mapping_ids'];
+      let existing_sf_ids = payload['existing_sf_ids']
       data["results"].map((result, index) => {
         let res = {}
-
-        if (result.hasOwnProperty('id')) {
-          res['id'] = result['id']
-        }
+        res['id'] = existing_sf_ids[index];
 
         if (result.hasOwnProperty('errors')) {
           res['error'] = result['errors'][0]['message'];
