@@ -34,7 +34,7 @@ class TransformUsingPriorityMapping:
       if account_mapping['currentJob'] != 'transform':
         continue
 
-      for mapping in account_mappings['mappings']:
+      for mapping in account_mapping['mappings']:
         if mapping['fromData'] == '':
           continue
 
