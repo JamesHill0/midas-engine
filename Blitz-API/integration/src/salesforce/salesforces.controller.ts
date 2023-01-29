@@ -287,12 +287,26 @@ export class SalesforcesController {
 
       let account_mapping_ids = payload['account_mapping_ids'];
       data["results"].map((result, index) => {
+        let res = {}
+
+        if (result.hasOwnProperty('id')) {
+          res['id'] = result['id']
+        }
+
+        if (result.hasOwnProperty('errors')) {
+          res['error'] = result['errors'][0]['message'];
+        }
+
+        if (result.hasOwnProperty('success')) {
+          res['success'] = result['success']
+        }
+
         this.updateAccountMappingService.emit('accounts.mappings.updated', {
           'apiKey': apiKey,
           'id': account_mapping_ids[index],
           'data': {
             'currentJob': 'done',
-            'result': result
+            'result': res
           }
         })
       })
@@ -322,12 +336,26 @@ export class SalesforcesController {
 
       let account_mapping_ids = payload['account_mapping_ids'];
       data["results"].map((result, index) => {
+        let res = {}
+
+        if (result.hasOwnProperty('id')) {
+          res['id'] = result['id']
+        }
+
+        if (result.hasOwnProperty('errors')) {
+          res['error'] = result['errors'][0]['message'];
+        }
+
+        if (result.hasOwnProperty('success')) {
+          res['success'] = result['success']
+        }
+
         this.updateAccountMappingService.emit('accounts.mappings.updated', {
           'apiKey': apiKey,
           'id': account_mapping_ids[index],
           'data': {
             'currentJob': 'done',
-            'result': result
+            'result': res
           }
         })
       })
