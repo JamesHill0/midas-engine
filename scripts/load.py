@@ -23,7 +23,7 @@ class Load:
       self.logger.info('', self.log_name, 'job is still running. checking again later')
       updated_date = parse(data['updated'])
       result_date = datetime.now() - updated_date.replace(tzinfo=None)
-      if (test.days) > 0:
+      if (result_date.days) > 0:
         self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
       return { 'status': 'suspended' }
 

@@ -27,7 +27,7 @@ class Extract:
       self.logger.info('', self.log_name, 'job is still running. checking again later')
       updated_date = parse(data['updated'])
       result_date = datetime.now() - updated_date.replace(tzinfo=None)
-      if (test.days) > 0:
+      if (result_date.days) > 0:
         self.blitz.account_update_job(data['id'], { 'status': 'inactive' })
       return { 'status': 'suspended' }
 
@@ -119,7 +119,7 @@ class Extract:
               self.extract_from_salesforce.create_field_mapping(api_key, subworkflow)
               self.logger.info(api_key, self.log_name, 'finish creating field mapping using salesforce for ' + workflow['name'])
         except Exception as e:
-          self.logger.info(api_key, self.log_name, workflow['name'] + ' encountered an error. skipping : ' + str(e))
+          self.logger.info(api_key, self.log_name, workflow['name'] + ' encountered an error. skipping. : ' + str(e))
           continue
 
   def run(self):
