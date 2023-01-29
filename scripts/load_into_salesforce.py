@@ -18,7 +18,7 @@ class LoadIntoSalesforce:
 
       if mapping['toData'] == '':
         salesforce_object[mapping['toField']] = mapping['fromData']
-      else
+      else:
         salesforce_object[mapping['toField']] = mapping['toData']
 
     return salesforce_object
