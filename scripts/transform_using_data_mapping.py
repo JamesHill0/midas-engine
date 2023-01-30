@@ -102,10 +102,13 @@ class TransformUsingDataMapping:
               }
             })
 
-      self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', {
-        'apiKey': api_key,
-        'id': account_mapping['id'],
+      return {
+        'name': account_mapping['name'],
         'data': {
-          'currentJob': 'load'
+          'apiKey': api_key,
+          'id': account_mapping['id'],
+          'data': {
+            'currentJob': 'load'
+          }
         }
-      })
+      }

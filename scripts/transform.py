@@ -2,6 +2,7 @@ from blitz import Blitz
 from transform_using_direct_mapping import TransformUsingDirectMapping
 from transform_using_priority_mapping import TransformUsingPriorityMapping
 from transform_using_data_mapping import TransformUsingDataMapping
+from rabbitmq import RabbitMQ
 from logger import Logger
 
 from dateutil.parser import parse
@@ -12,6 +13,7 @@ class Transform:
     self.log_name = 'transform'
 
     self.blitz = Blitz()
+    self.mq = RabbitMQ()
 
     self.transform_using_direct_mapping = TransformUsingDataMapping()
     self.transform_using_priority_mapping = TransformUsingPriorityMapping()
@@ -88,23 +90,30 @@ class Transform:
           self.logger.info(api_key, self.log_name, workflow['name'] + ' is inactive. skipping.')
           continue
 
+        account = {}
         try:
           if workflow['mappingType'] == 'direct-mapping':
             self.logger.info(api_key, self.log_name, 'transforming field using direct mapping for workflow ' + workflow['name'])
-            self.transform_using_data_mapping.run(api_key, subworkflow)
+            account = self.transform_using_data_mapping.run(api_key, subworkflow)
             self.logger.info(api_key, self.log_name, 'finish transforming field using direct mapping for workflow ' + workflow['name'])
           elif workflow['mappingType'] == 'priority-mapping':
             self.logger.info(api_key, self.log_name, 'transforming field using priority mapping for workflow ' + workflow['name'])
-            self.transform_using_priority_mapping.run(api_key, subworkflow)
+            account = self.transform_using_priority_mapping.run(api_key, subworkflow)
             self.logger.info(api_key, self.log_name, 'finish transforming field using priority mapping for workflow ' + workflow['name'])
 
           if workflow['needDataMapping'] == True:
             self.logger.info(api_key, self.log_name, 'transforming data using data mapping for workflow ' + workflow['name'])
-            self.transform_using_data_mapping.run(api_key, subworkflow)
+            account = self.transform_using_data_mapping.run(api_key, subworkflow)
             self.logger.info(api_key, self.log_name, 'finish transforming data using data mapping for workflow ' + workflow['name'])
         except Exception as e:
           self.logger.info(api_key, self.log_name, workflow['name'] + ' encountered an error. skipping. : ' + str(e))
           continue
+
+        if not account:
+          self.logger.info(api_key, self.log_name, 'was not able to transform account successfully: ' + account['name'])
+        else:
+          self.logger.info(api_key, self.log_name, 'sending account for update to load: ' + account['name'])
+          self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', account['data'])
 
   def run(self):
     try:
