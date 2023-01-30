@@ -1,4 +1,5 @@
 from blitz import Blitz
+from rabbitmq import RabbitMQ
 import pandas as pd
 from logger import Logger
 
@@ -9,10 +10,11 @@ class TransformUsingDataMapping:
   def __init__(self):
     self.log_name = 'transform'
     self.blitz = Blitz()
+    self.mq = RabbitMQ()
 
     self.logger = Logger('qa')
 
-  def __format_map(from_data, data_mapping):
+  def __format_map(self, from_data, data_mapping):
     format_type = data_mapping['formatType']
 
     if format_type == 'date':
@@ -33,11 +35,11 @@ class TransformUsingDataMapping:
     elif format_type == 'ssn':
       return f'{from_data[:3]}-{from_data[3:5]}-{from_data[5:]}'
     elif format_type == 'to_upper':
-      return from_data.to_upper()
+      return str(from_data).upper()
     elif format_type == 'to_lower':
-      return from_data.to_lower()
+      return str(from_data).lower()
     elif format_type == 'capitalize':
-      return from_data.capitalize()
+      return str(from_data).capitalize()
     elif format_type == 'conversion':
       for option in data_mapping['options']:
         if from_data == option['fromData']:
@@ -78,7 +80,6 @@ class TransformUsingDataMapping:
     for_update_accounts = []
     for account_mapping in account_mappings:
       if account_mapping['currentJob'] != 'transform':
-        self.logger.info(api_key, self.log_name, 'skipping account mapping as it is not in transform status : ' + account_mapping['name'])
         continue
 
       for mapping in account_mapping['mappings']:
@@ -89,8 +90,8 @@ class TransformUsingDataMapping:
           try:
             self.logger.info(api_key, self.log_name, 'executing data mapping according to settings : ' + mapping['fromData'])
             formatted_data = self.__format_map(mapping['fromData'], data_mapping)
-          except:
-            self.logger.info(api_key, self.log_name, 'data mapping unsuccessful skipping : ' + mapping['fromData'])
+          except Exception as e:
+            self.logger.info(api_key, self.log_name, 'data mapping unsuccessful skipping : ' + mapping['fromData'] + ' with error ' + str(e))
             continue
 
           if formatted_data:

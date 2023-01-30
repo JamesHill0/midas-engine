@@ -31,9 +31,9 @@ class TransformUsingPriorityMapping:
     self.logger.info(api_key, self.log_name, 'successfully retrieved account mappings : ' + current_integration['externalId'])
 
     for_update_accounts = []
+    fields_already_assigned = []
     for account_mapping in account_mappings:
       if account_mapping['currentJob'] != 'transform':
-        self.logger.info(api_key, self.log_name, 'skipping account mapping as it is not in transform status : ' + account_mapping['name'])
         continue
 
       for mapping in account_mapping['mappings']:
@@ -42,6 +42,10 @@ class TransformUsingPriorityMapping:
 
         for priority_field_mapping in priority_field_mappings:
           pfmv = {}
+
+          if priority_field_mapping['fromField'] in fields_already_assigned:
+            continue
+
           for priority_field_mapping_value in priority_field_mapping['values']:
             pfmv[priority_field_mapping_value['toField']] = priority_field_mapping_value['level']
 
@@ -52,6 +56,9 @@ class TransformUsingPriorityMapping:
 
           mapping_updated = False
           for value in sortedPfmv:
+            if mapping_updated:
+              break
+
             if value == mapping['fromField']:
               self.logger.info(api_key, self.log_name, 'sending priority mapping for update : ' + mapping['fromField'] + ' -> ' + priority_field_mapping['fromField'])
               self.mq.publish('blitz-api-mapping', 'mappings.updated', {
@@ -61,6 +68,8 @@ class TransformUsingPriorityMapping:
                   'toField': priority_field_mapping['fromField']
                 }
               })
+
+              fields_already_assigned.append(priority_field_mapping['fromField'])
 
               mapping_updated = True
               break

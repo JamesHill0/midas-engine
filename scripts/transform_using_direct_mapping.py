@@ -38,13 +38,16 @@ class TransformUsingDirectMapping:
     self.logger.info(api_key, self.log_name, 'successfully retrieved account mappings : ' + current_integration['externalId'])
 
     for_update_accounts = []
+    fields_already_assigned = []
     for account_mapping in account_mappings:
       if account_mapping['currentJob'] != 'transform':
-        self.logger.info(api_key, self.log_name, 'skipping account mapping as it is not in transform status : ' + account_mapping['name'])
         continue
 
       for mapping in account_mapping['mappings']:
         if mapping['fromField'] in dfm:
+          if dfm[mapping['fromField']] in fields_already_assigned:
+            continue
+
           self.logger.info(api_key, self.log_name, 'sending direct mapping for update : ' + mapping['fromField'] + ' -> ' + dfm[mapping['fromField']])
           self.mq.publish('blitz-api-mapping', 'mappings.updated', {
             'apiKey': api_key,
@@ -53,6 +56,7 @@ class TransformUsingDirectMapping:
               'toField': dfm[mapping['fromField']]
             }
           })
+          fields_already_assigned.append(dfm[mapping['fromField']])
 
       for_update_accounts.append({
         'name': account_mapping['name'],

@@ -294,7 +294,9 @@ export class SalesforcesController {
         }
 
         if (result.hasOwnProperty('errors')) {
-          res['error'] = result['errors'][0]['message'];
+          if (result['errors'].length > 0) {
+            res['error'] = result['errors'][0]['message'];
+          }
         }
 
         if (result.hasOwnProperty('success')) {
@@ -341,7 +343,9 @@ export class SalesforcesController {
         res['id'] = existing_sf_ids[index];
 
         if (result.hasOwnProperty('errors')) {
-          res['error'] = result['errors'][0]['message'];
+          if (result['errors'].length > 0) {
+            res['error'] = result['errors'][0]['message'];
+          }
         }
 
         if (result.hasOwnProperty('success')) {

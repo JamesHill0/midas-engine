@@ -69,7 +69,6 @@ class LoadIntoSalesforce:
 
     for account_mapping in account_mappings:
       if account_mapping['currentJob'] != 'load':
-        self.logger.info(api_key, self.log_name, 'skipping account mapping as it is not in load status : ' + account_mapping['name'])
         continue
 
       self.logger.info(api_key, self.log_name, 'creating a salesforce object using account mapping')
