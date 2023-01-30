@@ -94,11 +94,11 @@ class Transform:
         try:
           if workflow['mappingType'] == 'direct-mapping':
             self.logger.info(api_key, self.log_name, 'transforming field using direct mapping for workflow ' + workflow['name'])
-            account = self.transform_using_data_mapping.run(api_key, subworkflow)
+            accounts = self.transform_using_data_mapping.run(api_key, subworkflow)
             self.logger.info(api_key, self.log_name, 'finish transforming field using direct mapping for workflow ' + workflow['name'])
           elif workflow['mappingType'] == 'priority-mapping':
             self.logger.info(api_key, self.log_name, 'transforming field using priority mapping for workflow ' + workflow['name'])
-            account = self.transform_using_priority_mapping.run(api_key, subworkflow)
+            accounts = self.transform_using_priority_mapping.run(api_key, subworkflow)
             self.logger.info(api_key, self.log_name, 'finish transforming field using priority mapping for workflow ' + workflow['name'])
 
           if workflow['needDataMapping'] == True:
@@ -109,11 +109,12 @@ class Transform:
           self.logger.info(api_key, self.log_name, workflow['name'] + ' encountered an error. skipping. : ' + str(e))
           continue
 
-        if not account:
-          self.logger.info(api_key, self.log_name, 'was not able to transform account successfully: ' + account['name'])
-        else:
-          self.logger.info(api_key, self.log_name, 'sending account for update to load: ' + account['name'])
-          self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', account['data'])
+        for account in accounts:
+          if not accounts:
+            self.logger.info(api_key, self.log_name, 'was not able to transform account successfully: ' + account['name'])
+          else:
+            self.logger.info(api_key, self.log_name, 'sending account for update to load: ' + account['name'])
+            self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', account['data'])
 
   def run(self):
     try:

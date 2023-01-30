@@ -37,6 +37,7 @@ class TransformUsingDirectMapping:
     account_mappings = self.blitz.mapping_get_account_mapping_by_external_id(headers, current_integration['externalId'])
     self.logger.info(api_key, self.log_name, 'successfully retrieved account mappings : ' + current_integration['externalId'])
 
+    for_update_accounts = []
     for account_mapping in account_mappings:
       if account_mapping['currentJob'] != 'transform':
         self.logger.info(api_key, self.log_name, 'skipping account mapping as it is not in transform status : ' + account_mapping['name'])
@@ -53,7 +54,7 @@ class TransformUsingDirectMapping:
             }
           })
 
-      return {
+      for_update_accounts.append({
         'name': account_mapping['name'],
         'data': {
           'apiKey': api_key,
@@ -62,4 +63,6 @@ class TransformUsingDirectMapping:
             'currentJob': 'load'
           }
         }
-      }
+      })
+
+    return for_update_accounts

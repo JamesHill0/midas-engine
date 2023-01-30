@@ -75,6 +75,7 @@ class TransformUsingDataMapping:
       self.logger.info(api_key, self.log_name, 'failed to find existing data mappings')
       return
 
+    for_update_accounts = []
     for account_mapping in account_mappings:
       if account_mapping['currentJob'] != 'transform':
         self.logger.info(api_key, self.log_name, 'skipping account mapping as it is not in transform status : ' + account_mapping['name'])
@@ -102,7 +103,7 @@ class TransformUsingDataMapping:
               }
             })
 
-      return {
+      for_update_accounts.append({
         'name': account_mapping['name'],
         'data': {
           'apiKey': api_key,
@@ -111,4 +112,6 @@ class TransformUsingDataMapping:
             'currentJob': 'load'
           }
         }
-      }
+      })
+
+    return for_update_accounts
