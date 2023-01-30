@@ -110,6 +110,8 @@ class ExtractFromSmartFile:
                   'mappings': mappings
                 }
               })
+            else:
+              self.logger.info(api_key, self.log_name, 'skipping account mapping as it is not in extract status : ' + account_mapping['name'])
           else:
             self.logger.info(api_key, self.log_name, 'sending account mapping for creation : ' + f['name'])
             self.mq.publish('blitz-api-mapping', 'accounts.mappings.created', {

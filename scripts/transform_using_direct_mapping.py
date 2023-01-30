@@ -39,6 +39,7 @@ class TransformUsingDirectMapping:
 
     for account_mapping in account_mappings:
       if account_mapping['currentJob'] != 'transform':
+        self.logger.info(api_key, self.log_name, 'skipping account mapping as it is not in transform status : ' + account_mapping['name'])
         continue
 
       for mapping in account_mapping['mappings']:
