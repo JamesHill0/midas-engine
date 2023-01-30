@@ -38,7 +38,7 @@ class TransformUsingDirectMapping:
     self.logger.info(api_key, self.log_name, 'successfully retrieved account mappings : ' + current_integration['externalId'])
 
     for account_mapping in account_mappings:
-      if account_mapping['currentJob'] != 'transformation':
+      if account_mapping['currentJob'] != 'transform':
         continue
 
       for mapping in account_mapping['mappings']:

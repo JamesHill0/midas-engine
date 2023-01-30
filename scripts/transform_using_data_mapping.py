@@ -75,7 +75,7 @@ class TransformUsingDataMapping:
       return
 
     for account_mapping in account_mappings:
-      if account_mapping['currentJob'] != 'transformation':
+      if account_mapping['currentJob'] != 'transform':
         continue
 
       for mapping in account_mapping['mappings']:
