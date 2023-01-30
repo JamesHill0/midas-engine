@@ -72,6 +72,7 @@ class TransformUsingDataMapping:
       dm[data_mapping['toField']] = data_mapping
 
     if not dm:
+      self.logger.info(api_key, self.log_name, 'failed to find existing data mappings')
       return
 
     for account_mapping in account_mappings:
@@ -79,8 +80,8 @@ class TransformUsingDataMapping:
         continue
 
       for mapping in account_mapping['mappings']:
-        if mapping['fromField'] in dm:
-          data_mapping = dm[mapping['fromField']]
+        if mapping['toField'] in dm:
+          data_mapping = dm[mapping['toField']]
 
           formatted_data = ''
           try:
