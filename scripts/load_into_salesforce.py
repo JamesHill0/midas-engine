@@ -79,13 +79,7 @@ class LoadIntoSalesforce:
       if account_mapping['result']:
         result = json.loads(account_mapping['result'])
 
-      if not result['id']:
-        # do create
-        self.logger.info(api_key, self.log_name, 'adding salesforce object for creation')
-        for_create_account_mapping_ids.append(account_mapping['id'])
-        for_creation.append(salesforce_object)
-        self.logger.info(api_key, self.log_name, 'successfully added salesforce object for creation')
-      else:
+      if 'id' in result:
         # do update
         self.logger.info(api_key, self.log_name, 'adding salesforce object for update: ' + result['id'])
         salesforce_id = result['id']
@@ -94,6 +88,12 @@ class LoadIntoSalesforce:
         for_update_sf_ids.append(salesforce_id)
         for_update.append(salesforce_object)
         self.logger.info(api_key, self.log_name, 'successfully added salesforce object for update: ' + result['id'])
+      else:
+        # do create
+        self.logger.info(api_key, self.log_name, 'adding salesforce object for creation')
+        for_create_account_mapping_ids.append(account_mapping['id'])
+        for_creation.append(salesforce_object)
+        self.logger.info(api_key, self.log_name, 'successfully added salesforce object for creation')
 
       self.mq.publish('blitz-api-mapping', 'accounts.mappings.updated', {
         'apiKey': api_key,
