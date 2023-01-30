@@ -2,6 +2,7 @@ from blitz import Blitz
 from transform_using_direct_mapping import TransformUsingDirectMapping
 from transform_using_priority_mapping import TransformUsingPriorityMapping
 from transform_using_data_mapping import TransformUsingDataMapping
+from transform_remove_mapping import TransformRemoveMapping
 from rabbitmq import RabbitMQ
 from logger import Logger
 
@@ -15,6 +16,7 @@ class Transform:
     self.blitz = Blitz()
     self.mq = RabbitMQ()
 
+    self.transform_remove_mapping = TransformRemoveMapping()
     self.transform_using_direct_mapping = TransformUsingDataMapping()
     self.transform_using_priority_mapping = TransformUsingPriorityMapping()
     self.transform_using_data_mapping = TransformUsingDataMapping()
@@ -92,6 +94,10 @@ class Transform:
 
         account = {}
         try:
+          self.logger.info(api_key, self.log_name, 'cleaning up before transforming for workflow ' + workflow['name'])
+          self.transform_remove_mapping.run(api_key, subworkflow)
+          self.logger.info(api_key, self.log_name, 'finish cleaning up transformed data for workflow ' + workflow['name'])
+
           if workflow['mappingType'] == 'direct-mapping':
             self.logger.info(api_key, self.log_name, 'transforming field using direct mapping for workflow ' + workflow['name'])
             accounts = self.transform_using_data_mapping.run(api_key, subworkflow)
