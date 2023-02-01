@@ -10,6 +10,7 @@ import { createConnection, getConnection } from 'typeorm';
 import { CredentialType } from 'src/enums/credential.type';
 import { ClientProxy, Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { ConnectionService } from 'src/service/connection.service';
+import e from 'express';
 
 @Controller('salesforces')
 export class SalesforcesController {
@@ -297,6 +298,8 @@ export class SalesforcesController {
           if (result['errors'].length > 0) {
             res['error'] = result['errors'][0]['message'];
           }
+        } else {
+          res['error'] = 'N/A'
         }
 
         if (result.hasOwnProperty('success')) {
@@ -346,6 +349,8 @@ export class SalesforcesController {
           if (result['errors'].length > 0) {
             res['error'] = result['errors'][0]['message'];
           }
+        } else {
+          res['error'] = 'N/A'
         }
 
         if (result.hasOwnProperty('success')) {
