@@ -300,6 +300,7 @@ export class SalesforcesController {
           }
         } else {
           res['error'] = 'N/A'
+          res['success'] = 'Yes'
         }
 
         if (result.hasOwnProperty('success')) {
@@ -351,6 +352,7 @@ export class SalesforcesController {
           }
         } else {
           res['error'] = 'N/A'
+          res['success'] = 'Yes'
         }
 
         if (result.hasOwnProperty('success')) {
