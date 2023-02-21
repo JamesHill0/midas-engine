@@ -183,4 +183,24 @@ export class SalesforcesConnService {
       })
     })
   }
+
+  public async describeGlobal(auth: Secret): Promise<any> {
+    let conn = await this.connection(auth, null);
+
+    return new Promise((resolve, reject) => {
+      conn.describeGlobal((err: any, result: Jsforce.DescribeGlobalResult) => {
+        if (err) {
+          console.log(err);
+          reject('Internal Server Error');
+        }
+
+        if (result == null) {
+          console.log('Result not found');
+          reject('Internal Server Error');
+        }
+
+        resolve(result);
+      })
+    })
+  }
 }

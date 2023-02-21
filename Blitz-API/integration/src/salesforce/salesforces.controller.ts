@@ -163,7 +163,28 @@ export class SalesforcesController {
   public async getTableFields(@Res() res, @Param('id') id, @Param('tableName') tableName): Promise<any> {
     try {
       let sf = await this.salesforcesService.findById(id);
+
       let data = await this.salesforcesConnService.getTableFields(sf.secret, tableName);
+      return res.status(HttpStatus.OK).json({
+        data: data,
+        message: 'Success',
+        status: HttpStatus.OK,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: 'Internal Server Error',
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+      });
+    }
+  }
+
+  @Get(":id/jsforce/all/describeGlobal")
+  public async describeGlobal(@Res() res, @Param('id') id): Promise<any> {
+    try {
+      let sf = await this.salesforcesService.findById(id);
+
+      let data = await this.salesforcesConnService.describeGlobal(sf.secret);
       return res.status(HttpStatus.OK).json({
         data: data,
         message: 'Success',
