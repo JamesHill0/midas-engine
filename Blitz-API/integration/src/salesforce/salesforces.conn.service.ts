@@ -36,7 +36,7 @@ export class SalesforcesConnService {
 
     let loginUrl = await this.authenticationService.decrypt(authBasic.url);
 
-    let conn = new Jsforce.Connection({})
+    let conn = new Jsforce.Connection({ version: 'v57.0' })
 
     if (loginUrl["encoded"] != "") {
       conn = new Jsforce.Connection({
